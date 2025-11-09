@@ -141,6 +141,13 @@ header p {
     margin-bottom: 5px;
 }
 
+@media (max-width: 768px) {
+    .warning-box {
+        padding: 12px;
+        font-size: 0.9em;
+    }
+}
+
 /* Age Display */
 .age-display {
     display: inline-block;
@@ -154,16 +161,56 @@ header p {
 
 /* Responsive */
 @media (max-width: 768px) {
+    body {
+        padding: 0;
+    }
+    
     .container {
         border-radius: 0;
     }
     
+    header {
+        padding: 20px 15px;
+    }
+    
     header h1 {
-        font-size: 1.8em;
+        font-size: 1.5em;
+    }
+    
+    header p {
+        font-size: 0.9em;
     }
     
     .section {
-        padding: 20px;
+        padding: 15px;
+    }
+    
+    .section h2 {
+        font-size: 1.3em;
+        padding-left: 10px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 1em;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="date"],
+    .form-group input[type="number"] {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .age-display {
+        display: block;
+        margin-left: 0;
+        margin-top: 10px;
     }
 }
 

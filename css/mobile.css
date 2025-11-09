@@ -1,0 +1,195 @@
+/* Mobile-Specific Optimizations */
+
+/* Prevent text size adjustment on orientation change */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+/* Smooth scrolling for touch devices */
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* Better touch scrolling */
+.food-list,
+.intake-list,
+.available-foods-list,
+.meal-slots,
+.reference-table,
+.nutrition-table,
+.tab-container,
+.food-categories {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent zoom on input focus for iOS */
+@media (max-width: 768px) {
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+    
+    /* Better spacing for touch targets */
+    button,
+    .btn-primary,
+    .btn-secondary,
+    .category-btn,
+    .tab-button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Improve readability */
+    body {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    /* Better spacing */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    /* Sticky header on mobile */
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Hide drag indicators on mobile (use tap instead) */
+    .drag-indicator {
+        display: none;
+    }
+    
+    /* Better modal experience */
+    .modal {
+        align-items: flex-start;
+    }
+    
+    /* Improve table scrolling indicator */
+    .reference-table::after,
+    .nutrition-table::after {
+        content: '← Kaydırın →';
+        display: block;
+        text-align: center;
+        font-size: 0.8em;
+        color: #999;
+        margin-top: 5px;
+        font-style: italic;
+    }
+    
+    /* Better empty state messages */
+    .empty-meal,
+    .empty-foods,
+    .empty-state {
+        font-size: 0.9em;
+        padding: 20px;
+    }
+    
+    /* Compact meal planning on mobile */
+    .meal-food-item {
+        font-size: 0.9em;
+    }
+    
+    /* Better progress bars */
+    .progress-chart {
+        margin-top: 15px;
+    }
+    
+    .progress-item {
+        margin-bottom: 12px;
+    }
+    
+    /* Improve button groups */
+    .meal-header-controls {
+        flex-wrap: wrap;
+    }
+    
+    /* Better food box layout */
+    .food-box {
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    /* Improve intake item layout */
+    .intake-item-info {
+        width: 100%;
+    }
+    
+    /* Better meal totals */
+    .meal-total-item {
+        padding: 8px;
+    }
+    
+    .meal-total-item label {
+        font-size: 0.8em;
+    }
+    
+    .meal-total-item span {
+        font-size: 1.1em;
+    }
+}
+
+/* Landscape mode optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+    header {
+        padding: 15px;
+    }
+    
+    header h1 {
+        font-size: 1.3em;
+    }
+    
+    header p {
+        font-size: 0.85em;
+    }
+    
+    .section {
+        padding: 12px;
+    }
+    
+    .section h2 {
+        font-size: 1.2em;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.3em;
+    }
+    
+    .section h2 {
+        font-size: 1.2em;
+    }
+    
+    .needs-grid {
+        gap: 12px;
+    }
+    
+    .need-item {
+        padding: 12px;
+    }
+    
+    .food-list {
+        gap: 10px;
+    }
+    
+    .meal-slot {
+        padding: 12px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

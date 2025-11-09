@@ -15,6 +15,34 @@
     .meal-planning-container {
         grid-template-columns: 1fr;
     }
+    
+    .available-foods-panel {
+        position: static;
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .available-foods-panel {
+        padding: 15px;
+        max-height: 300px;
+    }
+    
+    .available-foods-panel h3 {
+        font-size: 1em;
+    }
+    
+    .available-food-item {
+        padding: 10px;
+    }
+    
+    .available-food-info h5 {
+        font-size: 0.9em;
+    }
+    
+    .available-food-info p {
+        font-size: 0.75em;
+    }
 }
 
 .available-foods-panel {
@@ -243,6 +271,40 @@
     gap: 10px;
 }
 
+@media (max-width: 768px) {
+    .meal-totals {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .meal-slot {
+        padding: 15px;
+    }
+    
+    .meal-header h4 {
+        font-size: 1em;
+    }
+    
+    .meal-header-controls button {
+        padding: 5px 10px;
+        font-size: 0.85em;
+    }
+    
+    .meal-food-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .meal-food-info h5 {
+        font-size: 0.9em;
+    }
+    
+    .meal-food-info p {
+        font-size: 0.8em;
+    }
+}
+
 .meal-total-item {
     text-align: center;
     padding: 10px;
@@ -350,4 +412,29 @@
 .modal-buttons .cancel-btn {
     background: #e0e0e0;
     color: #333;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .modal-content h3 {
+        font-size: 1.2em;
+    }
+    
+    .modal-content input {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-buttons button {
+        width: 100%;
+        padding: 12px;
+    }
 }

@@ -288,9 +288,32 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    .modal {
+        padding: 0;
+    }
+    
     .modal-content {
-        max-height: 95vh;
-        margin: 10px;
+        max-height: 100vh;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    .modal-header {
+        padding: 15px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.3em;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .modal-footer {
+        padding: 15px;
+        flex-direction: column;
     }
     
     .history-button {
@@ -301,7 +324,20 @@
     }
     
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    .stat-value {
+        font-size: 20px;
+    }
+    
+    .history-stats {
+        padding: 15px;
+    }
+    
+    .history-item {
+        padding: 15px;
     }
     
     .history-item-header {
@@ -310,11 +346,19 @@
         gap: 8px;
     }
     
+    .history-item-header h3 {
+        font-size: 1em;
+    }
+    
     .history-item-actions {
         flex-direction: column;
     }
     
-    .modal-footer {
-        flex-direction: column;
+    .history-info span,
+    .history-needs span,
+    .history-foods span,
+    .history-meals span {
+        font-size: 0.8em;
+        padding: 5px 10px;
     }
 }

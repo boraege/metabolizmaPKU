@@ -2,6 +2,7 @@
 .reference-table {
     overflow-x: auto;
     margin-top: 20px;
+    -webkit-overflow-scrolling: touch;
 }
 
 .reference-table table {
@@ -9,6 +10,7 @@
     border-collapse: collapse;
     background: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-width: 600px;
 }
 
 .reference-table th,
@@ -16,6 +18,14 @@
     padding: 12px;
     text-align: center;
     border: 1px solid #e0e0e0;
+}
+
+@media (max-width: 768px) {
+    .reference-table th,
+    .reference-table td {
+        padding: 8px;
+        font-size: 0.85em;
+    }
 }
 
 .reference-table th {
@@ -54,4 +64,18 @@
 .reference-info p {
     margin: 5px 0;
     color: #1b5e20;
+}
+
+@media (max-width: 768px) {
+    .reference-info {
+        padding: 12px;
+    }
+    
+    .reference-info h4 {
+        font-size: 1em;
+    }
+    
+    .reference-info p {
+        font-size: 0.9em;
+    }
 }

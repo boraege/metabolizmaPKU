@@ -15,6 +15,7 @@
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s;
+    white-space: nowrap;
 }
 
 .category-btn:hover {
@@ -24,6 +25,19 @@
 .category-btn.active {
     background: #66BB6A;
     color: white;
+}
+
+@media (max-width: 768px) {
+    .food-categories {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 5px;
+    }
+    
+    .category-btn {
+        padding: 12px 24px;
+        font-size: 0.95em;
+    }
 }
 
 .food-list {
@@ -36,6 +50,14 @@
     padding: 10px;
     background: #f8f9fa;
     border-radius: 8px;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+    .food-list {
+        grid-template-columns: 1fr;
+        max-height: 300px;
+    }
 }
 
 .food-box {
@@ -166,6 +188,7 @@
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s;
+    flex-shrink: 0;
 }
 
 .intake-item-controls button:hover {
@@ -180,12 +203,58 @@
     background: #d32f2f;
 }
 
+@media (max-width: 768px) {
+    .intake-item-controls button {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1em;
+    }
+}
+
 .intake-item-controls input {
     width: 80px;
     padding: 5px;
     text-align: center;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
+    font-size: 16px; /* Prevents zoom on iOS */
+}
+
+@media (max-width: 768px) {
+    .intake-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .intake-item-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .intake-item-controls input {
+        width: 70px;
+    }
+    
+    .food-box {
+        padding: 12px;
+    }
+    
+    .food-box h4 {
+        font-size: 0.95em;
+    }
+    
+    .food-box p {
+        font-size: 0.8em;
+    }
+    
+    .daily-intake {
+        padding: 15px;
+    }
+    
+    .daily-intake h3 {
+        font-size: 1.1em;
+    }
 }
 
 .intake-totals {
@@ -209,6 +278,20 @@
 .intake-totals span {
     color: #2E7D32;
     font-size: 1.2em;
+}
+
+@media (max-width: 768px) {
+    .intake-totals {
+        padding: 12px;
+    }
+    
+    .intake-totals div {
+        font-size: 0.9em;
+    }
+    
+    .intake-totals span {
+        font-size: 1.1em;
+    }
 }
 
 /* Progress Chart */
@@ -260,4 +343,23 @@
     font-size: 0.85em;
     color: #333;
     font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .progress-bar-container {
+        height: 25px;
+    }
+    
+    .progress-bar {
+        font-size: 0.75em;
+    }
+    
+    .progress-text {
+        font-size: 0.75em;
+        right: 5px;
+    }
+    
+    .progress-item label {
+        font-size: 0.9em;
+    }
 }

@@ -43,3 +43,17 @@
 [data-title]:hover {
     cursor: help;
 }
+
+@media (max-width: 768px) {
+    .custom-tooltip {
+        max-width: 250px;
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+    
+    /* Touch devices - show tooltip on tap */
+    [title]:active,
+    [data-title]:active {
+        cursor: pointer;
+    }
+}
