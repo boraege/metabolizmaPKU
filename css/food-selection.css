@@ -1,4 +1,147 @@
 /* Food Selection Styles */
+
+/* Exchange List Styles */
+.exchange-list-container {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.exchange-list-container h3 {
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.exchange-hint {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.exchange-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.exchange-group {
+    background: white;
+    border-left: 4px solid #667eea;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.exchange-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.exchange-group-header h4 {
+    color: #333;
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.exchange-portions {
+    background: #667eea;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.exchange-examples {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.exchange-examples li {
+    padding: 8px 0;
+    color: #555;
+    font-size: 0.9em;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.exchange-examples li:last-child {
+    border-bottom: none;
+}
+
+.exchange-examples li:before {
+    content: '✓';
+    color: #4CAF50;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Visual Charts */
+.visual-charts {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.visual-charts h4 {
+    color: #667eea;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chart-container h5 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1em;
+}
+
+.chart-container canvas {
+    width: 100%;
+    height: 250px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .exchange-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .exchange-group-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container canvas {
+        height: 200px;
+    }
+}
+
 .food-categories {
     display: flex;
     gap: 10px;

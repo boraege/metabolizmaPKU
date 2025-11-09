@@ -98,6 +98,40 @@ function exportToPDF() {
         html += '<div class="info-item"><strong>Fenilalanin:</strong> ' + needs.phenylalanine + ' mg/gün</div>';
         html += '</div>';
         
+        html += '<h2>Besin Değişim Listesi</h2>';
+        html += '<div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:20px 0">';
+        html += '<table style="margin:0"><thead><tr>';
+        html += '<th>Besin Grubu</th><th>Önerilen Porsiyon</th><th>Örnek Porsiyonlar</th>';
+        html += '</tr></thead><tbody>';
+        
+        const exchangeGroups = [
+            {
+                name: 'Ekmek ve Tahıl',
+                portions: '6-11 porsiyon/gün',
+                examples: '1 dilim ekmek (30g), 1/2 su bardağı pirinç (75g), 1 küçük patates (100g)'
+            },
+            {
+                name: 'Sebze',
+                portions: '3-5 porsiyon/gün',
+                examples: '1 su bardağı çiğ sebze (100g), 1/2 su bardağı pişmiş sebze (75g)'
+            },
+            {
+                name: 'Meyve',
+                portions: '2-4 porsiyon/gün',
+                examples: '1 orta elma (150g), 1/2 su bardağı meyve suyu (120ml), 1 orta muz (100g)'
+            }
+        ];
+        
+        exchangeGroups.forEach(group => {
+            html += '<tr>';
+            html += '<td><strong>' + group.name + '</strong></td>';
+            html += '<td>' + group.portions + '</td>';
+            html += '<td style="font-size:0.9em">' + group.examples + '</td>';
+            html += '</tr>';
+        });
+        
+        html += '</tbody></table></div>';
+        
         html += '<h2>Günlük Besin Alımı (Toplam)</h2>';
         
         // Collect all foods from both intake list and meal slots
@@ -160,6 +194,46 @@ function exportToPDF() {
         if (!hasAnyMeals) {
             html += '<p style="color:#999;font-style:italic">Henüz öğün planı oluşturulmamış.</p>';
         } else {
+            // Add meal distribution summary
+            html += '<div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:20px 0">';
+            html += '<h3 style="color:#667eea;margin-bottom:15px">Öğün Dağılımı Özeti</h3>';
+            html += '<table style="margin:0"><thead><tr>';
+            html += '<th>Öğün</th><th>Enerji (kcal)</th><th>Protein (g)</th><th>Fenilalanin (mg)</th><th>Yüzde</th>';
+            html += '</tr></thead><tbody>';
+            
+            var grandTotal = 0;
+            var mealSummaries = [];
+            
+            for (var j = 0; j < meals.length; j++) {
+                var meal = meals[j];
+                if (meal.foods && meal.foods.length > 0) {
+                    var mealTotals = {energy: 0, protein: 0, pa: 0};
+                    for (var l = 0; l < meal.foods.length; l++) {
+                        var food = meal.foods[l];
+                        mealTotals.energy += food.energy;
+                        mealTotals.protein += food.protein;
+                        mealTotals.pa += food.pa;
+                    }
+                    grandTotal += mealTotals.energy;
+                    mealSummaries.push({name: meal.name, totals: mealTotals});
+                }
+            }
+            
+            for (var i = 0; i < mealSummaries.length; i++) {
+                var summary = mealSummaries[i];
+                var percentage = grandTotal > 0 ? Math.round((summary.totals.energy / grandTotal) * 100) : 0;
+                html += '<tr>';
+                html += '<td><strong>' + summary.name + '</strong></td>';
+                html += '<td>' + summary.totals.energy + '</td>';
+                html += '<td>' + summary.totals.protein.toFixed(1) + '</td>';
+                html += '<td>' + summary.totals.pa + '</td>';
+                html += '<td>' + percentage + '%</td>';
+                html += '</tr>';
+            }
+            
+            html += '</tbody></table></div>';
+            
+            html += '<h3 style="margin-top:30px">Detaylı Öğün Planı</h3>';
             for (var k = 0; k < meals.length; k++) {
                 var meal = meals[k];
                 if (meal.foods && meal.foods.length > 0) {

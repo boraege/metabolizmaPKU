@@ -31,26 +31,39 @@ Modern, modüler bir metabolizma ve beslenme hesaplama web uygulaması.
    - Protein ihtiyacı
    - Fenilalanin ihtiyacı
 
-4. **Besin Seçimi ve Takibi**
+4. **Besin Değişim Listesi** 🆕
+   - Besin grupları için önerilen porsiyon sayıları
+   - Her grup için örnek porsiyonlar
+   - Görsel kategori ayırımı
+
+5. **Besin Seçimi ve Takibi**
    - 3 kategori: Ekmek/Tahıl, Sebzeler, Meyveler
    - Sürükle-bırak özelliği
    - Miktar ayarlama (+/- butonları)
    - Gerçek zamanlı toplam hesaplama
    - İlerleme çubukları (hedef karşılaştırması)
 
-5. **Öğün Planlaması**
+6. **Görsel Grafikler** 🆕
+   - **Enerji Dağılımı Grafiği**: Besin kategorilerine göre enerji dağılımı (pasta grafiği)
+   - **Makro Besin Grafiği**: Enerji, protein ve fenilalanin hedef karşılaştırması (çubuk grafik)
+   - Canvas tabanlı, gerçek zamanlı güncellenen grafikler
+
+7. **Öğün Planlaması**
    - 6 standart öğün (Sabah, Kuşluk, Öğle, İkindi, Akşam, Gece)
    - Öğün ekleme/silme/düzenleme
    - Öğünler arası yeni öğün ekleme
    - Besinleri öğünlere dağıtma
    - Öğün bazında toplam hesaplama
+   - **Öğün Dağılım Grafiği** 🆕: Öğünlere göre enerji dağılımı
 
-6. **PDF Rapor Oluşturma**
+8. **PDF Rapor Oluşturma**
    - Tüm bilgileri içeren yazdırılabilir rapor
    - Kişisel bilgiler
    - Günlük ihtiyaçlar
+   - **Besin değişim listesi** 🆕
+   - **Öğün dağılım özeti** 🆕
    - Besin listesi
-   - Öğün planı
+   - Detaylı öğün planı
 
 ## Dosya Yapısı
 

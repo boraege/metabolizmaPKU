@@ -21,6 +21,68 @@ function initializeFoodSelection() {
     
     // Initial display
     displayFoodList('bread');
+    displayExchangeList();
+}
+
+function displayExchangeList() {
+    const exchangeListDiv = document.getElementById('exchangeList');
+    if (!exchangeListDiv) return;
+    
+    const exchangeGroups = [
+        {
+            name: 'Ekmek ve Tahıl Grubu',
+            portions: '6-11 porsiyon/gün',
+            examples: [
+                '1 dilim ekmek (30g)',
+                '1/2 su bardağı pirinç/makarna (75g)',
+                '1 küçük patates (100g)',
+                '3-4 yemek kaşığı tahıl gevreği (30g)'
+            ],
+            color: '#FF9800'
+        },
+        {
+            name: 'Sebze Grubu',
+            portions: '3-5 porsiyon/gün',
+            examples: [
+                '1 su bardağı çiğ yapraklı sebze (100g)',
+                '1/2 su bardağı pişmiş sebze (75g)',
+                '3/4 su bardağı sebze suyu (180ml)',
+                '1 orta domates (100g)'
+            ],
+            color: '#4CAF50'
+        },
+        {
+            name: 'Meyve Grubu',
+            portions: '2-4 porsiyon/gün',
+            examples: [
+                '1 orta elma/portakal (150g)',
+                '1/2 su bardağı meyve suyu (120ml)',
+                '1 orta muz (100g)',
+                '1/2 su bardağı konserve meyve (120g)'
+            ],
+            color: '#E91E63'
+        }
+    ];
+    
+    exchangeListDiv.innerHTML = '';
+    
+    exchangeGroups.forEach(group => {
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'exchange-group';
+        groupDiv.style.borderLeftColor = group.color;
+        
+        groupDiv.innerHTML = `
+            <div class="exchange-group-header">
+                <h4>${group.name}</h4>
+                <span class="exchange-portions">${group.portions}</span>
+            </div>
+            <ul class="exchange-examples">
+                ${group.examples.map(ex => `<li>${ex}</li>`).join('')}
+            </ul>
+        `;
+        
+        exchangeListDiv.appendChild(groupDiv);
+    });
 }
 
 function setupIntakeDropZone() {
@@ -297,4 +359,176 @@ function updateProgressChart() {
             </div>
         </div>
     `;
+    
+    // Update visual charts
+    updateVisualCharts();
+}
+
+function updateVisualCharts() {
+    drawEnergyChart();
+    drawMacroChart();
+}
+
+function drawEnergyChart() {
+    const canvas = document.getElementById('energyChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width = canvas.offsetWidth * 2;
+    const height = canvas.height = canvas.offsetHeight * 2;
+    
+    ctx.scale(2, 2);
+    
+    // Calculate category totals
+    const categoryTotals = {
+        bread: 0,
+        vegetables: 0,
+        fruits: 0,
+        custom: 0
+    };
+    
+    dailyIntakeList.forEach(item => {
+        const category = item.category || 'custom';
+        categoryTotals[category] += item.energy;
+    });
+    
+    const total = Object.values(categoryTotals).reduce((a, b) => a + b, 0);
+    
+    if (total === 0) {
+        ctx.fillStyle = '#999';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Henüz veri yok', width/4, height/4);
+        return;
+    }
+    
+    // Draw pie chart
+    const centerX = width / 4;
+    const centerY = height / 4;
+    const radius = Math.min(width, height) / 5;
+    
+    const colors = {
+        bread: '#FF9800',
+        vegetables: '#4CAF50',
+        fruits: '#E91E63',
+        custom: '#9C27B0'
+    };
+    
+    const labels = {
+        bread: 'Ekmek/Tahıl',
+        vegetables: 'Sebze',
+        fruits: 'Meyve',
+        custom: 'Diğer'
+    };
+    
+    let currentAngle = -Math.PI / 2;
+    
+    Object.keys(categoryTotals).forEach(category => {
+        const value = categoryTotals[category];
+        if (value > 0) {
+            const sliceAngle = (value / total) * 2 * Math.PI;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+            ctx.closePath();
+            ctx.fillStyle = colors[category];
+            ctx.fill();
+            
+            // Draw label
+            const labelAngle = currentAngle + sliceAngle / 2;
+            const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+            const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(Math.round((value / total) * 100) + '%', labelX, labelY);
+            
+            currentAngle += sliceAngle;
+        }
+    });
+    
+    // Draw legend
+    let legendY = 20;
+    Object.keys(categoryTotals).forEach(category => {
+        if (categoryTotals[category] > 0) {
+            ctx.fillStyle = colors[category];
+            ctx.fillRect(width/2 + 10, legendY - 10, 15, 15);
+            
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText(`${labels[category]}: ${categoryTotals[category]} kcal`, width/2 + 30, legendY);
+            
+            legendY += 25;
+        }
+    });
+}
+
+function drawMacroChart() {
+    const canvas = document.getElementById('macroChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width = canvas.offsetWidth * 2;
+    const height = canvas.height = canvas.offsetHeight * 2;
+    
+    ctx.scale(2, 2);
+    
+    // Calculate totals
+    const totals = dailyIntakeList.reduce((acc, item) => {
+        acc.energy += item.energy;
+        acc.protein += item.protein;
+        acc.pa += item.pa;
+        return acc;
+    }, { energy: 0, protein: 0, pa: 0 });
+    
+    if (totals.energy === 0) {
+        ctx.fillStyle = '#999';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Henüz veri yok', width/4, height/4);
+        return;
+    }
+    
+    const needs = currentNeeds;
+    
+    const data = [
+        { label: 'Enerji', current: totals.energy, target: needs.energyPractical, unit: 'kcal', color: '#2196F3' },
+        { label: 'Protein', current: totals.protein, target: needs.protein, unit: 'g', color: '#4CAF50' },
+        { label: 'Fenilalanin', current: totals.pa, target: needs.phenylalanine, unit: 'mg', color: '#FF9800' }
+    ];
+    
+    const barHeight = 40;
+    const barSpacing = 60;
+    const startY = 30;
+    const maxBarWidth = width / 2 - 40;
+    
+    data.forEach((item, index) => {
+        const y = startY + index * barSpacing;
+        const percentage = Math.min(100, (item.current / item.target) * 100);
+        const barWidth = (percentage / 100) * maxBarWidth;
+        
+        // Draw label
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText(item.label, 10, y - 5);
+        
+        // Draw background bar
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(10, y, maxBarWidth, barHeight);
+        
+        // Draw progress bar
+        ctx.fillStyle = item.current > item.target ? '#f44336' : item.color;
+        ctx.fillRect(10, y, barWidth, barHeight);
+        
+        // Draw text
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 11px Arial';
+        ctx.textAlign = 'center';
+        const text = `${Math.round(item.current)} / ${Math.round(item.target)} ${item.unit}`;
+        ctx.fillText(text, 10 + maxBarWidth / 2, y + barHeight / 2 + 4);
+    });
 }

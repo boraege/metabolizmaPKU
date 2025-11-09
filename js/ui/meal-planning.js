@@ -16,6 +16,7 @@ var mealSlots = window.mealSlots;
 function initializeMealPlanning() {
     displayMealSlots();
     displayAvailableFoods();
+    updateMealDistributionChart();
     
     document.getElementById('addMeal').addEventListener('click', () => {
         addCustomFood();
@@ -281,6 +282,7 @@ function displayMealFoods(meal) {
     if (meal.foods.length === 0) {
         contentDiv.innerHTML = '<div class="empty-meal">Besin eklemek için günlük alım listesinden sürükleyin</div>';
         totalsDiv.innerHTML = '';
+        updateMealDistributionChart();
         return;
     }
     
@@ -321,6 +323,91 @@ function displayMealFoods(meal) {
             <span>${totals.pa} mg</span>
         </div>
     `;
+    
+    // Update meal distribution chart
+    updateMealDistributionChart();
+}
+
+function updateMealDistributionChart() {
+    const canvas = document.getElementById('mealDistributionChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width = canvas.offsetWidth * 2;
+    const height = canvas.height = 300 * 2;
+    
+    ctx.scale(2, 2);
+    ctx.clearRect(0, 0, width, height);
+    
+    // Calculate meal totals
+    const mealData = mealSlots.map(meal => {
+        const totals = meal.foods.reduce((acc, food) => {
+            acc.energy += food.energy;
+            acc.protein += food.protein;
+            acc.pa += food.pa;
+            return acc;
+        }, { energy: 0, protein: 0, pa: 0 });
+        
+        return {
+            name: meal.name,
+            ...totals
+        };
+    }).filter(meal => meal.energy > 0);
+    
+    if (mealData.length === 0) {
+        ctx.fillStyle = '#999';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Öğünlere besin eklendiğinde grafik görünecek', width/4, height/4);
+        return;
+    }
+    
+    // Draw bar chart
+    const barWidth = (width / 2 - 40) / mealData.length;
+    const maxEnergy = Math.max(...mealData.map(m => m.energy));
+    const chartHeight = height / 2 - 80;
+    
+    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
+    
+    mealData.forEach((meal, index) => {
+        const x = 20 + index * barWidth;
+        const barHeight = (meal.energy / maxEnergy) * chartHeight;
+        const y = chartHeight + 40 - barHeight;
+        
+        // Draw bar
+        ctx.fillStyle = colors[index % colors.length];
+        ctx.fillRect(x, y, barWidth - 10, barHeight);
+        
+        // Draw value on top
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 11px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(meal.energy + ' kcal', x + (barWidth - 10) / 2, y - 5);
+        
+        // Draw meal name
+        ctx.save();
+        ctx.translate(x + (barWidth - 10) / 2, chartHeight + 50);
+        ctx.rotate(-Math.PI / 4);
+        ctx.textAlign = 'right';
+        ctx.fillText(meal.name, 0, 0);
+        ctx.restore();
+    });
+    
+    // Draw legend
+    let legendY = 20;
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    
+    mealData.forEach((meal, index) => {
+        ctx.fillStyle = colors[index % colors.length];
+        ctx.fillRect(width/2 + 10, legendY - 10, 15, 15);
+        
+        ctx.fillStyle = '#333';
+        ctx.fillText(`${meal.name}: ${meal.energy} kcal`, width/2 + 30, legendY);
+        ctx.fillText(`Prot: ${meal.protein.toFixed(1)}g, PA: ${meal.pa}mg`, width/2 + 30, legendY + 12);
+        
+        legendY += 35;
+    });
 }
 
 function removeFoodFromMeal(mealId, foodId) {

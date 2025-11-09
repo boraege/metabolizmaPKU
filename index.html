@@ -108,6 +108,14 @@
         <!-- Section 6: Food Selection -->
         <section id="food-selection" class="section">
             <h2>6. Besin Seçimi</h2>
+            
+            <!-- Exchange List -->
+            <div class="exchange-list-container">
+                <h3>Besin Değişim Listesi</h3>
+                <p class="exchange-hint">Her grup için önerilen porsiyon sayıları ve değişim seçenekleri</p>
+                <div id="exchangeList" class="exchange-list"></div>
+            </div>
+            
             <div class="food-categories">
                 <button class="category-btn active" data-category="bread">Ekmek ve Tahıl</button>
                 <button class="category-btn" data-category="vegetables">Sebzeler</button>
@@ -124,6 +132,21 @@
                     <div>Toplam Fenilalanin: <span id="totalPhe">0</span> mg</div>
                 </div>
                 <div id="progressChart" class="progress-chart"></div>
+                
+                <!-- Visual Charts -->
+                <div class="visual-charts">
+                    <h4>Besin Dağılımı</h4>
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h5>Enerji Dağılımı</h5>
+                            <canvas id="energyChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h5>Makro Besin Dağılımı</h5>
+                            <canvas id="macroChart"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -131,6 +154,13 @@
         <section id="meal-planning" class="section">
             <h2>7. Öğün Planlaması</h2>
             <button id="addMeal" class="btn-secondary">Öğün Ekle</button>
+            
+            <!-- Meal Distribution Chart -->
+            <div class="meal-distribution-chart">
+                <h3>Öğün Dağılımı</h3>
+                <canvas id="mealDistributionChart"></canvas>
+            </div>
+            
             <div class="meal-planning-container">
                 <div class="available-foods-panel">
                     <h3>Seçilen Besinler</h3>
