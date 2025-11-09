@@ -1,0 +1,57 @@
+/* Reference Display Styles */
+.reference-table {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.reference-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.reference-table th,
+.reference-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+
+.reference-table th {
+    background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+    color: white;
+    font-weight: 600;
+}
+
+.reference-table tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.reference-table tr.highlighted {
+    background: #fff3cd !important;
+    font-weight: 600;
+}
+
+.reference-table tr.height-age-row {
+    background: #e3f2fd !important;
+    border: 2px solid #2196f3;
+}
+
+.reference-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e8f5e9;
+    border-radius: 8px;
+    border-left: 4px solid #66BB6A;
+}
+
+.reference-info h4 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.reference-info p {
+    margin: 5px 0;
+    color: #1b5e20;
+}

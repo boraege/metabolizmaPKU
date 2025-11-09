@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metabolizma Hesaplayıcı</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/user-input.css">
+    <link rel="stylesheet" href="css/reference.css">
+    <link rel="stylesheet" href="css/calculations.css">
+    <link rel="stylesheet" href="css/food-selection.css">
+    <link rel="stylesheet" href="css/meal-planning.css?v=7">
+    <link rel="stylesheet" href="css/history.css">
+    <link rel="stylesheet" href="css/tooltip.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Metabolizma Hesaplayıcı</h1>
+            <p>Beslenme ve Metabolizma Değerlendirme Sistemi</p>
+        </header>
+
+        <!-- Section 1: Personal Information -->
+        <section id="personal-info" class="section">
+            <h2>1. Kişisel Bilgiler</h2>
+            <div class="form-group">
+                <label for="patientName">Ad Soyad:</label>
+                <input type="text" id="patientName" required>
+            </div>
+            <div class="form-group">
+                <label for="birthDate">Doğum Tarihi:</label>
+                <input type="date" id="birthDate" required>
+                <span id="ageDisplay" class="age-display"></span>
+            </div>
+            <div class="form-group">
+                <label for="height">Boy (cm):</label>
+                <input type="number" id="height" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label for="weight">Kilo (kg):</label>
+                <input type="number" id="weight" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label>Cinsiyet:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="gender" value="male" required> Erkek</label>
+                    <label><input type="radio" name="gender" value="female"> Kız</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Percentile Source Selection -->
+        <section id="percentile-source" class="section">
+            <h2>2. Persentil Kaynağı Seçimi</h2>
+            <div class="tab-container">
+                <button class="tab-button active" data-source="manual">Manuel</button>
+                <button class="tab-button" data-source="neyzi">Neyzi</button>
+                <button class="tab-button" data-source="who">WHO</button>
+            </div>
+            <div id="sourceDescription" class="source-description"></div>
+        </section>
+
+        <!-- Section 3: Reference Values Display -->
+        <section id="reference-display" class="section">
+            <h2>3. Referans Değerler</h2>
+            <div id="referenceWarning" class="warning-box" style="display:none;"></div>
+            <div id="referenceTable" class="reference-table"></div>
+        </section>
+
+        <!-- Section 4: Daily Needs Calculation -->
+        <section id="daily-needs" class="section results-section">
+            <h2>4. Günlük İhtiyaçlar</h2>
+            <div class="needs-grid">
+                <div class="need-item">
+                    <label>BMR (kcal/gün):</label>
+                    <span id="bmrValue">-</span>
+                </div>
+                <div class="need-item">
+                    <label>Enerji (Ref) (kcal):</label>
+                    <span id="energyRefValue">-</span>
+                </div>
+                <div class="need-item">
+                    <label>Enerji (Pratik) (kcal):</label>
+                    <input type="number" id="energyPracticalValue" step="1">
+                </div>
+                <div class="need-item">
+                    <label>Protein (g/gün):</label>
+                    <span id="proteinValue">-</span>
+                </div>
+                <div class="need-item">
+                    <label>Fenilalanin (mg/gün):</label>
+                    <span id="pheValue">-</span>
+                </div>
+            </div>
+            <button id="calculateNeeds" class="btn-primary">Hesapla</button>
+        </section>
+
+        <!-- Section 5: Nutritional Reference Table -->
+        <section id="nutrition-reference" class="section">
+            <h2>5. Beslenme Referans Tablosu</h2>
+            <div id="nutritionRefTable" class="nutrition-table"></div>
+        </section>
+
+        <!-- Section 6: Food Selection -->
+        <section id="food-selection" class="section">
+            <h2>6. Besin Seçimi</h2>
+            <div class="food-categories">
+                <button class="category-btn active" data-category="bread">Ekmek ve Tahıl</button>
+                <button class="category-btn" data-category="vegetables">Sebzeler</button>
+                <button class="category-btn" data-category="fruits">Meyveler</button>
+            </div>
+            <div id="foodList" class="food-list"></div>
+            <div id="dailyIntake" class="daily-intake">
+                <h3>Günlük Alım</h3>
+                <p style="color: #666; font-size: 0.9em; margin-bottom: 10px;">💡 Besinleri buraya sürükleyin veya tıklayın</p>
+                <div id="intakeList" class="intake-list" data-drop-zone="true"></div>
+                <div class="intake-totals">
+                    <div>Toplam Enerji: <span id="totalEnergy">0</span> kcal</div>
+                    <div>Toplam Protein: <span id="totalProtein">0</span> g</div>
+                    <div>Toplam Fenilalanin: <span id="totalPhe">0</span> mg</div>
+                </div>
+                <div id="progressChart" class="progress-chart"></div>
+            </div>
+        </section>
+
+        <!-- Section 7: Meal Planning -->
+        <section id="meal-planning" class="section">
+            <h2>7. Öğün Planlaması</h2>
+            <button id="addMeal" class="btn-secondary">Öğün Ekle</button>
+            <div class="meal-planning-container">
+                <div class="available-foods-panel">
+                    <h3>Seçilen Besinler</h3>
+                    <p class="panel-hint">Besinleri sürükleyip öğünlere bırakın</p>
+                    <div id="availableFoodsList" class="available-foods-list"></div>
+                </div>
+                <div class="meal-slots-panel">
+                    <div id="mealSlots" class="meal-slots"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Export -->
+        <section id="export-section" class="section">
+            <h2>8. Rapor</h2>
+            <button id="exportPDF" class="btn-primary">PDF İndir</button>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data/reference-data.js"></script>
+    <script src="js/data/food-data.js"></script>
+    <script src="js/utils/age-calculator.js"></script>
+    <script src="js/utils/reference-lookup.js"></script>
+    <script src="js/utils/validation.js"></script>
+    <script src="js/utils/storage.js"></script>
+    <script src="js/calculations/bmr.js"></script>
+    <script src="js/calculations/daily-needs.js"></script>
+    <script src="js/ui/user-input.js"></script>
+    <script src="js/ui/reference-display.js"></script>
+    <script src="js/ui/food-selection.js"></script>
+    <script src="js/ui/meal-planning.js"></script>
+    <script src="js/ui/history-viewer.js?v=2"></script>
+    <script src="js/ui/tooltip.js?v=2"></script>
+    <script src="js/export/pdf-export.js?v=5"></script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html>
