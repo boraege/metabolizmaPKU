@@ -66,16 +66,21 @@ function exportToPDF() {
         var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">';
         html += '<title>Metabolizma Raporu - ' + fullName + '</title>';
         html += '<style>';
-        html += 'body{font-family:Arial,sans-serif;padding:20px}';
-        html += 'h1{color:#667eea;border-bottom:3px solid #667eea;padding-bottom:10px}';
-        html += 'h2{color:#764ba2;margin-top:30px}';
-        html += 'table{width:100%;border-collapse:collapse;margin:20px 0}';
-        html += 'th,td{border:1px solid #ddd;padding:10px;text-align:left}';
-        html += 'th{background:#667eea;color:white}';
-        html += '.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}';
-        html += '.info-item{padding:10px;background:#f8f9fa;border-left:3px solid #667eea}';
-        html += '.meal-section{margin:20px 0;padding:15px;background:#f8f9fa;border-radius:5px}';
-        html += '@media print{button{display:none}}';
+        html += 'body{font-family:Arial,sans-serif;padding:20px;background:#fff}';
+        html += 'h1{color:#667eea;border-bottom:3px solid #667eea;padding-bottom:10px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}';
+        html += 'h2{color:#764ba2;margin-top:30px;padding-bottom:8px;border-bottom:2px solid #e0e7ff}';
+        html += 'h3{color:#2E7D32;margin-top:20px}';
+        html += 'table{width:100%;border-collapse:collapse;margin:20px 0;box-shadow:0 2px 8px rgba(0,0,0,0.1);border-radius:8px;overflow:hidden}';
+        html += 'th,td{border:1px solid #e0e7ff;padding:12px;text-align:left}';
+        html += 'th{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;font-weight:600;text-transform:uppercase;font-size:0.9em;letter-spacing:0.5px}';
+        html += 'tr:nth-child(even){background:#f8f9fa}';
+        html += 'tr:hover{background:#e8f5e9}';
+        html += '.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}';
+        html += '.info-item{padding:15px;background:#f8f9fa;border-left:4px solid #667eea;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.05);transition:all 0.3s}';
+        html += '.info-item strong{color:#667eea;display:block;margin-bottom:5px;font-size:0.9em}';
+        html += '.meal-section{margin:20px 0;padding:20px;background:#f8f9fa;border-radius:12px;border:2px solid #e0e0e0;box-shadow:0 2px 8px rgba(0,0,0,0.05)}';
+        html += '.meal-section h3{color:#2E7D32;margin-top:0;padding-bottom:10px;border-bottom:2px solid #66BB6A}';
+        html += '@media print{button{display:none}body{background:#fff}}';
         html += '</style></head><body>';
         
         html += '<h1>Metabolizma ve Beslenme Raporu</h1>';
@@ -119,12 +124,32 @@ function exportToPDF() {
         }
         
         if (allFoods.length > 0) {
+            // Group foods by name and sum their values
+            var foodGroups = {};
+            for (var i = 0; i < allFoods.length; i++) {
+                var item = allFoods[i];
+                if (!foodGroups[item.name]) {
+                    foodGroups[item.name] = {
+                        name: item.name,
+                        amount: 0,
+                        energy: 0,
+                        protein: 0,
+                        pa: 0
+                    };
+                }
+                foodGroups[item.name].amount += item.amount;
+                foodGroups[item.name].energy += item.energy;
+                foodGroups[item.name].protein += item.protein;
+                foodGroups[item.name].pa += item.pa;
+            }
+            
             html += '<table><thead><tr>';
             html += '<th>Besin</th><th>Miktar</th><th>Enerji (kcal)</th><th>Protein (g)</th><th>Fenilalanin (mg)</th>';
             html += '</tr></thead><tbody>';
             
-            for (var i = 0; i < allFoods.length; i++) {
-                var item = allFoods[i];
+            // Display grouped foods
+            for (var foodName in foodGroups) {
+                var item = foodGroups[foodName];
                 html += '<tr>';
                 html += '<td>' + item.name + '</td>';
                 html += '<td>' + item.amount + 'g</td>';
@@ -137,7 +162,7 @@ function exportToPDF() {
                 totals.pa += item.pa;
             }
             
-            html += '<tr style="font-weight:bold;background:#f0f0f0">';
+            html += '<tr style="font-weight:bold;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);color:#2E7D32;border-top:3px solid #66BB6A">';
             html += '<td>TOPLAM</td><td>-</td>';
             html += '<td>' + totals.energy + '</td>';
             html += '<td>' + totals.protein.toFixed(1) + '</td>';
@@ -161,8 +186,8 @@ function exportToPDF() {
             html += '<p style="color:#999;font-style:italic">Henüz öğün planı oluşturulmamış.</p>';
         } else {
             // Add meal distribution summary
-            html += '<div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:20px 0">';
-            html += '<h3 style="color:#667eea;margin-bottom:15px">Öğün Dağılımı Özeti</h3>';
+            html += '<div style="background:linear-gradient(135deg,#f8f9fa 0%,#e8f5e9 100%);padding:20px;border-radius:12px;margin:20px 0;border:2px solid #e0e7ff;box-shadow:0 4px 12px rgba(102,126,234,0.1)">';
+            html += '<h3 style="color:#667eea;margin-bottom:15px;margin-top:0">Öğün Dağılımı Özeti</h3>';
             html += '<table style="margin:0"><thead><tr>';
             html += '<th>Öğün</th><th>Enerji (kcal)</th><th>Protein (g)</th><th>Fenilalanin (mg)</th><th>Yüzde</th>';
             html += '</tr></thead><tbody>';
@@ -224,7 +249,7 @@ function exportToPDF() {
                         mealTotals.pa += food.pa;
                     }
                     
-                    html += '<tr style="font-weight:bold;background:#f0f0f0">';
+                    html += '<tr style="font-weight:bold;background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);color:#e65100;border-top:3px solid #ff9800">';
                     html += '<td>Öğün Toplamı</td><td>-</td>';
                     html += '<td>' + mealTotals.energy + ' kcal</td>';
                     html += '<td>' + mealTotals.protein.toFixed(1) + ' g</td>';
@@ -234,16 +259,16 @@ function exportToPDF() {
             }
         }
         
-        html += '<div style="margin-top:30px;padding:20px;background:#f8f9fa;border-radius:8px;text-align:center">';
-        html += '<button onclick="window.print()" style="padding:15px 30px;background:#667eea;color:white;border:none;border-radius:5px;cursor:pointer;font-size:16px;margin-right:10px">';
+        html += '<div style="margin-top:30px;padding:20px;background:linear-gradient(135deg,#f8f9fa 0%,#e8f5e9 100%);border-radius:12px;text-align:center;border:2px solid #e0e7ff">';
+        html += '<button onclick="window.print()" style="padding:15px 30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:10px;cursor:pointer;font-size:16px;margin-right:10px;font-weight:600;box-shadow:0 4px 12px rgba(102,126,234,0.3);transition:all 0.3s">';
         html += '🖨️ Yazdır / PDF Olarak Kaydet</button>';
-        html += '<button onclick="window.close()" style="padding:15px 30px;background:#999;color:white;border:none;border-radius:5px;cursor:pointer;font-size:16px">';
+        html += '<button onclick="window.close()" style="padding:15px 30px;background:#999;color:white;border:none;border-radius:10px;cursor:pointer;font-size:16px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.2)">';
         html += '❌ Kapat</button>';
         html += '<p style="margin-top:15px;color:#666;font-size:14px">💡 PDF olarak kaydetmek için yazdır penceresinde "PDF olarak kaydet" seçeneğini seçin.</p>';
         html += '</div>';
         
-        html += '<div style="margin-top:20px;padding:15px;background:#e3f2fd;border-left:4px solid #2196F3;border-radius:4px">';
-        html += '<strong>ℹ️ Not:</strong> Bu rapor ' + new Date().toLocaleString('tr-TR') + ' tarihinde oluşturulmuştur.';
+        html += '<div style="margin-top:20px;padding:15px;background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);border-left:4px solid #66BB6A;border-radius:8px;box-shadow:0 2px 8px rgba(102,187,106,0.2)">';
+        html += '<strong style="color:#2E7D32">ℹ️ Not:</strong> <span style="color:#333">Bu rapor ' + new Date().toLocaleString('tr-TR') + ' tarihinde oluşturulmuştur.</span>';
         html += '</div></body></html>';
         
         printWindow.document.write(html);
