@@ -247,3 +247,24 @@ label:has(input[name="percentileSelection"]):hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+/* Hide sections until calculation */
+.section.hidden-until-calculation {
+    display: none;
+}
+
+.section.show-section {
+    display: block;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

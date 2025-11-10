@@ -107,6 +107,25 @@ function updateDailyNeeds() {
     
     // Update progress chart
     updateProgressChart();
+    
+    // Show hidden sections after calculation
+    showCalculationSections();
+}
+
+function showCalculationSections() {
+    const hiddenSections = document.querySelectorAll('.hidden-until-calculation');
+    hiddenSections.forEach(section => {
+        section.classList.remove('hidden-until-calculation');
+        section.classList.add('show-section');
+    });
+    
+    // Scroll to results smoothly
+    setTimeout(() => {
+        const referenceSection = document.getElementById('reference-display');
+        if (referenceSection) {
+            referenceSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 100);
 }
 
 function displayWarnings(warnings) {
