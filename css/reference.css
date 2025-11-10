@@ -15,9 +15,10 @@
 
 .reference-table th,
 .reference-table td {
-    padding: 12px;
+    padding: 10px;
     text-align: center;
     border: 1px solid #e0e0e0;
+    font-size: 0.9em;
 }
 
 @media (max-width: 768px) {
@@ -49,11 +50,11 @@
 }
 
 .reference-info {
-    margin-top: 15px;
-    padding: 15px;
+    margin-top: 12px;
+    padding: 12px;
     background: #e8f5e9;
-    border-radius: 8px;
-    border-left: 4px solid #66BB6A;
+    border-radius: 6px;
+    border-left: 3px solid #66BB6A;
 }
 
 .reference-info h4 {

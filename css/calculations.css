@@ -14,27 +14,28 @@
 }
 
 .need-item {
-    padding: 20px;
+    padding: 15px;
     background: #f8f9fa;
-    border-radius: 8px;
-    border-left: 4px solid #66BB6A;
+    border-radius: 6px;
+    border-left: 3px solid #66BB6A;
 }
 
 .need-item label {
     display: block;
     font-weight: 600;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    font-size: 0.9em;
 }
 
 .need-item span {
     display: block;
-    font-size: 1.5em;
+    font-size: 1.3em;
     color: #2E7D32;
     font-weight: 700;
     cursor: help;
     position: relative;
-    padding: 5px;
+    padding: 4px;
     border-radius: 4px;
     transition: all 0.3s;
 }
@@ -53,10 +54,10 @@
 
 .need-item input {
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     border: 2px solid #e0e0e0;
     border-radius: 6px;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 #calculateNeeds {
@@ -105,9 +106,10 @@
 
 .nutrition-table th,
 .nutrition-table td {
-    padding: 12px;
+    padding: 10px;
     text-align: center;
     border: 1px solid #e0e0e0;
+    font-size: 0.9em;
 }
 
 @media (max-width: 768px) {

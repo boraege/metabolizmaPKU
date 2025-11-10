@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>Metabolizma Hesaplayıcı</title>
+    <title>Metabolizma Hesaplayıcı PKU</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/user-input.css">
     <link rel="stylesheet" href="css/reference.css">
@@ -20,29 +20,31 @@
 <body>
     <div class="container">
         <header>
-            <h1>Metabolizma Hesaplayıcı</h1>
+            <h1>Metabolizma Hesaplayıcı PKU</h1>
             <p>Beslenme ve Metabolizma Değerlendirme Sistemi</p>
         </header>
 
         <!-- Section 1: Personal Information -->
         <section id="personal-info" class="section">
             <h2>1. Kişisel Bilgiler</h2>
-            <div class="form-group">
-                <label for="patientName">Ad Soyad:</label>
-                <input type="text" id="patientName" required>
-            </div>
-            <div class="form-group">
-                <label for="birthDate">Doğum Tarihi:</label>
-                <input type="date" id="birthDate" required>
-                <span id="ageDisplay" class="age-display"></span>
-            </div>
-            <div class="form-group">
-                <label for="height">Boy (cm):</label>
-                <input type="number" id="height" step="0.1" required>
-            </div>
-            <div class="form-group">
-                <label for="weight">Kilo (kg):</label>
-                <input type="number" id="weight" step="0.1" required>
+            <div class="personal-info-grid">
+                <div class="form-group">
+                    <label for="patientName">Ad Soyad:</label>
+                    <input type="text" id="patientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="height">Boy (cm):</label>
+                    <input type="number" id="height" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthDate">Doğum Tarihi:</label>
+                    <input type="date" id="birthDate" required>
+                    <span id="ageDisplay" class="age-display"></span>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Kilo (kg):</label>
+                    <input type="number" id="weight" step="0.1" required>
+                </div>
             </div>
             <div class="form-group">
                 <label>Cinsiyet:</label>
@@ -109,13 +111,6 @@
         <section id="food-selection" class="section">
             <h2>6. Besin Seçimi</h2>
             
-            <!-- Exchange List -->
-            <div class="exchange-list-container">
-                <h3>Besin Değişim Listesi</h3>
-                <p class="exchange-hint">Her grup için önerilen porsiyon sayıları ve değişim seçenekleri</p>
-                <div id="exchangeList" class="exchange-list"></div>
-            </div>
-            
             <div class="food-categories">
                 <button class="category-btn active" data-category="bread">Ekmek ve Tahıl</button>
                 <button class="category-btn" data-category="vegetables">Sebzeler</button>
@@ -132,21 +127,6 @@
                     <div>Toplam Fenilalanin: <span id="totalPhe">0</span> mg</div>
                 </div>
                 <div id="progressChart" class="progress-chart"></div>
-                
-                <!-- Visual Charts -->
-                <div class="visual-charts">
-                    <h4>Besin Dağılımı</h4>
-                    <div class="charts-grid">
-                        <div class="chart-container">
-                            <h5>Enerji Dağılımı</h5>
-                            <canvas id="energyChart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <h5>Makro Besin Dağılımı</h5>
-                            <canvas id="macroChart"></canvas>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -154,12 +134,6 @@
         <section id="meal-planning" class="section">
             <h2>7. Öğün Planlaması</h2>
             <button id="addMeal" class="btn-secondary">Öğün Ekle</button>
-            
-            <!-- Meal Distribution Chart -->
-            <div class="meal-distribution-chart">
-                <h3>Öğün Dağılımı</h3>
-                <canvas id="mealDistributionChart"></canvas>
-            </div>
             
             <div class="meal-planning-container">
                 <div class="available-foods-panel">

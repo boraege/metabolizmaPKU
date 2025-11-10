@@ -10,6 +10,7 @@ body {
     background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
     min-height: 100vh;
     padding: 20px;
+    font-size: 14px;
 }
 
 .container {
@@ -24,22 +25,22 @@ body {
 header {
     background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
     color: white;
-    padding: 30px;
+    padding: 20px;
     text-align: center;
 }
 
 header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
+    font-size: 2em;
+    margin-bottom: 8px;
 }
 
 header p {
-    font-size: 1.1em;
+    font-size: 1em;
     opacity: 0.9;
 }
 
 .section {
-    padding: 30px;
+    padding: 20px;
     border-bottom: 1px solid #e0e0e0;
     overflow: visible;
 }
@@ -50,32 +51,33 @@ header p {
 
 .section h2 {
     color: #2E7D32;
-    margin-bottom: 20px;
-    font-size: 1.8em;
+    margin-bottom: 15px;
+    font-size: 1.5em;
     border-left: 4px solid #66BB6A;
-    padding-left: 15px;
+    padding-left: 12px;
 }
 
 /* Form Elements */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-weight: 600;
     color: #333;
+    font-size: 0.95em;
 }
 
 .form-group input[type="text"],
 .form-group input[type="date"],
 .form-group input[type="number"] {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1em;
+    border-radius: 6px;
+    font-size: 0.95em;
     transition: border-color 0.3s;
 }
 
@@ -98,10 +100,10 @@ header p {
 
 /* Buttons */
 .btn-primary, .btn-secondary {
-    padding: 12px 30px;
+    padding: 10px 24px;
     border: none;
-    border-radius: 8px;
-    font-size: 1em;
+    border-radius: 6px;
+    font-size: 0.95em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;

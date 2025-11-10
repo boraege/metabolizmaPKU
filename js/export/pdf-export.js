@@ -98,40 +98,6 @@ function exportToPDF() {
         html += '<div class="info-item"><strong>Fenilalanin:</strong> ' + needs.phenylalanine + ' mg/gün</div>';
         html += '</div>';
         
-        html += '<h2>Besin Değişim Listesi</h2>';
-        html += '<div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:20px 0">';
-        html += '<table style="margin:0"><thead><tr>';
-        html += '<th>Besin Grubu</th><th>Önerilen Porsiyon</th><th>Örnek Porsiyonlar</th>';
-        html += '</tr></thead><tbody>';
-        
-        const exchangeGroups = [
-            {
-                name: 'Ekmek ve Tahıl',
-                portions: '6-11 porsiyon/gün',
-                examples: '1 dilim ekmek (30g), 1/2 su bardağı pirinç (75g), 1 küçük patates (100g)'
-            },
-            {
-                name: 'Sebze',
-                portions: '3-5 porsiyon/gün',
-                examples: '1 su bardağı çiğ sebze (100g), 1/2 su bardağı pişmiş sebze (75g)'
-            },
-            {
-                name: 'Meyve',
-                portions: '2-4 porsiyon/gün',
-                examples: '1 orta elma (150g), 1/2 su bardağı meyve suyu (120ml), 1 orta muz (100g)'
-            }
-        ];
-        
-        exchangeGroups.forEach(group => {
-            html += '<tr>';
-            html += '<td><strong>' + group.name + '</strong></td>';
-            html += '<td>' + group.portions + '</td>';
-            html += '<td style="font-size:0.9em">' + group.examples + '</td>';
-            html += '</tr>';
-        });
-        
-        html += '</tbody></table></div>';
-        
         html += '<h2>Günlük Besin Alımı (Toplam)</h2>';
         
         // Collect all foods from both intake list and meal slots

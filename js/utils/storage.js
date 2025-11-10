@@ -122,7 +122,7 @@ function loadDailyIntake() {
 // Save meal slots
 function saveMealSlots() {
     try {
-        localStorage.setItem(STORAGE_KEYS.MEAL_SLOTS, JSON.stringify(mealSlots));
+        localStorage.setItem(STORAGE_KEYS.MEAL_SLOTS, JSON.stringify(window.mealSlots));
         console.log('Öğün planı kaydedildi');
         return true;
     } catch (error) {
@@ -135,19 +135,43 @@ function saveMealSlots() {
 function loadMealSlots() {
     try {
         const data = localStorage.getItem(STORAGE_KEYS.MEAL_SLOTS);
-        if (!data) return [];
+        if (!data) {
+            // Varsayılan öğünleri kullan
+            const defaultSlots = [
+                { id: 1, name: 'Sabah', foods: [] },
+                { id: 2, name: 'Kuşluk', foods: [] },
+                { id: 3, name: 'Öğle', foods: [] },
+                { id: 4, name: 'İkindi', foods: [] },
+                { id: 5, name: 'Akşam', foods: [] },
+                { id: 6, name: 'Gece', foods: [] }
+            ];
+            window.mealSlots.length = 0;
+            window.mealSlots.push(...defaultSlots);
+            return defaultSlots;
+        }
         
         const slots = JSON.parse(data);
         
         // Restore to global variable
-        mealSlots.length = 0;
-        mealSlots.push(...slots);
+        window.mealSlots.length = 0;
+        window.mealSlots.push(...slots);
         
         console.log('Öğün planı yüklendi:', slots.length, 'öğün');
         return slots;
     } catch (error) {
         console.error('Öğün planı yüklenemedi:', error);
-        return [];
+        // Hata durumunda varsayılan öğünleri kullan
+        const defaultSlots = [
+            { id: 1, name: 'Sabah', foods: [] },
+            { id: 2, name: 'Kuşluk', foods: [] },
+            { id: 3, name: 'Öğle', foods: [] },
+            { id: 4, name: 'İkindi', foods: [] },
+            { id: 5, name: 'Akşam', foods: [] },
+            { id: 6, name: 'Gece', foods: [] }
+        ];
+        window.mealSlots.length = 0;
+        window.mealSlots.push(...defaultSlots);
+        return defaultSlots;
     }
 }
 

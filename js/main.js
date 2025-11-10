@@ -35,12 +35,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Initialize default meal slots BEFORE initializing meal planning
     window.mealSlots.length = 0;
     window.mealSlots.push(
-        { id: Date.now() + 1, name: 'Sabah', foods: [] },
-        { id: Date.now() + 2, name: 'Kuşluk', foods: [] },
-        { id: Date.now() + 3, name: 'Öğle', foods: [] },
-        { id: Date.now() + 4, name: 'İkindi', foods: [] },
-        { id: Date.now() + 5, name: 'Akşam', foods: [] },
-        { id: Date.now() + 6, name: 'Gece', foods: [] }
+        { id: 1, name: 'Sabah', foods: [] },
+        { id: 2, name: 'Kuşluk', foods: [] },
+        { id: 3, name: 'Öğle', foods: [] },
+        { id: 4, name: 'İkindi', foods: [] },
+        { id: 5, name: 'Akşam', foods: [] },
+        { id: 6, name: 'Gece', foods: [] }
     );
     
     // Now initialize meal planning (it will use the already populated window.mealSlots)
