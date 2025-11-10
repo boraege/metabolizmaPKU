@@ -55,6 +55,11 @@ header p {
     font-size: 1.5em;
     border-left: 4px solid #66BB6A;
     padding-left: 12px;
+    text-align: center;
+    border-left: none;
+    border-bottom: 3px solid #66BB6A;
+    padding-left: 0;
+    padding-bottom: 10px;
 }
 
 /* Form Elements */
@@ -89,6 +94,7 @@ header p {
 .radio-group {
     display: flex;
     gap: 20px;
+    justify-content: center;
 }
 
 .radio-group label {
@@ -107,6 +113,8 @@ header p {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    display: block;
+    margin: 0 auto;
 }
 
 .btn-primary {
