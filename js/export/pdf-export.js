@@ -67,18 +67,18 @@ function exportToPDF() {
         html += '<title>Metabolizma Raporu - ' + fullName + '</title>';
         html += '<style>';
         html += 'body{font-family:Arial,sans-serif;padding:20px;background:#fff}';
-        html += 'h1{color:#667eea;border-bottom:3px solid #667eea;padding-bottom:10px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}';
-        html += 'h2{color:#764ba2;margin-top:30px;padding-bottom:8px;border-bottom:2px solid #e0e7ff}';
+        html += 'h1{color:#2E7D32;border-bottom:3px solid #66BB6A;padding-bottom:10px;background:linear-gradient(135deg,#66BB6A 0%,#2E7D32 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}';
+        html += 'h2{color:#2E7D32;margin-top:30px;padding-bottom:8px;border-bottom:2px solid #c8e6c9}';
         html += 'h3{color:#2E7D32;margin-top:20px}';
         html += 'table{width:100%;border-collapse:collapse;margin:20px 0;box-shadow:0 2px 8px rgba(0,0,0,0.1);border-radius:8px;overflow:hidden}';
-        html += 'th,td{border:1px solid #e0e7ff;padding:12px;text-align:left}';
-        html += 'th{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;font-weight:600;text-transform:uppercase;font-size:0.9em;letter-spacing:0.5px}';
-        html += 'tr:nth-child(even){background:#f8f9fa}';
+        html += 'th,td{border:1px solid #c8e6c9;padding:12px;text-align:left}';
+        html += 'th{background:linear-gradient(135deg,#66BB6A 0%,#2E7D32 100%);color:white;font-weight:600;text-transform:uppercase;font-size:0.9em;letter-spacing:0.5px}';
+        html += 'tr:nth-child(even){background:#f1f8e9}';
         html += 'tr:hover{background:#e8f5e9}';
         html += '.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}';
-        html += '.info-item{padding:15px;background:#f8f9fa;border-left:4px solid #667eea;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.05);transition:all 0.3s}';
-        html += '.info-item strong{color:#667eea;display:block;margin-bottom:5px;font-size:0.9em}';
-        html += '.meal-section{margin:20px 0;padding:20px;background:#f8f9fa;border-radius:12px;border:2px solid #e0e0e0;box-shadow:0 2px 8px rgba(0,0,0,0.05)}';
+        html += '.info-item{padding:15px;background:#f1f8e9;border-left:4px solid #66BB6A;border-radius:8px;box-shadow:0 2px 6px rgba(102,187,106,0.1);transition:all 0.3s}';
+        html += '.info-item strong{color:#2E7D32;display:block;margin-bottom:5px;font-size:0.9em}';
+        html += '.meal-section{margin:20px 0;padding:20px;background:#f1f8e9;border-radius:12px;border:2px solid #c8e6c9;box-shadow:0 2px 8px rgba(102,187,106,0.1)}';
         html += '.meal-section h3{color:#2E7D32;margin-top:0;padding-bottom:10px;border-bottom:2px solid #66BB6A}';
         html += '@media print{button{display:none}body{background:#fff}}';
         html += '</style></head><body>';
@@ -186,8 +186,8 @@ function exportToPDF() {
             html += '<p style="color:#999;font-style:italic">Henüz öğün planı oluşturulmamış.</p>';
         } else {
             // Add meal distribution summary
-            html += '<div style="background:linear-gradient(135deg,#f8f9fa 0%,#e8f5e9 100%);padding:20px;border-radius:12px;margin:20px 0;border:2px solid #e0e7ff;box-shadow:0 4px 12px rgba(102,126,234,0.1)">';
-            html += '<h3 style="color:#667eea;margin-bottom:15px;margin-top:0">Öğün Dağılımı Özeti</h3>';
+            html += '<div style="background:linear-gradient(135deg,#f1f8e9 0%,#e8f5e9 100%);padding:20px;border-radius:12px;margin:20px 0;border:2px solid #c8e6c9;box-shadow:0 4px 12px rgba(102,187,106,0.15)">';
+            html += '<h3 style="color:#2E7D32;margin-bottom:15px;margin-top:0">Öğün Dağılımı Özeti</h3>';
             html += '<table style="margin:0"><thead><tr>';
             html += '<th>Öğün</th><th>Enerji (kcal)</th><th>Protein (g)</th><th>Fenilalanin (mg)</th><th>Yüzde</th>';
             html += '</tr></thead><tbody>';
@@ -259,8 +259,8 @@ function exportToPDF() {
             }
         }
         
-        html += '<div style="margin-top:30px;padding:20px;background:linear-gradient(135deg,#f8f9fa 0%,#e8f5e9 100%);border-radius:12px;text-align:center;border:2px solid #e0e7ff">';
-        html += '<button onclick="window.print()" style="padding:15px 30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:10px;cursor:pointer;font-size:16px;margin-right:10px;font-weight:600;box-shadow:0 4px 12px rgba(102,126,234,0.3);transition:all 0.3s">';
+        html += '<div style="margin-top:30px;padding:20px;background:linear-gradient(135deg,#f1f8e9 0%,#e8f5e9 100%);border-radius:12px;text-align:center;border:2px solid #c8e6c9">';
+        html += '<button onclick="window.print()" style="padding:15px 30px;background:linear-gradient(135deg,#66BB6A 0%,#2E7D32 100%);color:white;border:none;border-radius:10px;cursor:pointer;font-size:16px;margin-right:10px;font-weight:600;box-shadow:0 4px 12px rgba(102,187,106,0.3);transition:all 0.3s">';
         html += '🖨️ Yazdır / PDF Olarak Kaydet</button>';
         html += '<button onclick="window.close()" style="padding:15px 30px;background:#999;color:white;border:none;border-radius:10px;cursor:pointer;font-size:16px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.2)">';
         html += '❌ Kapat</button>';
