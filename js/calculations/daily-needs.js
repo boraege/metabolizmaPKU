@@ -375,16 +375,20 @@ function displayReferenceValues(refLookup, source, gender, ageData, heightAgeRow
             { value: 50, label: 'P50 (Önerilen)', recommended: true },
             { value: 75, label: 'P75' },
             { value: 90, label: 'P90' },
-            { value: 97, label: 'P97' }
+            { value: 97, label: 'P97' },
+            { value: 'custom', label: 'Kendi Ağırlığı', custom: true }
         ];
         
         percentileOptions.forEach(option => {
             const savedPercentile = localStorage.getItem('selectedPercentile');
-            const checked = savedPercentile && parseInt(savedPercentile) === option.value ? 'checked' : '';
+            const checked = savedPercentile && savedPercentile === String(option.value) ? 'checked' : '';
             
-            html += `<label style="padding: 8px 15px; border: 2px solid ${option.recommended ? '#66BB6A' : '#ddd'}; border-radius: 20px; cursor: pointer; background: ${option.recommended ? '#e8f5e9' : 'white'}; transition: all 0.3s;">`;
+            const borderColor = option.custom ? '#FF9800' : (option.recommended ? '#66BB6A' : '#ddd');
+            const bgColor = option.custom ? '#fff3e0' : (option.recommended ? '#e8f5e9' : 'white');
+            
+            html += `<label style="padding: 8px 15px; border: 2px solid ${borderColor}; border-radius: 20px; cursor: pointer; background: ${bgColor}; transition: all 0.3s;">`;
             html += `<input type="radio" name="percentileSelection" value="${option.value}" ${checked} style="margin-right: 5px;">`;
-            html += `<span style="font-weight: ${option.recommended ? 'bold' : 'normal'};">${option.label}</span>`;
+            html += `<span style="font-weight: ${option.recommended || option.custom ? 'bold' : 'normal'};">${option.label}</span>`;
             html += '</label>';
         });
         
@@ -392,7 +396,7 @@ function displayReferenceValues(refLookup, source, gender, ageData, heightAgeRow
         
         html += '<div style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-size: 13px; color: #666;">';
         html += '<strong>💡 İpucu:</strong> P50 (medyan) genellikle standart hesaplamalar için önerilir. ';
-        html += 'Özel durumlar için farklı persentiller seçilebilir.';
+        html += '"Kendi Ağırlığı" seçeneği girdiğiniz gerçek ağırlığı kullanır.';
         html += '</div>';
         
         html += '</div>';
@@ -408,7 +412,8 @@ function displayReferenceValues(refLookup, source, gender, ageData, heightAgeRow
             radio.addEventListener('change', function() {
                 localStorage.setItem('selectedPercentile', this.value);
                 // Recalculate with new percentile
-                updateDailyNeedsWithPercentile(parseInt(this.value));
+                const percentileValue = this.value === 'custom' ? 'custom' : parseInt(this.value);
+                updateDailyNeedsWithPercentile(percentileValue);
             });
         });
     }
@@ -427,31 +432,40 @@ function updateDailyNeedsWithPercentile(selectedPercentile) {
     const source = document.querySelector('.tab-button.active').dataset.source;
     
     const ageData = calculateAge(birthDate);
-    const refLookup = findReferenceRow(source, gender, ageData);
     
-    if (!refLookup.found) {
-        console.error('❌ Referans verisi bulunamadı');
-        return;
+    let effectiveWeight;
+    
+    // Check if "custom" (kendi ağırlığı) is selected
+    if (selectedPercentile === 'custom') {
+        effectiveWeight = weight;
+        console.log(`📊 Kendi ağırlığı kullanılıyor: ${effectiveWeight} kg`);
+    } else {
+        const refLookup = findReferenceRow(source, gender, ageData);
+        
+        if (!refLookup.found) {
+            console.error('❌ Referans verisi bulunamadı');
+            return;
+        }
+        
+        // Get the selected percentile weight for calculations
+        const dataKey = gender === 'male' ? 
+            (source === 'who' ? 'who_male' : 'neyzi_male') : 
+            (source === 'who' ? 'who_female' : 'neyzi_female');
+        
+        const weightRow = refLookup.row;
+        
+        // Map percentile to row property
+        const percentileMap = {
+            3: 'p3', 10: 'p10', 25: 'p25', 50: 'p50', 
+            75: 'p75', 90: 'p90', 97: 'p97'
+        };
+        
+        const percentileKey = percentileMap[selectedPercentile] || 'p50';
+        const referenceWeight = parseFloat(weightRow[percentileKey]);
+        
+        // Use reference weight for calculations instead of actual weight
+        effectiveWeight = referenceWeight;
     }
-    
-    // Get the selected percentile weight for calculations
-    const dataKey = gender === 'male' ? 
-        (source === 'who' ? 'who_male' : 'neyzi_male') : 
-        (source === 'who' ? 'who_female' : 'neyzi_female');
-    
-    const weightRow = refLookup.row;
-    
-    // Map percentile to row property
-    const percentileMap = {
-        3: 'p3', 10: 'p10', 25: 'p25', 50: 'p50', 
-        75: 'p75', 90: 'p90', 97: 'p97'
-    };
-    
-    const percentileKey = percentileMap[selectedPercentile] || 'p50';
-    const referenceWeight = parseFloat(weightRow[percentileKey]);
-    
-    // Use reference weight for calculations instead of actual weight
-    const effectiveWeight = referenceWeight;
     
     console.log(`📊 Seçilen persentil: P${selectedPercentile}, Referans ağırlık: ${effectiveWeight} kg`);
     
@@ -548,9 +562,13 @@ function showPercentileNotification(percentile, weight) {
         document.body.appendChild(notification);
     }
     
+    const message = percentile === 'custom' 
+        ? `Kendi ağırlığı kullanılarak hesaplandı (${weight} kg)`
+        : `P${percentile} kullanılarak hesaplandı (${weight} kg)`;
+    
     notification.innerHTML = `
         <strong>✓ Persentil Güncellendi</strong><br>
-        <span style="font-size: 14px;">P${percentile} kullanılarak hesaplandı (${weight} kg)</span>
+        <span style="font-size: 14px;">${message}</span>
     `;
     notification.style.display = 'block';
     
