@@ -119,9 +119,22 @@ function handleDragEnd(e) {
     e.currentTarget.classList.remove('dragging');
 }
 
-function addFoodToIntake(category, index) {
+async function addFoodToIntake(category, index) {
     const food = FOOD_DATABASE[category][index];
-    const amount = prompt(`${food.name} için miktar girin (gram):`, food.amount);
+    
+    const amount = await showModal({
+        type: 'input',
+        title: food.name,
+        subtitle: `${food.amount}g - ${food.unit}`,
+        label: 'Miktar (gram):',
+        inputType: 'number',
+        step: '1',
+        min: '1',
+        defaultValue: food.amount,
+        placeholder: 'Gram cinsinden miktar girin',
+        confirmText: 'Ekle',
+        cancelText: 'İptal'
+    });
     
     if (amount && parseFloat(amount) > 0) {
         const multiplier = parseFloat(amount) / food.amount;
