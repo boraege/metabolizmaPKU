@@ -74,8 +74,8 @@
 
 .modal-input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
 }
 
 .modal-footer {
@@ -104,13 +104,13 @@
 }
 
 .modal-btn-confirm {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     color: white;
 }
 
 .modal-btn-confirm:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
 }
 
 .modal-btn-confirm:active {

@@ -50,12 +50,16 @@ function showModal(options) {
             if (options.inputType === 'number') {
                 input.step = options.step || '1';
                 input.min = options.min || '0';
+                if (options.max) {
+                    input.max = options.max;
+                }
             }
             
             inputGroup.appendChild(input);
             body.appendChild(inputGroup);
         } else if (options.message) {
             const message = document.createElement('p');
+            message.style.cssText = 'margin: 0; color: #555; line-height: 1.6; white-space: pre-line;';
             message.textContent = options.message;
             body.appendChild(message);
         }
@@ -64,39 +68,51 @@ function showModal(options) {
         const footer = document.createElement('div');
         footer.className = 'modal-footer';
         
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'modal-btn modal-btn-cancel';
-        cancelBtn.textContent = options.cancelText || 'İptal';
-        cancelBtn.onclick = () => {
-            closeModal();
-            resolve(null);
-        };
-        
-        const confirmBtn = document.createElement('button');
-        confirmBtn.className = 'modal-btn modal-btn-confirm';
-        confirmBtn.textContent = options.confirmText || 'Tamam';
-        confirmBtn.onclick = () => {
-            if (options.type === 'input') {
-                const inputValue = document.getElementById('modal-input-field').value;
-                if (inputValue) {
-                    closeModal();
-                    resolve(inputValue);
-                } else {
-                    // Shake animation for empty input
-                    const input = document.getElementById('modal-input-field');
-                    input.style.animation = 'shake 0.3s';
-                    setTimeout(() => {
-                        input.style.animation = '';
-                    }, 300);
-                }
-            } else {
+        // For alert type, only show confirm button
+        if (options.type === 'alert') {
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = 'modal-btn modal-btn-confirm';
+            confirmBtn.textContent = options.confirmText || 'Tamam';
+            confirmBtn.onclick = () => {
                 closeModal();
                 resolve(true);
-            }
-        };
-        
-        footer.appendChild(cancelBtn);
-        footer.appendChild(confirmBtn);
+            };
+            footer.appendChild(confirmBtn);
+        } else {
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'modal-btn modal-btn-cancel';
+            cancelBtn.textContent = options.cancelText || 'İptal';
+            cancelBtn.onclick = () => {
+                closeModal();
+                resolve(null);
+            };
+            
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = 'modal-btn modal-btn-confirm';
+            confirmBtn.textContent = options.confirmText || 'Tamam';
+            confirmBtn.onclick = () => {
+                if (options.type === 'input') {
+                    const inputValue = document.getElementById('modal-input-field').value;
+                    if (inputValue) {
+                        closeModal();
+                        resolve(inputValue);
+                    } else {
+                        // Shake animation for empty input
+                        const input = document.getElementById('modal-input-field');
+                        input.style.animation = 'shake 0.3s';
+                        setTimeout(() => {
+                            input.style.animation = '';
+                        }, 300);
+                    }
+                } else {
+                    closeModal();
+                    resolve(true);
+                }
+            };
+            
+            footer.appendChild(cancelBtn);
+            footer.appendChild(confirmBtn);
+        }
         
         // Assemble modal
         dialog.appendChild(header);
@@ -126,7 +142,8 @@ function showModal(options) {
             const input = document.getElementById('modal-input-field');
             input.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    confirmBtn.click();
+                    const confirmBtn = dialog.querySelector('.modal-btn-confirm');
+                    if (confirmBtn) confirmBtn.click();
                 }
             });
         }

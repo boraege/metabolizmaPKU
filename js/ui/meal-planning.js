@@ -121,7 +121,7 @@ function handleDragLeave(e) {
     e.currentTarget.closest('.meal-slot').classList.remove('drop-target');
 }
 
-function handleDrop(e, mealId) {
+async function handleDrop(e, mealId) {
     e.preventDefault();
     e.currentTarget.closest('.meal-slot').classList.remove('drop-target');
     
@@ -145,16 +145,31 @@ function handleDrop(e, mealId) {
             if (intakeItem) {
                 // Ask for amount to add to meal
                 const maxAmount = intakeItem.amount;
-                const amountToAdd = prompt(
-                    `${intakeItem.name} için ne kadar eklemek istersiniz?\n(Mevcut: ${maxAmount}g)`,
-                    maxAmount
-                );
+                const amountToAdd = await showModal({
+                    type: 'input',
+                    title: intakeItem.name,
+                    subtitle: `Mevcut: ${maxAmount}g`,
+                    label: 'Ne kadar eklemek istersiniz?',
+                    inputType: 'number',
+                    step: '1',
+                    min: '1',
+                    max: maxAmount.toString(),
+                    defaultValue: maxAmount,
+                    placeholder: 'Gram cinsinden miktar',
+                    confirmText: 'Ekle',
+                    cancelText: 'İptal'
+                });
                 
                 if (amountToAdd && parseFloat(amountToAdd) > 0) {
                     const amount = parseFloat(amountToAdd);
                     
                     if (amount > maxAmount) {
-                        alert(`Maksimum ${maxAmount}g ekleyebilirsiniz.`);
+                        await showModal({
+                            type: 'alert',
+                            title: 'Uyarı',
+                            message: `Maksimum ${maxAmount}g ekleyebilirsiniz.`,
+                            confirmText: 'Tamam'
+                        });
                         return;
                     }
                     
@@ -171,19 +186,41 @@ function handleDrop(e, mealId) {
             const food = FOOD_DATABASE[data.category]?.[foodIndex];
             
             if (food) {
-                const amount = prompt(`${food.name} için miktar girin (gram):`, food.amount);
+                const amount = await showModal({
+                    type: 'input',
+                    title: food.name,
+                    subtitle: `${food.amount}g - ${food.unit}`,
+                    label: 'Miktar (gram):',
+                    inputType: 'number',
+                    step: '1',
+                    min: '1',
+                    defaultValue: food.amount,
+                    placeholder: 'Gram cinsinden miktar',
+                    confirmText: 'Ekle',
+                    cancelText: 'İptal'
+                });
                 
                 if (amount && parseFloat(amount) > 0) {
                     addFoodToMeal(mealId, food, parseFloat(amount));
                 }
             } else {
                 console.error('Besin bulunamadı:', data.category, foodIndex);
-                alert('Besin bulunamadı. Lütfen tekrar deneyin.');
+                await showModal({
+                    type: 'alert',
+                    title: 'Hata',
+                    message: 'Besin bulunamadı. Lütfen tekrar deneyin.',
+                    confirmText: 'Tamam'
+                });
             }
         }
     } catch (error) {
         console.error('Drop error:', error);
-        alert('Besin eklenirken bir hata oluştu');
+        await showModal({
+            type: 'alert',
+            title: 'Hata',
+            message: 'Besin eklenirken bir hata oluştu',
+            confirmText: 'Tamam'
+        });
     }
 }
 
@@ -323,7 +360,7 @@ function displayMealFoods(meal) {
     `;
 }
 
-function removeFoodFromMeal(mealId, foodId) {
+async function removeFoodFromMeal(mealId, foodId) {
     const meal = mealSlots.find(m => m.id === mealId);
     if (!meal) return;
     
@@ -331,7 +368,13 @@ function removeFoodFromMeal(mealId, foodId) {
     if (!food) return;
     
     // Ask if user wants to return to pool
-    const returnToPool = confirm(`${food.name} (${food.amount}g) öğünden çıkarılacak.\n\nBesin havuzuna geri eklensin mi?`);
+    const returnToPool = await showModal({
+        type: 'confirm',
+        title: 'Besini Çıkar',
+        message: `${food.name} (${food.amount}g) öğünden çıkarılacak.\n\nBesin havuzuna geri eklensin mi?`,
+        confirmText: 'Evet, Geri Ekle',
+        cancelText: 'Hayır, Sadece Çıkar'
+    });
     
     if (returnToPool && food.sourceItemId) {
         // Return to pool
@@ -399,12 +442,22 @@ function returnToPool_func(food) {
     }
 }
 
-function editMealName(mealId) {
+async function editMealName(mealId) {
     const meal = mealSlots.find(m => m.id === mealId);
     if (meal) {
-        const newName = prompt('Yeni öğün adı:', meal.name);
-        if (newName) {
-            meal.name = newName;
+        const newName = await showModal({
+            type: 'input',
+            title: 'Öğün Adını Düzenle',
+            label: 'Yeni öğün adı:',
+            inputType: 'text',
+            defaultValue: meal.name,
+            placeholder: 'Öğün adı girin',
+            confirmText: 'Kaydet',
+            cancelText: 'İptal'
+        });
+        
+        if (newName && newName.trim()) {
+            meal.name = newName.trim();
             displayMealSlots();
             
             // Auto-save
@@ -415,8 +468,16 @@ function editMealName(mealId) {
     }
 }
 
-function deleteMeal(mealId) {
-    if (confirm('Bu öğünü silmek istediğinizden emin misiniz?')) {
+async function deleteMeal(mealId) {
+    const confirmed = await showModal({
+        type: 'confirm',
+        title: 'Öğünü Sil',
+        message: 'Bu öğünü silmek istediğinizden emin misiniz?',
+        confirmText: 'Evet, Sil',
+        cancelText: 'İptal'
+    });
+    
+    if (confirmed) {
         const index = window.mealSlots.findIndex(m => m.id === mealId);
         if (index > -1) {
             window.mealSlots.splice(index, 1);
@@ -430,12 +491,21 @@ function deleteMeal(mealId) {
     }
 }
 
-function insertMeal(afterIndex) {
-    const name = prompt('Yeni öğün adı:');
-    if (name) {
+async function insertMeal(afterIndex) {
+    const name = await showModal({
+        type: 'input',
+        title: 'Yeni Öğün Ekle',
+        label: 'Öğün adı:',
+        inputType: 'text',
+        placeholder: 'Örn: Ara Öğün',
+        confirmText: 'Ekle',
+        cancelText: 'İptal'
+    });
+    
+    if (name && name.trim()) {
         window.mealSlots.splice(afterIndex + 1, 0, {
             id: Date.now(),
-            name: name,
+            name: name.trim(),
             foods: []
         });
         displayMealSlots();
@@ -447,41 +517,114 @@ function insertMeal(afterIndex) {
     }
 }
 
-function addCustomFood() {
+async function addCustomFood() {
     // Step 1: Ask for food name
-    const name = prompt('Besin adı:');
+    const name = await showModal({
+        type: 'input',
+        title: 'Özel Besin Ekle',
+        label: 'Besin adı:',
+        inputType: 'text',
+        placeholder: 'Örn: Makarna',
+        confirmText: 'Devam',
+        cancelText: 'İptal'
+    });
+    
     if (!name || name.trim() === '') {
         return;
     }
     
     // Step 2: Ask for amount
-    const amountStr = prompt('Miktar (gram):');
+    const amountStr = await showModal({
+        type: 'input',
+        title: name.trim(),
+        label: 'Miktar (gram):',
+        inputType: 'number',
+        step: '1',
+        min: '1',
+        placeholder: 'Gram cinsinden',
+        confirmText: 'Devam',
+        cancelText: 'İptal'
+    });
+    
     if (!amountStr || parseFloat(amountStr) <= 0) {
-        alert('Geçerli bir miktar girin.');
+        await showModal({
+            type: 'alert',
+            title: 'Hata',
+            message: 'Geçerli bir miktar girin.',
+            confirmText: 'Tamam'
+        });
         return;
     }
     const amount = parseFloat(amountStr);
     
     // Step 3: Ask for energy
-    const energyStr = prompt('Enerji (kcal):');
+    const energyStr = await showModal({
+        type: 'input',
+        title: name.trim(),
+        label: 'Enerji (kcal):',
+        inputType: 'number',
+        step: '0.1',
+        min: '0',
+        placeholder: 'Kalori değeri',
+        confirmText: 'Devam',
+        cancelText: 'İptal'
+    });
+    
     if (!energyStr || parseFloat(energyStr) < 0) {
-        alert('Geçerli bir enerji değeri girin.');
+        await showModal({
+            type: 'alert',
+            title: 'Hata',
+            message: 'Geçerli bir enerji değeri girin.',
+            confirmText: 'Tamam'
+        });
         return;
     }
     const energy = parseFloat(energyStr);
     
     // Step 4: Ask for protein
-    const proteinStr = prompt('Protein (g):');
+    const proteinStr = await showModal({
+        type: 'input',
+        title: name.trim(),
+        label: 'Protein (g):',
+        inputType: 'number',
+        step: '0.1',
+        min: '0',
+        placeholder: 'Protein miktarı',
+        confirmText: 'Devam',
+        cancelText: 'İptal'
+    });
+    
     if (!proteinStr || parseFloat(proteinStr) < 0) {
-        alert('Geçerli bir protein değeri girin.');
+        await showModal({
+            type: 'alert',
+            title: 'Hata',
+            message: 'Geçerli bir protein değeri girin.',
+            confirmText: 'Tamam'
+        });
         return;
     }
     const protein = parseFloat(proteinStr);
     
     // Step 5: Ask for phenylalanine
-    const paStr = prompt('Fenilalanin (mg):');
+    const paStr = await showModal({
+        type: 'input',
+        title: name.trim(),
+        label: 'Fenilalanin (mg):',
+        inputType: 'number',
+        step: '1',
+        min: '0',
+        placeholder: 'Fenilalanin miktarı',
+        confirmText: 'Ekle',
+        cancelText: 'İptal'
+    });
+    
     if (!paStr || parseFloat(paStr) < 0) {
-        alert('Geçerli bir fenilalanin değeri girin.');
+        await showModal({
+            type: 'alert',
+            title: 'Hata',
+            message: 'Geçerli bir fenilalanin değeri girin.',
+            confirmText: 'Tamam'
+        });
         return;
     }
     const pa = parseFloat(paStr);
@@ -512,5 +655,10 @@ function addCustomFood() {
         saveDailyIntake();
     }
     
-    alert(`${name} başarıyla eklendi!`);
+    await showModal({
+        type: 'alert',
+        title: 'Başarılı',
+        message: `${name.trim()} başarıyla eklendi!`,
+        confirmText: 'Tamam'
+    });
 }
