@@ -3,6 +3,7 @@
 window.dailyIntakeList = window.dailyIntakeList || [];
 let dailyIntakeList = window.dailyIntakeList;
 let currentCategory = 'bread';
+let searchQuery = '';
 
 function initializeFoodSelection() {
     // Category buttons
@@ -14,6 +15,30 @@ function initializeFoodSelection() {
             currentCategory = this.dataset.category;
             displayFoodList(currentCategory);
         });
+    });
+    
+    // Search functionality
+    const searchInput = document.getElementById('foodSearchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    
+    searchInput.addEventListener('input', function() {
+        searchQuery = this.value.toLowerCase().trim();
+        
+        if (searchQuery) {
+            clearSearchBtn.classList.remove('hidden');
+            displaySearchResults(searchQuery);
+        } else {
+            clearSearchBtn.classList.add('hidden');
+            displayFoodList(currentCategory);
+        }
+    });
+    
+    clearSearchBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearchBtn.classList.add('hidden');
+        displayFoodList(currentCategory);
+        searchInput.focus();
     });
     
     // Setup drop zone for daily intake
@@ -84,25 +109,52 @@ function displayFoodList(category) {
     foodList.innerHTML = '';
     
     foods.forEach((food, index) => {
-        const foodBox = document.createElement('div');
-        foodBox.className = 'food-box';
-        foodBox.draggable = true;
-        foodBox.dataset.category = category;
-        foodBox.dataset.index = index;
-        
-        foodBox.innerHTML = `
-            <h4>${food.name}</h4>
-            <p>${food.amount}g - ${food.unit}</p>
-            <p>PA: ${food.pa}mg | Prot: ${food.protein}g</p>
-            <p>Enerji: ${food.energy} kcal</p>
-        `;
-        
-        foodBox.addEventListener('dragstart', handleDragStart);
-        foodBox.addEventListener('dragend', handleDragEnd);
-        foodBox.addEventListener('click', () => addFoodToIntake(category, index));
-        
+        const foodBox = createFoodBox(food, category, index);
         foodList.appendChild(foodBox);
     });
+}
+
+function displaySearchResults(query) {
+    const foodList = document.getElementById('foodList');
+    foodList.innerHTML = '';
+    
+    let foundCount = 0;
+    
+    // Search in all categories
+    Object.keys(FOOD_DATABASE).forEach(category => {
+        FOOD_DATABASE[category].forEach((food, index) => {
+            if (food.name.toLowerCase().includes(query)) {
+                const foodBox = createFoodBox(food, category, index);
+                foodList.appendChild(foodBox);
+                foundCount++;
+            }
+        });
+    });
+    
+    if (foundCount === 0) {
+        foodList.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">Besin bulunamadı</div>';
+    }
+}
+
+function createFoodBox(food, category, index) {
+    const foodBox = document.createElement('div');
+    foodBox.className = 'food-box';
+    foodBox.draggable = true;
+    foodBox.dataset.category = category;
+    foodBox.dataset.index = index;
+    
+    foodBox.innerHTML = `
+        <h4>${food.name}</h4>
+        <p>${food.amount}g - ${food.unit}</p>
+        <p>PA: ${food.pa}mg | Prot: ${food.protein}g</p>
+        <p>Enerji: ${food.energy} kcal</p>
+    `;
+    
+    foodBox.addEventListener('dragstart', handleDragStart);
+    foodBox.addEventListener('dragend', handleDragEnd);
+    foodBox.addEventListener('click', () => addFoodToIntake(category, index));
+    
+    return foodBox;
 }
 
 function handleDragStart(e) {

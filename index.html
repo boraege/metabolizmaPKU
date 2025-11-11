@@ -120,10 +120,16 @@
         <section id="food-selection" class="section hidden-until-calculation">
             <h2>6. Besin Seçimi</h2>
             
-            <div class="food-categories">
-                <button class="category-btn active" data-category="bread">Ekmek ve Tahıl</button>
-                <button class="category-btn" data-category="vegetables">Sebzeler</button>
-                <button class="category-btn" data-category="fruits">Meyveler</button>
+            <div class="food-selection-header">
+                <div class="food-categories">
+                    <button class="category-btn active" data-category="bread">Ekmek ve Tahıl</button>
+                    <button class="category-btn" data-category="vegetables">Sebzeler</button>
+                    <button class="category-btn" data-category="fruits">Meyveler</button>
+                </div>
+                <div class="food-search-container">
+                    <input type="text" id="foodSearchInput" class="food-search-input" placeholder="🔍 Besin ara...">
+                    <button id="clearSearchBtn" class="clear-search-btn hidden">×</button>
+                </div>
             </div>
             <div id="foodList" class="food-list"></div>
             <div id="dailyIntake" class="daily-intake">
