@@ -9,8 +9,11 @@ window.currentNeeds = window.currentNeeds || {
 };
 let currentNeeds = window.currentNeeds;
 
-function updateDailyNeeds() {
+async function updateDailyNeeds() {
+    console.log('🔄 updateDailyNeeds çağrıldı');
+    
     if (!validatePersonalInfo()) {
+        console.log('❌ Kişisel bilgiler geçersiz');
         return;
     }
     
@@ -20,10 +23,12 @@ function updateDailyNeeds() {
     const gender = document.querySelector('input[name="gender"]:checked').value;
     const source = document.querySelector('.tab-button.active').dataset.source;
     
+    console.log('📊 Veriler:', { weight, height, birthDate, gender, source });
+    
     const ageData = calculateAge(birthDate);
     
-    // Find reference row from selected source
-    const refLookup = findReferenceRow(source, gender, ageData);
+    // Find reference row from selected source (async for WHO)
+    const refLookup = await findReferenceRow(source, gender, ageData);
     
     // Validate growth and check for warnings
     let effectiveAgeData = ageData;
@@ -110,6 +115,16 @@ function updateDailyNeeds() {
     
     // Show hidden sections after calculation
     showCalculationSections();
+    
+    // Apply saved percentile selection if exists
+    const savedPercentile = localStorage.getItem('selectedPercentile');
+    if (savedPercentile && currentPercentiles) {
+        // Wait a bit for DOM to be ready
+        setTimeout(async () => {
+            const percentileValue = savedPercentile === 'custom' ? 'custom' : parseInt(savedPercentile);
+            await updateDailyNeedsWithPercentile(percentileValue);
+        }, 100);
+    }
 }
 
 function showCalculationSections() {
@@ -152,15 +167,72 @@ function displayWarnings(warnings) {
     warningsDiv.style.display = 'block';
 }
 
-function findReferenceRow(source, gender, ageData) {
+async function findReferenceRow(source, gender, ageData) {
     if (source === 'manual') {
         return { found: false, row: null, source: 'manual' };
     }
     
-    // WHO veya Neyzi kaynağına göre veri seç
-    const dataKey = gender === 'male' ? 
-        (source === 'who' ? 'who_male' : 'neyzi_male') : 
-        (source === 'who' ? 'who_female' : 'neyzi_female');
+    // WHO seçiliyse ve yaş 0-5 arası ise WHO günlük verilerini kullan
+    if (source === 'who') {
+        const ageInDays = calculateAgeInDays(document.getElementById('birthDate').value);
+        
+        // WHO verileri 0-1856 gün (0-5 yaş) için geçerli
+        if (ageInDays <= 1856) {
+            // WHO verilerini yükle
+            await loadWHOPercentileData();
+            
+            if (WHO_PERCENTILE_DATA.loaded) {
+                const whoData = gender === 'male' ? WHO_PERCENTILE_DATA.boys : WHO_PERCENTILE_DATA.girls;
+                
+                // Ağırlık verisi
+                let weightRecord = whoData.weight.find(r => r.Age === ageInDays);
+                if (!weightRecord) {
+                    weightRecord = whoData.weight.reduce((prev, curr) => 
+                        Math.abs(curr.Age - ageInDays) < Math.abs(prev.Age - ageInDays) ? curr : prev
+                    );
+                }
+                
+                // Boy verisi
+                let heightRecord = whoData.height.find(r => r.Day === ageInDays);
+                if (!heightRecord) {
+                    heightRecord = whoData.height.reduce((prev, curr) => 
+                        Math.abs(curr.Day - ageInDays) < Math.abs(prev.Day - ageInDays) ? curr : prev
+                    );
+                }
+                
+                // WHO verilerini Neyzi formatına dönüştür
+                const whoRow = {
+                    age: `${ageInDays} gün`,
+                    months: Math.floor(ageInDays / 30.44),
+                    days: ageInDays,
+                    p3: weightRecord.P3,
+                    p10: weightRecord.P10,
+                    p25: weightRecord.P25,
+                    p50: weightRecord.P50,
+                    p75: weightRecord.P75,
+                    p90: weightRecord.P90,
+                    p97: weightRecord.P97,
+                    height_p3: heightRecord.P3,
+                    height_p10: heightRecord.P10,
+                    height_p25: heightRecord.P25,
+                    height_p50: heightRecord.P50,
+                    height_p75: heightRecord.P75,
+                    height_p90: heightRecord.P90,
+                    height_p97: heightRecord.P97,
+                    isWHO: true
+                };
+                
+                console.log(`WHO referans satırı bulundu: ${ageInDays} gün`);
+                return { found: true, row: whoRow, source: 'who' };
+            }
+        }
+        
+        // WHO verileri yüklenemedi veya yaş 5+ ise Neyzi'ye düş
+        console.warn('WHO verileri kullanılamıyor, Neyzi verilerine geçiliyor');
+    }
+    
+    // Neyzi verileri (aylık bazda)
+    const dataKey = gender === 'male' ? 'neyzi_male' : 'neyzi_female';
     
     const data = REFERENCE_DATA[dataKey];
     
@@ -175,14 +247,39 @@ function findReferenceRow(source, gender, ageData) {
         return Math.abs(curr.months - ageInMonths) < Math.abs(prev.months - ageInMonths) ? curr : prev;
     });
     
-    console.log(`Referans satırı bulundu: ${closestRow.age} (${closestRow.months} ay)`);
-    return { found: true, row: closestRow, source };
+    console.log(`Neyzi referans satırı bulundu: ${closestRow.age} (${closestRow.months} ay)`);
+    return { found: true, row: closestRow, source: source === 'who' ? 'neyzi' : source };
 }
 
 function calculateCurrentPercentiles(weight, height, refLookup, source, gender, ageData, heightAgeRow = null) {
-    const dataKey = gender === 'male' ? 
-        (source === 'who' ? 'who_male' : 'neyzi_male') : 
-        (source === 'who' ? 'who_female' : 'neyzi_female');
+    // WHO verisi kullanılıyorsa direkt row'dan al
+    if (refLookup.row?.isWHO) {
+        const weightRow = refLookup.row;
+        const heightRow = {
+            p3: refLookup.row.height_p3,
+            p10: refLookup.row.height_p10,
+            p25: refLookup.row.height_p25,
+            p50: refLookup.row.height_p50,
+            p75: refLookup.row.height_p75,
+            p90: refLookup.row.height_p90,
+            p97: refLookup.row.height_p97,
+            months: refLookup.row.months,
+            age: refLookup.row.age
+        };
+        
+        const weightPercentile = findPercentile(weight, weightRow);
+        const heightPercentile = findPercentile(height, heightRow);
+        
+        return {
+            weight: weightPercentile,
+            height: heightPercentile,
+            weightRow: weightRow,
+            heightRow: heightRow
+        };
+    }
+    
+    // Neyzi verileri için
+    const dataKey = gender === 'male' ? 'neyzi_male' : 'neyzi_female';
     
     const weightData = REFERENCE_DATA[dataKey].weight;
     const heightData = REFERENCE_DATA[dataKey].height;
@@ -262,31 +359,60 @@ function displayReferenceValues(refLookup, source, gender, ageData, heightAgeRow
     
     const isUsingHeightAge = heightAgeRow !== null;
     
-    // Kaynak ve cinsiyete göre doğru veri setini seç
-    const dataKey = gender === 'male' ? 
-        (source === 'who' ? 'who_male' : 'neyzi_male') : 
-        (source === 'who' ? 'who_female' : 'neyzi_female');
+    let weightRow, heightRow;
     
-    const weightData = REFERENCE_DATA[dataKey].weight;
-    const heightData = REFERENCE_DATA[dataKey].height;
-    
-    // For weight: always use chronological age
-    const weightRow = refLookup.row;
-    
-    // For height: use height-age if available, otherwise chronological age
-    const heightRow = isUsingHeightAge ? 
-        (heightData.find(h => h.months === heightAgeRow.months) || heightAgeRow) : 
-        (heightData.find(h => h.months === refLookup.row.months) || refLookup.row);
+    // WHO verisi kullanılıyorsa
+    if (refLookup.row?.isWHO) {
+        weightRow = refLookup.row;
+        heightRow = {
+            p3: refLookup.row.height_p3,
+            p10: refLookup.row.height_p10,
+            p25: refLookup.row.height_p25,
+            p50: refLookup.row.height_p50,
+            p75: refLookup.row.height_p75,
+            p90: refLookup.row.height_p90,
+            p97: refLookup.row.height_p97,
+            months: refLookup.row.months,
+            age: refLookup.row.age
+        };
+    } else {
+        // Neyzi verileri için
+        const dataKey = gender === 'male' ? 'neyzi_male' : 'neyzi_female';
+        
+        const weightData = REFERENCE_DATA[dataKey].weight;
+        const heightData = REFERENCE_DATA[dataKey].height;
+        
+        // For weight: always use chronological age
+        weightRow = refLookup.row;
+        
+        // For height: use height-age if available, otherwise chronological age
+        heightRow = isUsingHeightAge ? 
+            (heightData.find(h => h.months === heightAgeRow.months) || heightAgeRow) : 
+            (heightData.find(h => h.months === refLookup.row.months) || refLookup.row);
+    }
     
     // Create table
     let html = '<div style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px;">';
-    html += `<strong>📊 Kaynak:</strong> ${source === 'who' ? 'WHO (Dünya Sağlık Örgütü)' : 'Neyzi (Türkiye Referansı)'} | `;
+    html += `<strong>📊 Seçilen Kaynak:</strong> ${source === 'who' ? 'WHO (Dünya Sağlık Örgütü)' : 'Neyzi (Türkiye Referansı)'} | `;
     html += `<strong>👤 Yaş:</strong> ${weightRow.age}`;
     if (isUsingHeightAge) {
         html += ` <span style="background: #fff3cd; padding: 2px 8px; border-radius: 4px; font-size: 12px;">📏 Boy Yaşı Kullanılıyor</span>`;
     }
     html += ` | <strong>⚥ Cinsiyet:</strong> ${gender === 'male' ? 'Erkek' : 'Kız'}`;
     html += '</div>';
+    
+    // WHO için ek bilgi
+    if (source === 'who' && refLookup.row?.isWHO) {
+        html += '<div style="margin-bottom: 15px; padding: 10px; background: #e3f2fd; border-left: 4px solid #2196F3; border-radius: 4px;">';
+        html += '<strong>✓ WHO Günlük Verileri Kullanılıyor:</strong> ';
+        html += `Çocuğunuzun tam ${refLookup.row.days} günlük WHO persentil değerleri hesaplamalarda kullanılmaktadır.`;
+        html += '</div>';
+    } else if (source === 'who' && !refLookup.row?.isWHO) {
+        html += '<div style="margin-bottom: 15px; padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">';
+        html += '<strong>⚠️ Not:</strong> WHO seçildi ancak yaş 5+ olduğu için Neyzi (Türkiye) referans değerleri kullanılmaktadır. ';
+        html += 'WHO verileri sadece 0-5 yaş arası için mevcuttur.';
+        html += '</div>';
+    }
     
     html += '<table style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">';
     html += '<thead><tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">';
@@ -381,7 +507,9 @@ function displayReferenceValues(refLookup, source, gender, ageData, heightAgeRow
         
         percentileOptions.forEach(option => {
             const savedPercentile = localStorage.getItem('selectedPercentile');
-            const checked = savedPercentile && savedPercentile === String(option.value) ? 'checked' : '';
+            // Default to P50 if nothing is saved
+            const defaultValue = savedPercentile || '50';
+            const checked = defaultValue === String(option.value) ? 'checked' : '';
             
             const borderColor = option.custom ? '#FF9800' : (option.recommended ? '#66BB6A' : '#ddd');
             const bgColor = option.custom ? '#fff3e0' : (option.recommended ? '#e8f5e9' : 'white');
@@ -409,11 +537,11 @@ function displayReferenceValues(refLookup, source, gender, ageData, heightAgeRow
     if (currentPercentiles) {
         const radioButtons = document.querySelectorAll('input[name="percentileSelection"]');
         radioButtons.forEach(radio => {
-            radio.addEventListener('change', function() {
+            radio.addEventListener('change', async function() {
                 localStorage.setItem('selectedPercentile', this.value);
                 // Recalculate with new percentile
                 const percentileValue = this.value === 'custom' ? 'custom' : parseInt(this.value);
-                updateDailyNeedsWithPercentile(percentileValue);
+                await updateDailyNeedsWithPercentile(percentileValue);
             });
         });
     }
@@ -421,7 +549,7 @@ function displayReferenceValues(refLookup, source, gender, ageData, heightAgeRow
     if (warningDiv) warningDiv.style.display = 'none';
 }
 
-function updateDailyNeedsWithPercentile(selectedPercentile) {
+async function updateDailyNeedsWithPercentile(selectedPercentile) {
     console.log('🔄 Persentil değiştirildi:', selectedPercentile);
     
     // Get current values
@@ -440,17 +568,15 @@ function updateDailyNeedsWithPercentile(selectedPercentile) {
         effectiveWeight = weight;
         console.log(`📊 Kendi ağırlığı kullanılıyor: ${effectiveWeight} kg`);
     } else {
-        const refLookup = findReferenceRow(source, gender, ageData);
+        const refLookup = await findReferenceRow(source, gender, ageData);
         
         if (!refLookup.found) {
             console.error('❌ Referans verisi bulunamadı');
             return;
         }
         
-        // Get the selected percentile weight for calculations
-        const dataKey = gender === 'male' ? 
-            (source === 'who' ? 'who_male' : 'neyzi_male') : 
-            (source === 'who' ? 'who_female' : 'neyzi_female');
+        // Her iki kaynak için de Neyzi verilerini kullan
+        const dataKey = gender === 'male' ? 'neyzi_male' : 'neyzi_female';
         
         const weightRow = refLookup.row;
         

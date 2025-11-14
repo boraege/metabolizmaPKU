@@ -28,45 +28,70 @@
         <!-- Section 1: Personal Information -->
         <section id="personal-info" class="section">
             <h2>1. Kişisel Bilgiler</h2>
-            <div class="personal-info-grid">
-                <div class="form-group">
-                    <label for="patientName">👤 Ad Soyad</label>
-                    <input type="text" id="patientName" placeholder="Hasta adı ve soyadı" required>
+            <div class="personal-info-compact">
+                <div class="info-row">
+                    <div class="form-group">
+                        <label for="patientName">👤 Ad Soyad</label>
+                        <input type="text" id="patientName" placeholder="Hasta adı" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate">🎂 Doğum Tarihi <span id="ageDisplay" class="age-display-inline"></span></label>
+                        <input type="date" id="birthDate" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="birthDate">🎂 Doğum Tarihi</label>
-                    <input type="date" id="birthDate" required>
-                    <span id="ageDisplay" class="age-display"></span>
-                </div>
-                <div class="form-group">
-                    <label for="height">📏 Boy (cm)</label>
-                    <input type="number" id="height" step="0.1" placeholder="Örn: 165.5" required>
-                </div>
-                <div class="form-group">
-                    <label for="weight">⚖️ Kilo (kg)</label>
-                    <input type="number" id="weight" step="0.1" placeholder="Örn: 55.5" required>
-                </div>
-            </div>
-            <div class="form-group gender-selection">
-                <label style="text-align: center; margin-bottom: 15px;">Cinsiyet</label>
-                <div class="radio-group">
-                    <label class="gender-option">
-                        <input type="radio" name="gender" value="male" required>
-                        <span class="gender-icon">👦</span>
-                        <span class="gender-text">Erkek</span>
-                    </label>
-                    <label class="gender-option">
-                        <input type="radio" name="gender" value="female">
-                        <span class="gender-icon">👧</span>
-                        <span class="gender-text">Kız</span>
-                    </label>
+                <div class="info-row">
+                    <div class="form-group">
+                        <label for="height">📏 Boy (cm)</label>
+                        <input type="number" id="height" step="0.1" placeholder="165.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">⚖️ Kilo (kg)</label>
+                        <input type="number" id="weight" step="0.1" placeholder="55.5" required>
+                    </div>
+                    <div class="form-group gender-compact">
+                        <label>⚥ Cinsiyet</label>
+                        <div class="radio-group-compact">
+                            <label class="gender-option-compact">
+                                <input type="radio" name="gender" value="male" required>
+                                <span>👦 Erkek</span>
+                            </label>
+                            <label class="gender-option-compact">
+                                <input type="radio" name="gender" value="female">
+                                <span>👧 Kız</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 2: Percentile Source Selection -->
+        <!-- Section 2: Percentile Tables Preview -->
+        <section id="percentile-tables-preview" class="section">
+            <h2>2. Persentil Değerleri Karşılaştırması</h2>
+            <p style="color: #666; margin-bottom: 20px;">Kişisel bilgilerinizi girdikten sonra, yaşınıza uygun Neyzi ve WHO persentil değerlerini karşılaştırabilirsiniz.</p>
+            
+            <div id="percentileTablesContainer">
+                <div class="tables-preview">
+                    <div class="percentile-table-section">
+                        <h3>📊 Neyzi (Türkiye Referansı)</h3>
+                        <div id="neyziTablesPreview">
+                            <p style="color: #666; font-style: italic; padding: 20px; text-align: center;">Lütfen doğum tarihi ve cinsiyet bilgilerini girin.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="percentile-table-section">
+                        <h3>🌍 WHO (Dünya Sağlık Örgütü)</h3>
+                        <div id="whoTablesPreview">
+                            <p style="color: #666; font-style: italic; padding: 20px; text-align: center;">Lütfen doğum tarihi ve cinsiyet bilgilerini girin.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Percentile Source Selection -->
         <section id="percentile-source" class="section">
-            <h2>2. Persentil Kaynağı Seçimi</h2>
+            <h2>3. Persentil Kaynağı Seçimi</h2>
             <div class="tab-container">
                 <button class="tab-button active" data-source="manual">Manuel</button>
                 <button class="tab-button" data-source="neyzi">Neyzi</button>
@@ -76,16 +101,16 @@
             <button id="calculateNeeds" class="btn-primary" style="margin-top: 20px;">Hesapla</button>
         </section>
 
-        <!-- Section 3: Reference Values Display -->
+        <!-- Section 4: Reference Values Display -->
         <section id="reference-display" class="section hidden-until-calculation">
-            <h2>3. Referans Değerler</h2>
+            <h2>4. Referans Değerler</h2>
             <div id="referenceWarning" class="warning-box" style="display:none;"></div>
             <div id="referenceTable" class="reference-table"></div>
         </section>
 
-        <!-- Section 4: Daily Needs Calculation -->
+        <!-- Section 5: Daily Needs Calculation -->
         <section id="daily-needs" class="section results-section hidden-until-calculation">
-            <h2>4. Günlük İhtiyaçlar</h2>
+            <h2>5. Günlük İhtiyaçlar</h2>
             <div class="needs-grid">
                 <div class="need-item">
                     <label>BMR (kcal/gün):</label>
@@ -110,15 +135,15 @@
             </div>
         </section>
 
-        <!-- Section 5: Nutritional Reference Table -->
+        <!-- Section 6: Nutritional Reference Table -->
         <section id="nutrition-reference" class="section hidden-until-calculation">
-            <h2>5. Beslenme Referans Tablosu</h2>
+            <h2>6. Beslenme Referans Tablosu</h2>
             <div id="nutritionRefTable" class="nutrition-table"></div>
         </section>
 
-        <!-- Section 6: Food Selection -->
+        <!-- Section 7: Food Selection -->
         <section id="food-selection" class="section hidden-until-calculation">
-            <h2>6. Besin Seçimi</h2>
+            <h2>7. Besin Seçimi</h2>
             
             <div class="food-selection-header">
                 <div class="food-categories">
@@ -145,9 +170,9 @@
             </div>
         </section>
 
-        <!-- Section 7: Meal Planning -->
+        <!-- Section 8: Meal Planning -->
         <section id="meal-planning" class="section hidden-until-calculation">
-            <h2>7. Öğün Planlaması</h2>
+            <h2>8. Öğün Planlaması</h2>
             <button id="addMeal" class="btn-secondary">Öğün Ekle</button>
             
             <div class="meal-planning-container">
@@ -162,9 +187,9 @@
             </div>
         </section>
 
-        <!-- Section 8: Export -->
+        <!-- Section 9: Export -->
         <section id="export-section" class="section hidden-until-calculation">
-            <h2>8. Rapor</h2>
+            <h2>9. Rapor</h2>
             <button id="exportPDF" class="btn-primary">PDF İndir</button>
         </section>
     </div>

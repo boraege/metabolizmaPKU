@@ -64,10 +64,8 @@ function validateGrowth(height, weight, referenceRow, source, gender) {
         });
     }
     
-    // Check height percentile
-    const dataKey = gender === 'male' ? 
-        (source === 'who' ? 'who_male' : 'neyzi_male') : 
-        (source === 'who' ? 'who_female' : 'neyzi_female');
+    // Check height percentile - her iki kaynak için de Neyzi verilerini kullan
+    const dataKey = gender === 'male' ? 'neyzi_male' : 'neyzi_female';
     const heightData = REFERENCE_DATA[dataKey].height;
     const heightRow = heightData.find(h => h.months === referenceRow.months);
     
@@ -106,11 +104,10 @@ function validateGrowth(height, weight, referenceRow, source, gender) {
 
 function findHeightAgeRow(targetHeight, source, gender) {
     // Find the age where the target height corresponds to P50
-    const dataKey = gender === 'male' ? 
-        (source === 'who' ? 'who_male' : 'neyzi_male') : 
-        (source === 'who' ? 'who_female' : 'neyzi_female');
+    // Her iki kaynak için de Neyzi verilerini kullan
+    const dataKey = gender === 'male' ? 'neyzi_male' : 'neyzi_female';
     
-    const heightData = REFERENCE_DATA[dataKey].height;
+    const heightData = REFERENCE_DATA[dataKey]?.height;
     
     if (!heightData) {
         console.warn('Height data not found for', dataKey);
