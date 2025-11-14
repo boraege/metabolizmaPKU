@@ -398,7 +398,7 @@ function displayReferenceValues(refLookup, source, gender, ageData, heightAgeRow
     if (isUsingHeightAge) {
         html += ` <span style="background: #fff3cd; padding: 2px 8px; border-radius: 4px; font-size: 12px;">📏 Boy Yaşı Kullanılıyor</span>`;
     }
-    html += ` | <strong>⚥ Cinsiyet:</strong> ${gender === 'male' ? 'Erkek' : 'Kız'}`;
+    html += ` | <strong>⚥ Cinsiyet:</strong> ${gender === 'male' ? 'Erkek' : 'Kadın'}`;
     html += '</div>';
     
     // WHO için ek bilgi

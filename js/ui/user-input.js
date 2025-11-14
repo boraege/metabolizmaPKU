@@ -145,7 +145,7 @@ async function loadAndDisplayWHOData(gender, ageInDays, ageData) {
 
 // WHO verilerini tablo olarak göster (Boy ve Ağırlık)
 function displayWHOComparisonTable(container, heightRecord, weightRecord, gender, ageData, ageInDays) {
-    const genderText = gender === 'male' ? 'Erkek' : 'Kız';
+    const genderText = gender === 'male' ? 'Erkek' : 'Kadın';
     
     let html = '<div style="background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;">';
     html += `<div style="padding: 12px 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #66BB6A;">`;
@@ -198,7 +198,7 @@ function displayComparisonTable(containerId, sourceName, weightRow, heightRow, g
         return;
     }
     
-    const genderText = gender === 'male' ? 'Erkek' : 'Kız';
+    const genderText = gender === 'male' ? 'Erkek' : 'Kadın';
     
     let html = '<div style="background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;">';
     html += `<div style="padding: 12px 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #66BB6A;">`;

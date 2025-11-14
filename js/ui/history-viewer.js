@@ -148,7 +148,7 @@ function displayHistoryList() {
                 </div>
                 <div class="history-item-body">
                     <div class="history-info">
-                        <span>👤 ${info.gender === 'male' ? 'Erkek' : 'Kız'}</span>
+                        <span>👤 ${info.gender === 'male' ? 'Erkek' : 'Kadın'}</span>
                         ${ageData ? `<span>🎂 ${ageData.years} yaş ${ageData.months} ay</span>` : ''}
                         <span>⚖️ ${info.weight} kg</span>
                         <span>📏 ${info.height} cm</span>

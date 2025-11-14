@@ -54,7 +54,7 @@ function exportToPDF() {
         var ageDisplay = ageDisplayEl ? ageDisplayEl.textContent : '-';
         var height = heightEl ? heightEl.value : '-';
         var weight = weightEl ? weightEl.value : '-';
-        var genderText = genderEl ? (genderEl.value === 'male' ? 'Erkek' : 'Kız') : '-';
+        var genderText = genderEl ? (genderEl.value === 'male' ? 'Erkek' : 'Kadın') : '-';
         
         var printWindow = window.open('', '_blank');
         
