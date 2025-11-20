@@ -5,6 +5,10 @@ let dailyIntakeList = window.dailyIntakeList;
 let currentCategory = 'bread';
 let searchQuery = '';
 
+// Favorites and recent foods
+let favoriteFoods = JSON.parse(localStorage.getItem('favoriteFoods') || '[]');
+let recentFoods = JSON.parse(localStorage.getItem('recentFoods') || '[]');
+
 function initializeFoodSelection() {
     // Category buttons
     const categoryButtons = document.querySelectorAll('.category-btn');
@@ -13,7 +17,15 @@ function initializeFoodSelection() {
             categoryButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             currentCategory = this.dataset.category;
-            displayFoodList(currentCategory);
+            
+            // Show appropriate list
+            if (currentCategory === 'favorites') {
+                displayFavorites();
+            } else if (currentCategory === 'recent') {
+                displayRecent();
+            } else {
+                displayFoodList(currentCategory);
+            }
         });
     });
     
@@ -143,11 +155,21 @@ function createFoodBox(food, category, index) {
     foodBox.dataset.category = category;
     foodBox.dataset.index = index;
     
+    const isFav = isFavorite(category, index);
+    
     foodBox.innerHTML = `
+        <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${category}', ${index})">
+            ${isFav ? '⭐' : '☆'}
+        </button>
         <h4>${food.name}</h4>
         <p>${food.amount}g - ${food.unit}</p>
         <p>PA: ${food.pa}mg | Prot: ${food.protein}g</p>
         <p>Enerji: ${food.energy} kcal</p>
+        <div class="quick-add-btns">
+            <button class="quick-add-btn" onclick="event.stopPropagation(); addFoodToIntake('${category}', ${index}, 50)">+50g</button>
+            <button class="quick-add-btn" onclick="event.stopPropagation(); addFoodToIntake('${category}', ${index}, 100)">+100g</button>
+            <button class="quick-add-btn primary" onclick="event.stopPropagation(); addFoodToIntake('${category}', ${index}, ${food.amount})">+${food.amount}g</button>
+        </div>
     `;
     
     foodBox.addEventListener('dragstart', handleDragStart);
@@ -171,22 +193,36 @@ function handleDragEnd(e) {
     e.currentTarget.classList.remove('dragging');
 }
 
-async function addFoodToIntake(category, index) {
+async function addFoodToIntake(category, index, quickAmount = null) {
     const food = FOOD_DATABASE[category][index];
     
-    const amount = await showModal({
-        type: 'input',
-        title: food.name,
-        subtitle: `${food.amount}g - ${food.unit}`,
-        label: 'Miktar (gram):',
-        inputType: 'number',
-        step: '1',
-        min: '1',
-        defaultValue: food.amount,
-        placeholder: 'Gram cinsinden miktar girin',
-        confirmText: 'Ekle',
-        cancelText: 'İptal'
-    });
+    let amount;
+    
+    // If quick amount provided, use it directly
+    if (quickAmount) {
+        amount = quickAmount;
+    } else {
+        // Show quick amount selector for mobile
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+            amount = await showQuickAmountModal(food);
+        } else {
+            amount = await showModal({
+                type: 'input',
+                title: food.name,
+                subtitle: `${food.amount}g - ${food.unit}`,
+                label: 'Miktar (gram):',
+                inputType: 'number',
+                step: '1',
+                min: '1',
+                defaultValue: food.amount,
+                placeholder: 'Gram cinsinden miktar girin',
+                confirmText: 'Ekle',
+                cancelText: 'İptal'
+            });
+        }
+    }
     
     if (amount && parseFloat(amount) > 0) {
         const multiplier = parseFloat(amount) / food.amount;
@@ -202,6 +238,9 @@ async function addFoodToIntake(category, index) {
             energy: Math.round(food.energy * multiplier)
         });
         
+        // Add to recent foods
+        addToRecent(category, index);
+        
         updateIntakeDisplay();
         
         // Auto-save
@@ -209,6 +248,166 @@ async function addFoodToIntake(category, index) {
             saveDailyIntake();
         }
     }
+}
+
+async function showQuickAmountModal(food) {
+    return new Promise((resolve) => {
+        const modal = document.createElement('div');
+        modal.className = 'quick-amount-modal';
+        modal.innerHTML = `
+            <div class="quick-amount-content">
+                <h3>${food.name}</h3>
+                <p class="food-info">${food.amount}g - ${food.unit}</p>
+                <p class="food-nutrition">PA: ${food.pa}mg | Prot: ${food.protein}g | ${food.energy} kcal</p>
+                
+                <div class="quick-amounts">
+                    <button class="quick-amount-btn" data-amount="50">50g</button>
+                    <button class="quick-amount-btn" data-amount="100">100g</button>
+                    <button class="quick-amount-btn" data-amount="${food.amount}">${food.amount}g<br><small>(Standart)</small></button>
+                    <button class="quick-amount-btn" data-amount="150">150g</button>
+                    <button class="quick-amount-btn" data-amount="200">200g</button>
+                </div>
+                
+                <div class="custom-amount-section">
+                    <label>Özel Miktar:</label>
+                    <input type="number" class="custom-amount-input" placeholder="Gram" min="1" step="1">
+                    <button class="custom-amount-btn">Ekle</button>
+                </div>
+                
+                <button class="cancel-quick-btn">İptal</button>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Quick amount buttons
+        modal.querySelectorAll('.quick-amount-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const amount = btn.dataset.amount;
+                document.body.removeChild(modal);
+                resolve(amount);
+            });
+        });
+        
+        // Custom amount
+        const customInput = modal.querySelector('.custom-amount-input');
+        const customBtn = modal.querySelector('.custom-amount-btn');
+        
+        customBtn.addEventListener('click', () => {
+            const amount = customInput.value;
+            if (amount && parseFloat(amount) > 0) {
+                document.body.removeChild(modal);
+                resolve(amount);
+            }
+        });
+        
+        customInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                customBtn.click();
+            }
+        });
+        
+        // Cancel
+        modal.querySelector('.cancel-quick-btn').addEventListener('click', () => {
+            document.body.removeChild(modal);
+            resolve(null);
+        });
+        
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+                resolve(null);
+            }
+        });
+    });
+}
+
+function addToRecent(category, index) {
+    const foodKey = `${category}-${index}`;
+    
+    // Remove if already exists
+    recentFoods = recentFoods.filter(f => f.key !== foodKey);
+    
+    // Add to beginning
+    recentFoods.unshift({
+        key: foodKey,
+        category: category,
+        index: index,
+        timestamp: Date.now()
+    });
+    
+    // Keep only last 10
+    recentFoods = recentFoods.slice(0, 10);
+    
+    localStorage.setItem('recentFoods', JSON.stringify(recentFoods));
+}
+
+function toggleFavorite(category, index) {
+    const foodKey = `${category}-${index}`;
+    const existingIndex = favoriteFoods.findIndex(f => f.key === foodKey);
+    
+    if (existingIndex >= 0) {
+        favoriteFoods.splice(existingIndex, 1);
+    } else {
+        favoriteFoods.push({
+            key: foodKey,
+            category: category,
+            index: index
+        });
+    }
+    
+    localStorage.setItem('favoriteFoods', JSON.stringify(favoriteFoods));
+    
+    // Refresh display if on favorites
+    if (currentCategory === 'favorites') {
+        displayFavorites();
+    } else if (currentCategory === 'recent') {
+        displayRecent();
+    } else {
+        displayFoodList(currentCategory);
+    }
+}
+
+function isFavorite(category, index) {
+    const foodKey = `${category}-${index}`;
+    return favoriteFoods.some(f => f.key === foodKey);
+}
+
+function displayFavorites() {
+    const foodList = document.getElementById('foodList');
+    foodList.innerHTML = '';
+    
+    if (favoriteFoods.length === 0) {
+        foodList.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">Henüz favori besin eklemediniz.<br>Besinlerin üzerindeki ⭐ simgesine tıklayarak favorilere ekleyebilirsiniz.</div>';
+        return;
+    }
+    
+    favoriteFoods.forEach(fav => {
+        const food = FOOD_DATABASE[fav.category]?.[fav.index];
+        if (food) {
+            const foodBox = createFoodBox(food, fav.category, fav.index);
+            foodList.appendChild(foodBox);
+        }
+    });
+}
+
+function displayRecent() {
+    const foodList = document.getElementById('foodList');
+    foodList.innerHTML = '';
+    
+    if (recentFoods.length === 0) {
+        foodList.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">Henüz besin eklemediniz.</div>';
+        return;
+    }
+    
+    recentFoods.forEach(recent => {
+        const food = FOOD_DATABASE[recent.category]?.[recent.index];
+        if (food) {
+            const foodBox = createFoodBox(food, recent.category, recent.index);
+            foodList.appendChild(foodBox);
+        }
+    });
 }
 
 function updateIntakeDisplay() {
@@ -224,15 +423,20 @@ function updateIntakeDisplay() {
             itemDiv.dataset.itemId = item.id;
             
             itemDiv.innerHTML = `
-                <div class="intake-item-info">
-                    <h5>${item.name}</h5>
-                    <p>${item.amount}g | PA: ${item.pa}mg | Prot: ${item.protein}g | Enerji: ${item.energy} kcal</p>
+                <div class="intake-item-wrapper">
+                    <div class="intake-item-info">
+                        <h5>${item.name}</h5>
+                        <p>${item.amount}g | PA: ${item.pa}mg | Prot: ${item.protein}g | Enerji: ${item.energy} kcal</p>
+                    </div>
+                    <div class="intake-item-controls">
+                        <button onclick="adjustAmount(${item.id}, -10)">-</button>
+                        <input type="number" value="${item.amount}" onchange="updateAmount(${item.id}, this.value)">
+                        <button onclick="adjustAmount(${item.id}, 10)">+</button>
+                        <button class="remove-btn" onclick="removeFromIntake(${item.id})">×</button>
+                    </div>
                 </div>
-                <div class="intake-item-controls">
-                    <button onclick="adjustAmount(${item.id}, -10)">-</button>
-                    <input type="number" value="${item.amount}" onchange="updateAmount(${item.id}, this.value)">
-                    <button onclick="adjustAmount(${item.id}, 10)">+</button>
-                    <button class="remove-btn" onclick="removeFromIntake(${item.id})">×</button>
+                <div class="swipe-delete-action">
+                    <span>🗑️ Sil</span>
                 </div>
             `;
             
@@ -249,6 +453,9 @@ function updateIntakeDisplay() {
             itemDiv.addEventListener('dragend', (e) => {
                 itemDiv.classList.remove('dragging');
             });
+            
+            // Add swipe functionality for mobile
+            addSwipeToDelete(itemDiv, item.id);
             
             intakeList.appendChild(itemDiv);
         });
@@ -362,4 +569,53 @@ function updateProgressChart() {
             </div>
         </div>
     `;
+}
+
+
+// Swipe to delete functionality (mobile only)
+function addSwipeToDelete(element, itemId) {
+    // Only enable on mobile devices
+    if (window.innerWidth > 768) return;
+    
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    const wrapper = element.querySelector('.intake-item-wrapper');
+    
+    element.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        element.style.transition = 'none';
+    }, { passive: true });
+    
+    element.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        
+        currentX = e.touches[0].clientX;
+        const diff = currentX - startX;
+        
+        // Only allow left swipe
+        if (diff < 0) {
+            wrapper.style.transform = `translateX(${diff}px)`;
+        }
+    }, { passive: true });
+    
+    element.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        
+        const diff = currentX - startX;
+        element.style.transition = 'transform 0.3s ease';
+        
+        // If swiped more than 100px, delete
+        if (diff < -100) {
+            wrapper.style.transform = 'translateX(-100%)';
+            setTimeout(() => {
+                removeFromIntake(itemId);
+            }, 300);
+        } else {
+            // Reset position
+            wrapper.style.transform = 'translateX(0)';
+        }
+    });
 }

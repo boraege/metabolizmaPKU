@@ -164,6 +164,92 @@
     margin: 3px 0;
 }
 
+.favorite-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    font-size: 1.3em;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: transform 0.2s;
+    z-index: 10;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.2);
+}
+
+.favorite-btn.active {
+    filter: drop-shadow(0 0 3px rgba(255, 193, 7, 0.8));
+}
+
+.quick-add-btns {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.quick-add-btn {
+    flex: 1;
+    min-width: 50px;
+    padding: 4px 6px;
+    background: #e8f5e9;
+    border: 1px solid #66BB6A;
+    border-radius: 4px;
+    color: #2E7D32;
+    font-size: 0.7em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-add-btn:hover {
+    background: #66BB6A;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.quick-add-btn.primary {
+    background: #66BB6A;
+    color: white;
+}
+
+.quick-add-btn.primary:hover {
+    background: #388E3C;
+}
+
+@media (max-width: 768px) {
+    .quick-add-btn {
+        padding: 10px 8px;
+        font-size: 0.85em;
+        min-width: 70px;
+    }
+    
+    .favorite-btn {
+        font-size: 1.5em;
+        padding: 6px;
+    }
+}
+
+/* Desktop: Hide quick add buttons on hover, show on food box hover */
+@media (min-width: 769px) {
+    .quick-add-btns {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+    
+    .food-box:hover .quick-add-btns {
+        opacity: 1;
+        max-height: 50px;
+    }
+}
+
 /* Daily Intake */
 .daily-intake {
     background: #f8f9fa;
@@ -434,5 +520,222 @@
     
     .progress-item label {
         font-size: 0.9em;
+    }
+}
+
+/* Quick Amount Modal */
+.quick-amount-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+}
+
+.quick-amount-content {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.quick-amount-content h3 {
+    color: #2E7D32;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.quick-amount-content .food-info {
+    text-align: center;
+    color: #666;
+    font-size: 0.95em;
+    margin-bottom: 5px;
+}
+
+.quick-amount-content .food-nutrition {
+    text-align: center;
+    color: #999;
+    font-size: 0.85em;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.quick-amounts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.quick-amount-btn {
+    padding: 20px 10px;
+    background: #e8f5e9;
+    border: 2px solid #66BB6A;
+    border-radius: 8px;
+    color: #2E7D32;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.quick-amount-btn:hover {
+    background: #66BB6A;
+    color: white;
+    transform: scale(1.05);
+}
+
+.quick-amount-btn small {
+    display: block;
+    font-size: 0.7em;
+    font-weight: 400;
+    margin-top: 3px;
+}
+
+.custom-amount-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.custom-amount-section label {
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
+
+.custom-amount-input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.custom-amount-input:focus {
+    outline: none;
+    border-color: #66BB6A;
+}
+
+.custom-amount-btn {
+    padding: 10px 20px;
+    background: #66BB6A;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.custom-amount-btn:hover {
+    background: #388E3C;
+}
+
+.cancel-quick-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancel-quick-btn:hover {
+    background: #d32f2f;
+}
+
+@media (max-width: 768px) {
+    .quick-amount-modal {
+        padding: 15px;
+    }
+    
+    .quick-amount-content {
+        padding: 20px;
+        max-width: 100%;
+    }
+    
+    .quick-amounts {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .quick-amount-btn {
+        padding: 25px 10px;
+        font-size: 1.2em;
+    }
+    
+    .custom-amount-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .custom-amount-input {
+        width: 100%;
+    }
+    
+    .custom-amount-btn {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+/* Swipe to delete (mobile only) */
+@media (max-width: 768px) {
+    .intake-item {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .intake-item-wrapper {
+        position: relative;
+        z-index: 2;
+        background: white;
+        transition: transform 0.3s ease;
+    }
+    
+    .swipe-delete-action {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100px;
+        background: #f44336;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        z-index: 1;
+    }
+    
+    .swipe-delete-action span {
+        font-size: 1.2em;
+    }
+}
+
+@media (min-width: 769px) {
+    .swipe-delete-action {
+        display: none;
     }
 }
