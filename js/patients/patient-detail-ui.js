@@ -3,6 +3,7 @@ let currentPatient = null;
 let currentMeasurements = [];
 let heightChart = null;
 let weightChart = null;
+let bmiChart = null;
 let heightPercentileChart = null;
 let weightPercentileChart = null;
 
@@ -168,6 +169,15 @@ function createMeasurementCard(measurement, index) {
     const date = formatDate(new Date(measurement.date));
     const calculations = measurement.calculations || {};
     
+    // Calculate BMI
+    const heightInMeters = measurement.height / 100;
+    const bmi = (measurement.weight / (heightInMeters * heightInMeters)).toFixed(2);
+    let bmiCategory = '';
+    if (bmi < 18.5) bmiCategory = 'Zayıf';
+    else if (bmi < 25) bmiCategory = 'Normal';
+    else if (bmi < 30) bmiCategory = 'Fazla Kilolu';
+    else bmiCategory = 'Obez';
+    
     card.innerHTML = `
         <div class="measurement-header">
             <div>
@@ -185,8 +195,12 @@ function createMeasurementCard(measurement, index) {
                     <value>${measurement.height} cm</value>
                 </div>
                 <div class="measurement-item">
-                    <label>Kilo</label>
+                    <label>Ağırlık</label>
                     <value>${measurement.weight} kg</value>
+                </div>
+                <div class="measurement-item">
+                    <label>BKI</label>
+                    <value>${bmi} <span style="font-size: 0.85em; color: #666;">(${bmiCategory})</span></value>
                 </div>
                 <div class="measurement-item">
                     <label>BMR</label>
@@ -253,6 +267,12 @@ function createCharts(measurements) {
     const heights = sorted.map(m => m.height);
     const weights = sorted.map(m => m.weight);
     
+    // Calculate BMI for each measurement
+    const bmis = sorted.map(m => {
+        const heightInMeters = m.height / 100;
+        return (m.weight / (heightInMeters * heightInMeters)).toFixed(2);
+    });
+    
     // Height Chart
     const heightCtx = document.getElementById('heightChart').getContext('2d');
     if (heightChart) heightChart.destroy();
@@ -266,7 +286,9 @@ function createCharts(measurements) {
                 borderColor: '#81C784',
                 backgroundColor: 'rgba(129, 199, 132, 0.1)',
                 tension: 0.4,
-                fill: true
+                fill: true,
+                pointRadius: 5,
+                pointHoverRadius: 7
             }]
         },
         options: {
@@ -275,6 +297,13 @@ function createCharts(measurements) {
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Boy: ' + context.parsed.y + ' cm';
+                        }
+                    }
                 }
             },
             scales: {
@@ -289,7 +318,7 @@ function createCharts(measurements) {
         }
     });
     
-    // Weight Chart
+    // Weight Chart (Ağırlık Kazanımı)
     const weightCtx = document.getElementById('weightChart').getContext('2d');
     if (weightChart) weightChart.destroy();
     weightChart = new Chart(weightCtx, {
@@ -297,12 +326,14 @@ function createCharts(measurements) {
         data: {
             labels: dates,
             datasets: [{
-                label: 'Kilo (kg)',
+                label: 'Ağırlık (kg)',
                 data: weights,
                 borderColor: '#64B5F6',
                 backgroundColor: 'rgba(100, 181, 246, 0.1)',
                 tension: 0.4,
-                fill: true
+                fill: true,
+                pointRadius: 5,
+                pointHoverRadius: 7
             }]
         },
         options: {
@@ -311,6 +342,21 @@ function createCharts(measurements) {
             plugins: {
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const index = context.dataIndex;
+                            let label = 'Ağırlık: ' + context.parsed.y + ' kg';
+                            // Show weight gain if not first measurement
+                            if (index > 0) {
+                                const gain = (weights[index] - weights[index - 1]).toFixed(2);
+                                const gainText = gain >= 0 ? '+' + gain : gain;
+                                label += ' (' + gainText + ' kg)';
+                            }
+                            return label;
+                        }
+                    }
                 }
             },
             scales: {
@@ -318,7 +364,58 @@ function createCharts(measurements) {
                     beginAtZero: false,
                     title: {
                         display: true,
-                        text: 'Kilo (kg)'
+                        text: 'Ağırlık (kg)'
+                    }
+                }
+            }
+        }
+    });
+    
+    // BMI Chart
+    const bmiCtx = document.getElementById('bmiChart').getContext('2d');
+    if (bmiChart) bmiChart.destroy();
+    bmiChart = new Chart(bmiCtx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'BKI',
+                data: bmis,
+                borderColor: '#FF9800',
+                backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const bmi = context.parsed.y;
+                            let category = '';
+                            if (bmi < 18.5) category = ' (Zayıf)';
+                            else if (bmi < 25) category = ' (Normal)';
+                            else if (bmi < 30) category = ' (Fazla Kilolu)';
+                            else category = ' (Obez)';
+                            return 'BKI: ' + bmi + category;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'BKI (kg/m²)'
                     }
                 }
             }
@@ -363,6 +460,15 @@ function openMeasurementModal(measurement) {
     const dailyIntake = measurement.dailyIntake || [];
     const mealPlan = measurement.mealPlan || [];
     
+    // Calculate BMI
+    const heightInMeters = measurement.height / 100;
+    const bmi = (measurement.weight / (heightInMeters * heightInMeters)).toFixed(2);
+    let bmiCategory = '';
+    if (bmi < 18.5) bmiCategory = 'Zayıf';
+    else if (bmi < 25) bmiCategory = 'Normal';
+    else if (bmi < 30) bmiCategory = 'Fazla Kilolu';
+    else bmiCategory = 'Obez';
+    
     let dailyIntakeHTML = '';
     if (dailyIntake.length > 0) {
         dailyIntakeHTML = '<h4>Günlük Besin Alımı</h4><ul class="food-list">';
@@ -393,7 +499,8 @@ function openMeasurementModal(measurement) {
                 <h4>Ölçümler</h4>
                 <div class="detail-grid">
                     <div><strong>Boy:</strong> ${measurement.height} cm</div>
-                    <div><strong>Kilo:</strong> ${measurement.weight} kg</div>
+                    <div><strong>Ağırlık:</strong> ${measurement.weight} kg</div>
+                    <div><strong>BKI:</strong> ${bmi} kg/m² (${bmiCategory})</div>
                 </div>
             </div>
             
