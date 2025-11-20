@@ -38,9 +38,8 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background: white;
+    background: transparent;
     border-radius: 16px;
-    box-shadow: 0 12px 48px rgba(0,0,0,0.15);
     overflow: visible;
 }
 
@@ -48,7 +47,9 @@ header {
     background: linear-gradient(135deg, var(--dark-slate) 0%, var(--muted-teal) 100%);
     color: white;
     padding: 20px 24px;
-    border-radius: 15px 15px 0 0;
+    border-radius: 30px;
+    margin-bottom: 30px;
+    box-shadow: 15px 15px 30px rgba(0,0,0,0.2), -15px -15px 30px rgba(255,255,255,0.1);
 }
 
 @media (max-width: 768px) {
@@ -287,11 +288,16 @@ header p {
 /* Responsive */
 @media (max-width: 768px) {
     body {
-        padding: 0;
+        padding: 12px;
     }
     
     .container {
         border-radius: 0;
+    }
+    
+    header {
+        border-radius: 20px;
+        margin-bottom: 20px;
     }
     
     header {
