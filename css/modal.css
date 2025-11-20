@@ -20,12 +20,12 @@
 
 .modal-dialog {
     background: white;
-    border-radius: 16px;
-    padding: 30px;
-    min-width: 400px;
+    border-radius: 20px;
+    padding: 32px;
+    min-width: 420px;
     max-width: 90%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: slideUp 0.3s ease-out;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
 
@@ -34,10 +34,11 @@
 }
 
 .modal-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
-    color: #333;
+    color: #1a1a1a;
     margin: 0 0 8px 0;
+    letter-spacing: -0.3px;
 }
 
 .modal-subtitle {
@@ -57,25 +58,27 @@
 .modal-input-group label {
     display: block;
     font-size: 14px;
-    font-weight: 500;
-    color: #555;
+    font-weight: 600;
+    color: #424242;
     margin-bottom: 8px;
 }
 
 .modal-input {
     width: 100%;
-    padding: 12px 16px;
-    font-size: 16px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 15px;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    background: #fafafa;
     transition: all 0.2s;
     box-sizing: border-box;
 }
 
 .modal-input:focus {
     outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    border-color: #81C784;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(129, 199, 132, 0.08);
 }
 
 .modal-footer {
@@ -85,32 +88,36 @@
 }
 
 .modal-btn {
-    padding: 12px 24px;
-    font-size: 15px;
-    font-weight: 500;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 600;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.3px;
 }
 
 .modal-btn-cancel {
-    background: #f5f5f5;
-    color: #666;
+    background: white;
+    color: #616161;
+    border: 1px solid #e8e8e8;
 }
 
 .modal-btn-cancel:hover {
-    background: #e0e0e0;
+    background: #fafafa;
+    border-color: #d0d0d0;
 }
 
 .modal-btn-confirm {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
     color: white;
+    box-shadow: 0 2px 8px rgba(102, 187, 106, 0.2);
 }
 
 .modal-btn-confirm:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 187, 106, 0.35);
 }
 
 .modal-btn-confirm:active {
