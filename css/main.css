@@ -457,3 +457,69 @@ label:has(input[name="percentileSelection"]):hover {
         opacity: 0;
     }
 }
+
+/* Card Styles - Neumorphic Design */
+.card {
+    width: 100%;
+    min-height: auto;
+    border-radius: 30px;
+    background: #e0e0e0;
+    box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
+    margin-bottom: 30px;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 20px 20px 40px #bebebe, -20px -20px 40px #ffffff;
+    transform: translateY(-2px);
+}
+
+.card .section {
+    background: transparent;
+    border-bottom: none;
+    padding: 30px;
+}
+
+.card .section h2 {
+    color: var(--dark-slate);
+    margin-bottom: 20px;
+}
+
+/* Responsive Card Styles */
+@media (max-width: 768px) {
+    .card {
+        border-radius: 20px;
+        margin-bottom: 20px;
+        box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+    }
+    
+    .card .section {
+        padding: 20px;
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+}
+
+/* Card içindeki özel elementler için düzenlemeler */
+.card .personal-info-compact,
+.card .needs-grid,
+.card .export-actions,
+.card .tab-container {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .card .personal-info-compact,
+    .card .needs-grid,
+    .card .export-actions,
+    .card .tab-container {
+        padding: 15px;
+        border-radius: 12px;
+    }
+}
