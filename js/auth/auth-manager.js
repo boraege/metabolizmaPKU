@@ -119,16 +119,14 @@ class AuthManager {
         // Redirect to main app if on login page
         if (window.location.pathname.includes('login.html') || 
             window.location.pathname.includes('register.html')) {
-            window.location.href = 'index.html';
+            window.location.href = 'app.html';
         }
     }
 
     // Called when user logs out
     onUserLoggedOut() {
         // Redirect to login if on main app
-        if (window.location.pathname.includes('index.html') || 
-            window.location.pathname === '/' ||
-            window.location.pathname.endsWith('/')) {
+        if (window.location.pathname.includes('app.html')) {
             window.location.href = 'login.html';
         }
     }
