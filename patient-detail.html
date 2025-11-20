@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasta Detayı - Metabolizma PKU</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/patient-detail.css">
+    <link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1 id="patientNameHeader">Hasta Detayı</h1>
+                    <p id="patientInfoHeader">Ölçüm Geçmişi ve Gelişim Takibi</p>
+                </div>
+                <div class="header-actions">
+                    <button id="backToPatientsBtn" class="btn-secondary">← Hasta Listesi</button>
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <span id="userDisplayName">Kullanıcı</span>
+                        <button id="logoutBtn" class="btn-logout">Çıkış Yap</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Patient Info Card -->
+        <section class="section">
+            <div id="patientInfoCard" class="patient-info-card">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Hasta bilgileri yükleniyor...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="section">
+            <div class="quick-actions">
+                <button id="addMeasurementBtn" class="btn-primary">➕ Yeni Ölçüm Ekle</button>
+                <button id="editPatientBtn" class="btn-secondary">✏️ Hasta Bilgilerini Düzenle</button>
+            </div>
+        </section>
+
+        <!-- Growth Charts -->
+        <section class="section">
+            <h2>📈 Gelişim Grafikleri</h2>
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3>Boy Gelişimi</h3>
+                    <canvas id="heightChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Kilo Gelişimi</h3>
+                    <canvas id="weightChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Measurements History -->
+        <section class="section">
+            <h2>📋 Ölçüm Geçmişi</h2>
+            <div id="measurementsContainer" class="measurements-container">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Ölçümler yükleniyor...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="js/auth/firebase-config.js"></script>
+    <script src="js/auth/auth-manager.js"></script>
+    <script src="js/utils/age-calculator.js"></script>
+    <script src="js/utils/modal.js"></script>
+    <script src="js/patients/patient-manager.js"></script>
+    <script src="js/patients/patient-detail-ui.js"></script>
+</body>
+</html>

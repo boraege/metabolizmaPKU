@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hastalarım - Metabolizma PKU</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/patients.css">
+    <link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1>👥 Hastalarım</h1>
+                    <p>Hasta Takip ve Yönetim Sistemi</p>
+                </div>
+                <div class="header-actions">
+                    <button id="backToAppBtn" class="btn-secondary">← Hesaplama Sayfası</button>
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <span id="userDisplayName">Kullanıcı</span>
+                        <button id="logoutBtn" class="btn-logout">Çıkış Yap</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="section">
+            <div class="patients-header">
+                <button id="addPatientBtn" class="btn-primary">+ Yeni Hasta Ekle</button>
+                <div class="search-container">
+                    <input type="text" id="patientSearch" placeholder="🔍 Hasta ara..." class="search-input">
+                </div>
+            </div>
+
+            <div id="patientsContainer" class="patients-container">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Hastalar yükleniyor...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Yeni Hasta Modal -->
+    <div id="addPatientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Yeni Hasta Ekle</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addPatientForm">
+                    <div class="form-group">
+                        <label for="newPatientName">👤 Ad Soyad *</label>
+                        <input type="text" id="newPatientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPatientBirthDate">🎂 Doğum Tarihi *</label>
+                        <input type="date" id="newPatientBirthDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>⚥ Cinsiyet *</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="newPatientGender" value="male" required>
+                                <span>👦 Erkek</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="newPatientGender" value="female">
+                                <span>👧 Kadın</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary modal-cancel">İptal</button>
+                <button type="submit" form="addPatientForm" class="btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="js/auth/firebase-config.js"></script>
+    <script src="js/auth/auth-manager.js"></script>
+    <script src="js/utils/age-calculator.js"></script>
+    <script src="js/utils/modal.js"></script>
+    <script src="js/patients/patient-manager.js"></script>
+    <script src="js/patients/patients-ui.js"></script>
+</body>
+</html>

@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Set user in data manager
             userDataManager.setUser(user.uid);
             
+            // Initialize patient manager
+            patientManager.init(user.uid);
+            
             // Display user info
             const userInfo = document.getElementById('userInfo');
             const userDisplayName = document.getElementById('userDisplayName');
@@ -65,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializePDFExport();
     initializeHistoryViewer();
     initializeTooltips();
+    initializeSaveToPatient();
     
     // Set default source description
     updateSourceDescription('manual');
