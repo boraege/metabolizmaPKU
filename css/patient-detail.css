@@ -269,3 +269,74 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* Measurement Modal */
+.modal-large .modal-content {
+    max-width: 800px;
+}
+
+.modal-measurement-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.detail-section {
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.detail-section h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    border-bottom: 2px solid #81C784;
+    padding-bottom: 8px;
+}
+
+.detail-section h5 {
+    margin: 10px 0 5px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.detail-grid div {
+    padding: 8px;
+    background: white;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.detail-grid strong {
+    color: #666;
+    font-weight: 600;
+}
+
+.food-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+
+.food-list li {
+    padding: 8px 12px;
+    background: white;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.meal-section {
+    margin-bottom: 15px;
+}
+
+.meal-section:last-child {
+    margin-bottom: 0;
+}

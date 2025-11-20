@@ -3,6 +3,8 @@ let currentPatient = null;
 let currentMeasurements = [];
 let heightChart = null;
 let weightChart = null;
+let heightPercentileChart = null;
+let weightPercentileChart = null;
 
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('Hasta detay sayfası başlatılıyor...');
@@ -87,6 +89,7 @@ async function loadPatientData(patientId) {
         
         // Create charts
         createCharts(currentMeasurements);
+        createPercentileCharts(currentMeasurements);
         
     } catch (error) {
         console.error('Hasta verileri yüklenirken hata:', error);
@@ -97,12 +100,13 @@ async function loadPatientData(patientId) {
 
 // Display patient info card
 function displayPatientInfo(patient) {
-    const age = calculateAge(patient.birthDate);
+    const ageData = calculateAge(patient.birthDate);
+    const ageText = ageData.formatted || ageData; // Handle both object and string
     const genderIcon = patient.gender === 'male' ? '👦' : '👧';
     const genderText = patient.gender === 'male' ? 'Erkek' : 'Kadın';
     
     document.getElementById('patientNameHeader').textContent = `${genderIcon} ${patient.name}`;
-    document.getElementById('patientInfoHeader').textContent = `${age} • ${genderText}`;
+    document.getElementById('patientInfoHeader').textContent = `${ageText} • ${genderText}`;
     
     const card = document.getElementById('patientInfoCard');
     card.innerHTML = `
@@ -117,7 +121,7 @@ function displayPatientInfo(patient) {
             </div>
             <div class="info-item">
                 <label>Yaş</label>
-                <value>${age}</value>
+                <value>${ageText}</value>
             </div>
             <div class="info-item">
                 <label>Cinsiyet</label>
@@ -340,8 +344,114 @@ async function deleteMeasurementConfirm(measurementId, date) {
 
 // View measurement details
 function viewMeasurementDetails(measurementId) {
-    // TODO: Open modal with full measurement details
-    alert('Ölçüm detayları özelliği yakında eklenecek');
+    const measurement = currentMeasurements.find(m => m.id === measurementId);
+    if (!measurement) return;
+    
+    openMeasurementModal(measurement);
+}
+
+// Open measurement details modal
+function openMeasurementModal(measurement) {
+    const modal = document.getElementById('measurementModal');
+    if (!modal) {
+        createMeasurementModal();
+        return openMeasurementModal(measurement);
+    }
+    
+    const date = formatDate(new Date(measurement.date));
+    const calculations = measurement.calculations || {};
+    const dailyIntake = measurement.dailyIntake || [];
+    const mealPlan = measurement.mealPlan || [];
+    
+    let dailyIntakeHTML = '';
+    if (dailyIntake.length > 0) {
+        dailyIntakeHTML = '<h4>Günlük Besin Alımı</h4><ul class="food-list">';
+        dailyIntake.forEach(food => {
+            dailyIntakeHTML += `<li>${food.name} - ${food.amount}g (${food.energy} kcal, ${food.protein}g protein, ${food.phe}mg phe)</li>`;
+        });
+        dailyIntakeHTML += '</ul>';
+    }
+    
+    let mealPlanHTML = '';
+    if (mealPlan.length > 0) {
+        mealPlanHTML = '<h4>Öğün Planı</h4>';
+        mealPlan.forEach(meal => {
+            if (meal.foods && meal.foods.length > 0) {
+                mealPlanHTML += `<div class="meal-section"><h5>${meal.name}</h5><ul class="food-list">`;
+                meal.foods.forEach(food => {
+                    mealPlanHTML += `<li>${food.name} - ${food.amount}g</li>`;
+                });
+                mealPlanHTML += '</ul></div>';
+            }
+        });
+    }
+    
+    document.getElementById('modalMeasurementTitle').textContent = `Ölçüm Detayları - ${date}`;
+    document.getElementById('modalMeasurementBody').innerHTML = `
+        <div class="modal-measurement-details">
+            <div class="detail-section">
+                <h4>Ölçümler</h4>
+                <div class="detail-grid">
+                    <div><strong>Boy:</strong> ${measurement.height} cm</div>
+                    <div><strong>Kilo:</strong> ${measurement.weight} kg</div>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h4>Hesaplamalar</h4>
+                <div class="detail-grid">
+                    <div><strong>BMR:</strong> ${calculations.bmr || '-'} kcal</div>
+                    <div><strong>Enerji (Ref):</strong> ${calculations.energyRef || '-'} kcal</div>
+                    <div><strong>Enerji (Pratik):</strong> ${calculations.energyPractical || '-'} kcal</div>
+                    <div><strong>Protein:</strong> ${calculations.protein || '-'} g</div>
+                    <div><strong>Fenilalanin:</strong> ${calculations.phe || '-'} mg</div>
+                </div>
+            </div>
+            
+            ${measurement.percentileData && (measurement.percentileData.heightPercentile || measurement.percentileData.weightPercentile) ? `
+                <div class="detail-section">
+                    <h4>Persentil Değerleri (${measurement.percentileData.source || 'Manuel'})</h4>
+                    <div class="detail-grid">
+                        ${measurement.percentileData.heightPercentile ? `<div><strong>Boy Persentil:</strong> ${measurement.percentileData.heightPercentile}</div>` : ''}
+                        ${measurement.percentileData.weightPercentile ? `<div><strong>Kilo Persentil:</strong> ${measurement.percentileData.weightPercentile}</div>` : ''}
+                    </div>
+                </div>
+            ` : ''}
+            
+            ${dailyIntakeHTML ? `<div class="detail-section">${dailyIntakeHTML}</div>` : ''}
+            ${mealPlanHTML ? `<div class="detail-section">${mealPlanHTML}</div>` : ''}
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+}
+
+// Create measurement modal
+function createMeasurementModal() {
+    const modal = document.createElement('div');
+    modal.id = 'measurementModal';
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="modalMeasurementTitle">Ölçüm Detayları</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modalMeasurementBody"></div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-cancel">Kapat</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Setup close handlers
+    modal.querySelector('.modal-close').onclick = () => modal.style.display = 'none';
+    modal.querySelector('.modal-cancel').onclick = () => modal.style.display = 'none';
+    modal.onclick = (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+    };
 }
 
 // Format date helper
@@ -363,6 +473,133 @@ function formatShortDate(date) {
         month: 'short', 
         day: 'numeric' 
     });
+}
+
+// Create percentile charts
+function createPercentileCharts(measurements) {
+    if (measurements.length === 0) return;
+    
+    // Filter measurements that have percentile data
+    const withPercentiles = measurements.filter(m => 
+        m.percentileData && (m.percentileData.heightPercentile || m.percentileData.weightPercentile)
+    );
+    
+    if (withPercentiles.length === 0) {
+        document.getElementById('percentileChartsSection').style.display = 'none';
+        return;
+    }
+    
+    document.getElementById('percentileChartsSection').style.display = 'block';
+    
+    // Sort by date
+    const sorted = [...withPercentiles].sort((a, b) => 
+        new Date(a.date) - new Date(b.date)
+    );
+    
+    const dates = sorted.map(m => formatShortDate(new Date(m.date)));
+    const heightPercentiles = sorted.map(m => {
+        const p = m.percentileData?.heightPercentile;
+        if (!p) return null;
+        // Extract number from percentile string (e.g., "P50" -> 50)
+        const match = p.match(/\d+/);
+        return match ? parseInt(match[0]) : null;
+    });
+    const weightPercentiles = sorted.map(m => {
+        const p = m.percentileData?.weightPercentile;
+        if (!p) return null;
+        const match = p.match(/\d+/);
+        return match ? parseInt(match[0]) : null;
+    });
+    
+    // Height Percentile Chart
+    if (heightPercentiles.some(p => p !== null)) {
+        const heightPercentileCtx = document.getElementById('heightPercentileChart').getContext('2d');
+        if (heightPercentileChart) heightPercentileChart.destroy();
+        heightPercentileChart = new Chart(heightPercentileCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Boy Persentil',
+                    data: heightPercentiles,
+                    borderColor: '#81C784',
+                    backgroundColor: 'rgba(129, 199, 132, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    spanGaps: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Persentil'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'P' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Weight Percentile Chart
+    if (weightPercentiles.some(p => p !== null)) {
+        const weightPercentileCtx = document.getElementById('weightPercentileChart').getContext('2d');
+        if (weightPercentileChart) weightPercentileChart.destroy();
+        weightPercentileChart = new Chart(weightPercentileCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Kilo Persentil',
+                    data: weightPercentiles,
+                    borderColor: '#64B5F6',
+                    backgroundColor: 'rgba(100, 181, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    spanGaps: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Persentil'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'P' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 }
 
 // Show notification
