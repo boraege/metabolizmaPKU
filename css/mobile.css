@@ -136,28 +136,42 @@ html {
     .nutrition-table {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        margin: 0 -15px;
+        padding: 0 15px;
     }
     
     .reference-table table,
     .nutrition-table table {
         min-width: auto;
         width: 100%;
-        font-size: 0.7em;
+        font-size: 0.55em;
     }
     
     .reference-table th,
     .reference-table td,
     .nutrition-table th,
     .nutrition-table td {
-        padding: 5px 3px;
-        font-size: 0.85em;
+        padding: 4px 2px;
+        font-size: 1em;
         white-space: nowrap;
     }
     
+    .reference-table th,
+    .nutrition-table th {
+        font-size: 0.9em;
+    }
+    
     /* Input overflow fix */
-    input[type="date"] {
-        max-width: 100%;
-        box-sizing: border-box;
+    input[type="date"],
+    input[type="text"],
+    input[type="number"] {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    #birthDate {
+        width: 100% !important;
+        max-width: 100% !important;
     }
     
     /* Tab buttons - Horizontal scroll */

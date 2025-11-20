@@ -20,6 +20,8 @@
 .personal-info-compact {
     max-width: 1000px;
     margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .info-row {
@@ -27,6 +29,8 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
     margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .info-row:last-child {
@@ -331,6 +335,7 @@
         padding: 10px 12px;
         width: 100%;
         box-sizing: border-box;
+        overflow: hidden;
     }
 
     #personal-info label {
@@ -342,10 +347,19 @@
     #personal-info input[type="number"],
     #personal-info input[type="date"] {
         padding: 8px;
-        font-size: 0.9em;
+        font-size: 16px;
         width: 100%;
         box-sizing: border-box;
         max-width: 100%;
+        border: 2px solid #c8e6c9;
+        border-radius: 6px;
+    }
+    
+    /* Doğum tarihi özel düzeltme */
+    #birthDate {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .age-display-inline {

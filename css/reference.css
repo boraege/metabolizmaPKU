@@ -26,30 +26,25 @@
     .reference-table {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        margin: 0 -15px;
+        padding: 0 15px;
     }
     
     .reference-table table {
         min-width: auto;
         width: 100%;
-        font-size: 0.7em;
+        font-size: 0.55em;
     }
     
     .reference-table th,
     .reference-table td {
-        padding: 5px 3px;
-        font-size: 0.85em;
+        padding: 4px 2px;
+        font-size: 1em;
         white-space: nowrap;
     }
     
-    /* Scroll ipucu */
-    .reference-table::after {
-        content: '← Kaydırın →';
-        display: block;
-        text-align: center;
-        font-size: 0.7em;
-        color: #999;
-        margin-top: 5px;
-        font-style: italic;
+    .reference-table th {
+        font-size: 0.9em;
     }
 }
 
