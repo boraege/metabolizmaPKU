@@ -82,10 +82,12 @@ async function loadPatientData(patientId) {
     try {
         // Load patient info
         currentPatient = await patientManager.getPatient(patientId);
-        displayPatientInfo(currentPatient);
         
-        // Load measurements
+        // Load measurements FIRST
         currentMeasurements = await patientManager.getPatientMeasurements(patientId);
+        
+        // Then display patient info (now currentMeasurements.length is correct)
+        displayPatientInfo(currentPatient);
         displayMeasurements(currentMeasurements);
         
         // Create charts
@@ -270,7 +272,14 @@ function createCharts(measurements) {
     // Calculate BMI for each measurement
     const bmis = sorted.map(m => {
         const heightInMeters = m.height / 100;
-        return (m.weight / (heightInMeters * heightInMeters)).toFixed(2);
+        return parseFloat((m.weight / (heightInMeters * heightInMeters)).toFixed(2));
+    });
+    
+    // Calculate ideal BMI (P50) for each measurement based on age
+    const idealBMIs = sorted.map(m => {
+        const ageData = calculateAge(currentPatient.birthDate, new Date(m.date));
+        const ageInMonths = (ageData.years * 12) + ageData.months;
+        return getIdealBMI(ageInMonths, currentPatient.gender);
     });
     
     // Height Chart
@@ -371,41 +380,72 @@ function createCharts(measurements) {
         }
     });
     
-    // BMI Chart
+    // BMI Chart with Ideal BMI line
     const bmiCtx = document.getElementById('bmiChart').getContext('2d');
     if (bmiChart) bmiChart.destroy();
+    
+    const genderColor = currentPatient.gender === 'male' ? '#64B5F6' : '#F48FB1';
+    
     bmiChart = new Chart(bmiCtx, {
         type: 'line',
         data: {
             labels: dates,
-            datasets: [{
-                label: 'BKI',
-                data: bmis,
-                borderColor: '#FF9800',
-                backgroundColor: 'rgba(255, 152, 0, 0.1)',
-                tension: 0.4,
-                fill: true,
-                pointRadius: 5,
-                pointHoverRadius: 7
-            }]
+            datasets: [
+                {
+                    label: 'Gerçek BKI',
+                    data: bmis,
+                    borderColor: '#FF9800',
+                    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                    tension: 0.4,
+                    fill: false,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    borderWidth: 3
+                },
+                {
+                    label: 'İdeal BKI (P50)',
+                    data: idealBMIs,
+                    borderColor: genderColor,
+                    backgroundColor: 'transparent',
+                    borderDash: [5, 5],
+                    tension: 0.4,
+                    fill: false,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    borderWidth: 2
+                }
+            ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            size: 12
+                        }
+                    }
                 },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
+                            const datasetLabel = context.dataset.label;
                             const bmi = context.parsed.y;
-                            let category = '';
-                            if (bmi < 18.5) category = ' (Zayıf)';
-                            else if (bmi < 25) category = ' (Normal)';
-                            else if (bmi < 30) category = ' (Fazla Kilolu)';
-                            else category = ' (Obez)';
-                            return 'BKI: ' + bmi + category;
+                            
+                            if (datasetLabel === 'Gerçek BKI') {
+                                const index = context.dataIndex;
+                                const ageData = calculateAge(currentPatient.birthDate, new Date(sorted[index].date));
+                                const ageInMonths = (ageData.years * 12) + ageData.months;
+                                const percentile = getBMIPercentile(bmi, ageInMonths, currentPatient.gender);
+                                return `${datasetLabel}: ${bmi} kg/m² (${percentile})`;
+                            } else {
+                                return `${datasetLabel}: ${bmi.toFixed(1)} kg/m²`;
+                            }
                         }
                     }
                 }
