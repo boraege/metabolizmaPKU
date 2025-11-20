@@ -107,7 +107,7 @@ async function handleSaveToPatient() {
         // Get percentile source
         const percentileSource = document.querySelector('.tab-button.active')?.dataset.source || 'manual';
         
-        // Prepare measurement data
+        // Prepare measurement data with safe defaults
         const measurementData = {
             date: new Date().toISOString(),
             height: height,
@@ -115,11 +115,11 @@ async function handleSaveToPatient() {
             percentileSource: percentileSource,
             percentileData: currentPercentileData || {},
             calculations: {
-                bmr: currentNeeds.bmr,
-                energyRef: currentNeeds.energyRef,
-                energyPractical: currentNeeds.energyPractical,
-                protein: currentNeeds.protein,
-                phe: currentNeeds.phe
+                bmr: currentNeeds.bmr || 0,
+                energyRef: currentNeeds.energyRef || 0,
+                energyPractical: currentNeeds.energyPractical || 0,
+                protein: currentNeeds.protein || 0,
+                phe: currentNeeds.phe || 0
             },
             dailyIntake: window.dailyIntakeList || [],
             mealPlan: window.mealSlots || []

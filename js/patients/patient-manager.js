@@ -40,14 +40,23 @@ class PatientManager {
             .collection('patients').doc(patientId)
             .collection('measurements').doc();
 
+        // Clean data - remove undefined values
+        const cleanCalculations = {};
+        if (measurementData.calculations) {
+            Object.keys(measurementData.calculations).forEach(key => {
+                const value = measurementData.calculations[key];
+                cleanCalculations[key] = (value !== undefined && value !== null) ? value : 0;
+            });
+        }
+
         const measurement = {
             id: measurementRef.id,
             date: measurementData.date || new Date().toISOString(),
-            height: measurementData.height,
-            weight: measurementData.weight,
-            percentileSource: measurementData.percentileSource,
-            percentileData: measurementData.percentileData,
-            calculations: measurementData.calculations,
+            height: measurementData.height || 0,
+            weight: measurementData.weight || 0,
+            percentileSource: measurementData.percentileSource || 'manual',
+            percentileData: measurementData.percentileData || {},
+            calculations: cleanCalculations,
             dailyIntake: measurementData.dailyIntake || [],
             mealPlan: measurementData.mealPlan || [],
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
