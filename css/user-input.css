@@ -465,27 +465,20 @@
         grid-template-columns: 1fr;
     }
     
-    .percentile-table-section {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
     .percentile-table-section h3 {
         font-size: 1em;
         padding: 10px 12px;
     }
     
+    /* Önizleme tabloları normal boyutta kalsın */
     .preview-table {
-        font-size: 0.7em;
-        width: 100%;
-        min-width: auto;
+        font-size: 0.85em;
     }
     
     .preview-table th,
     .preview-table td {
-        padding: 6px 3px;
+        padding: 8px 4px;
         font-size: 0.85em;
-        white-space: nowrap;
     }
     
     #neyziTablesPreview h4,
@@ -498,26 +491,5 @@
     #whoTablesPreview table {
         margin: 0 12px 12px 12px;
         width: calc(100% - 24px);
-        font-size: 0.75em;
-        display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    #neyziTablesPreview > div,
-    #whoTablesPreview > div {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Tablo scroll ipucu */
-    .percentile-table-section::after {
-        content: '← Kaydırın →';
-        display: block;
-        text-align: center;
-        font-size: 0.7em;
-        color: #999;
-        margin-top: 5px;
-        font-style: italic;
     }
 }

@@ -127,43 +127,31 @@ html {
     
     .percentile-table-section {
         width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
     }
     
-    /* Persentil tablolarını küçült */
-    .preview-table {
-        font-size: 0.7em !important;
-        width: 100%;
-    }
+    /* Önizleme tabloları normal boyutta */
     
-    .preview-table th,
-    .preview-table td {
-        padding: 5px 3px !important;
-        font-size: 0.85em !important;
-        white-space: nowrap;
-    }
-    
+    /* Referans ve nutrition tabloları - hesapla sonrası */
     .reference-table,
     .nutrition-table {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
     
-    .reference-table::after,
-    .nutrition-table::after {
-        content: '← Kaydırın →';
-        display: block;
-        text-align: center;
-        font-size: 0.8em;
-        color: #999;
-        margin-top: 8px;
-        font-style: italic;
-    }
-    
     .reference-table table,
     .nutrition-table table {
-        min-width: 500px;
+        min-width: auto;
+        width: 100%;
+        font-size: 0.7em;
+    }
+    
+    .reference-table th,
+    .reference-table td,
+    .nutrition-table th,
+    .nutrition-table td {
+        padding: 5px 3px;
+        font-size: 0.85em;
+        white-space: nowrap;
     }
     
     /* Input overflow fix */

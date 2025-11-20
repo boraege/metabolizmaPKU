@@ -22,10 +22,34 @@
 }
 
 @media (max-width: 768px) {
+    /* Referans tablosu - hesapla sonrası */
+    .reference-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .reference-table table {
+        min-width: auto;
+        width: 100%;
+        font-size: 0.7em;
+    }
+    
     .reference-table th,
     .reference-table td {
-        padding: 8px;
+        padding: 5px 3px;
         font-size: 0.85em;
+        white-space: nowrap;
+    }
+    
+    /* Scroll ipucu */
+    .reference-table::after {
+        content: '← Kaydırın →';
+        display: block;
+        text-align: center;
+        font-size: 0.7em;
+        color: #999;
+        margin-top: 5px;
+        font-style: italic;
     }
 }
 
