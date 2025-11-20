@@ -144,21 +144,25 @@ html {
     .nutrition-table table {
         min-width: auto;
         width: 100%;
-        font-size: 0.55em;
+        font-size: 0.45em;
+        table-layout: fixed;
     }
     
     .reference-table th,
     .reference-table td,
     .nutrition-table th,
     .nutrition-table td {
-        padding: 4px 2px;
+        padding: 3px 1px;
         font-size: 1em;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .reference-table th,
     .nutrition-table th {
-        font-size: 0.9em;
+        font-size: 0.85em;
+        padding: 4px 1px;
     }
     
     /* Input overflow fix */
@@ -452,6 +456,19 @@ html {
     .section h2 {
         font-size: 1.2em;
         padding-bottom: 8px;
+    }
+    
+    /* Tablolar daha da küçük */
+    .reference-table table,
+    .nutrition-table table {
+        font-size: 0.4em;
+    }
+    
+    .reference-table th,
+    .reference-table td,
+    .nutrition-table th,
+    .nutrition-table td {
+        padding: 2px 1px;
     }
     
     /* Buttons */

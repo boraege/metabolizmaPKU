@@ -33,18 +33,22 @@
     .reference-table table {
         min-width: auto;
         width: 100%;
-        font-size: 0.55em;
+        font-size: 0.45em;
+        table-layout: fixed;
     }
     
     .reference-table th,
     .reference-table td {
-        padding: 4px 2px;
+        padding: 3px 1px;
         font-size: 1em;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .reference-table th {
-        font-size: 0.9em;
+        font-size: 0.85em;
+        padding: 4px 1px;
     }
 }
 
