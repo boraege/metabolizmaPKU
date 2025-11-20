@@ -243,15 +243,44 @@ header p {
     }
     
     header {
-        padding: 20px 15px;
+        padding: 12px 15px;
     }
     
     header h1 {
-        font-size: 1.5em;
+        font-size: 1.3em;
+        margin-bottom: 3px;
     }
     
     header p {
-        font-size: 0.9em;
+        font-size: 0.8em;
+        margin: 0;
+    }
+    
+    .header-content {
+        gap: 10px;
+    }
+    
+    .header-actions {
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .header-actions button {
+        flex: 1;
+        min-width: 100px;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .user-info {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .btn-logout {
+        padding: 6px 12px;
+        font-size: 12px;
     }
     
     .section {

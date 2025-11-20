@@ -52,33 +52,51 @@ html {
         font-size: 15px;
     }
     
-    /* Sticky header on mobile */
+    /* Header optimizations - NOT sticky on mobile */
     header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: relative; /* Sticky kaldırıldı */
+        padding: 12px 15px !important; /* Daha kompakt */
     }
     
-    /* Header optimizations */
+    header h1 {
+        font-size: 1.3em !important;
+        margin-bottom: 3px !important;
+    }
+    
+    header p {
+        font-size: 0.8em !important;
+        margin: 0 !important;
+    }
+    
     .header-content {
-        flex-direction: column;
-        gap: 12px;
-    }
-    
-    .header-actions {
-        width: 100%;
         flex-direction: column;
         gap: 10px;
     }
     
-    .header-actions button {
+    .header-actions {
         width: 100%;
+        flex-direction: row; /* Yatay düzen */
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .header-actions button {
+        flex: 1;
+        min-width: 120px;
+        padding: 8px 12px !important;
+        font-size: 13px !important;
     }
     
     .user-info {
         width: 100%;
         justify-content: space-between;
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+    }
+    
+    .btn-logout {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
     }
     
     /* Personal Info - Stack vertically on mobile */
