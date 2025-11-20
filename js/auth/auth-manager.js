@@ -75,6 +75,46 @@ class AuthManager {
         }
     }
 
+    // Login with Google
+    async loginWithGoogle() {
+        try {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({
+                prompt: 'select_account'
+            });
+            
+            const userCredential = await firebase.auth().signInWithPopup(provider);
+            const user = userCredential.user;
+
+            // Check if this is a new user
+            const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+            
+            if (!userDoc.exists) {
+                // Create user document for new Google users
+                await firebase.firestore().collection('users').doc(user.uid).set({
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    role: 'dietitian',
+                    provider: 'google'
+                });
+            }
+
+            console.log('✅ User logged in with Google:', user.email);
+            return { success: true, user: user };
+        } catch (error) {
+            console.error('❌ Google login error:', error);
+            
+            // Handle popup closed by user
+            if (error.code === 'auth/popup-closed-by-user') {
+                return { success: false, error: 'Giriş penceresi kapatıldı.' };
+            }
+            
+            return { success: false, error: this.getErrorMessage(error.code) };
+        }
+    }
+
     // Logout user
     async logout() {
         try {
