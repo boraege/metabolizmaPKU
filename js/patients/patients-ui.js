@@ -158,11 +158,35 @@ function openAddPatientModal() {
     
     // Setup close buttons
     modal.querySelector('.modal-close').onclick = () => {
-        modal.style.display = 'none';
+        closeModal();
     };
     modal.querySelector('.modal-cancel').onclick = () => {
-        modal.style.display = 'none';
+        closeModal();
     };
+    
+    // Close on backdrop click
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    };
+}
+
+// Close modal with animation
+function closeModal() {
+    const modal = document.getElementById('addPatientModal');
+    const modalContent = modal.querySelector('.modal-content');
+    
+    // Add closing animation
+    modalContent.style.animation = 'modalSlideOut 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+    modal.style.animation = 'fadeOut 0.25s ease-out';
+    
+    setTimeout(() => {
+        modal.style.display = 'none';
+        // Reset animations
+        modalContent.style.animation = '';
+        modal.style.animation = '';
+    }, 250);
 }
 
 // Handle add patient form submission
@@ -178,7 +202,7 @@ async function handleAddPatient() {
     
     try {
         await patientManager.addPatient({ name, birthDate, gender });
-        document.getElementById('addPatientModal').style.display = 'none';
+        closeModal();
         await loadPatients();
         showNotification('✅ Hasta başarıyla eklendi');
     } catch (error) {
