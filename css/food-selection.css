@@ -249,21 +249,18 @@
 }
 
 .intake-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
     background: white;
     border-radius: 6px;
     margin-bottom: 8px;
     border-left: 3px solid #66BB6A;
     cursor: move;
     transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
 }
 
 .intake-item:hover {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transform: translateX(2px);
 }
 
 .intake-item.dragging {
@@ -271,8 +268,20 @@
     cursor: grabbing;
 }
 
+.intake-item-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+    z-index: 2;
+    background: white;
+}
+
 .intake-item-info {
     flex: 1;
+    min-width: 0;
+    margin-right: 10px;
 }
 
 .intake-item-info h5 {
@@ -284,6 +293,7 @@
 .intake-item-info p {
     font-size: 0.85em;
     color: #666;
+    line-height: 1.4;
 }
 
 .intake-item-controls {
@@ -343,23 +353,42 @@
 
 @media (max-width: 768px) {
     .intake-item {
-        padding: 8px;
-        margin-bottom: 6px;
+        padding: 10px;
+        margin-bottom: 8px;
+    }
+    
+    .intake-item-info {
+        flex: 1;
+        min-width: 0;
     }
     
     .intake-item-info h5 {
         font-size: 0.9em;
         margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .intake-item-info p {
         font-size: 0.75em;
+        line-height: 1.3;
+    }
+    
+    .intake-item-controls {
+        flex-shrink: 0;
     }
     
     .intake-item-controls input {
-        width: 60px;
-        padding: 6px 2px;
-        font-size: 15px;
+        width: 55px;
+        padding: 6px 4px;
+        font-size: 14px;
+    }
+    
+    .intake-item-controls button {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9em;
     }
     
     .food-box {
@@ -701,6 +730,9 @@
         z-index: 2;
         background: white;
         transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
     
     .swipe-delete-action {
@@ -708,7 +740,7 @@
         right: 0;
         top: 0;
         bottom: 0;
-        width: 100px;
+        width: 80px;
         background: #f44336;
         display: flex;
         align-items: center;
@@ -716,15 +748,26 @@
         color: white;
         font-weight: bold;
         z-index: 1;
+        border-radius: 0 6px 6px 0;
     }
     
     .swipe-delete-action span {
-        font-size: 1.2em;
+        font-size: 1em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
     }
 }
 
 @media (min-width: 769px) {
     .swipe-delete-action {
         display: none;
+    }
+    
+    .intake-item-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }
