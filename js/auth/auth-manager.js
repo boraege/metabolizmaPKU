@@ -165,8 +165,10 @@ class AuthManager {
 
     // Called when user logs out
     onUserLoggedOut() {
-        // Redirect to login if on main app
-        if (window.location.pathname.includes('app.html')) {
+        // Redirect to login if on protected pages
+        if (window.location.pathname.includes('app.html') ||
+            window.location.pathname.includes('patients.html') ||
+            window.location.pathname.includes('patient-detail.html')) {
             window.location.href = 'login.html';
         }
     }
