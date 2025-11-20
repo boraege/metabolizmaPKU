@@ -1,6 +1,46 @@
-// Main Application Initialization v1.1
+// Main Application Initialization v1.2
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('Metabolizma Hesaplayıcı başlatılıyor...');
+    
+    // Initialize Firebase and check authentication
+    initializeFirebase();
+    authManager.init();
+    
+    // Wait for auth state to be determined
+    await new Promise((resolve) => {
+        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            unsubscribe();
+            if (!user) {
+                // No user logged in, redirect to login
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // User is logged in
+            console.log('✅ Kullanıcı giriş yapmış:', user.email);
+            
+            // Set user in data manager
+            userDataManager.setUser(user.uid);
+            
+            // Display user info
+            const userInfo = document.getElementById('userInfo');
+            const userDisplayName = document.getElementById('userDisplayName');
+            if (userInfo && userDisplayName) {
+                userDisplayName.textContent = user.displayName || user.email;
+                userInfo.style.display = 'flex';
+            }
+            
+            // Setup logout button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    await authManager.logout();
+                });
+            }
+            
+            resolve();
+        });
+    });
     
     // Clear all data on page load (fresh start for each case)
     console.log('Yeni vaka başlatılıyor - veriler temizleniyor...');

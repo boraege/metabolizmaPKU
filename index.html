@@ -21,8 +21,16 @@
 <body>
     <div class="container">
         <header>
-            <h1>Metabolizma Hesaplayıcı PKU</h1>
-            <p>Beslenme ve Metabolizma Değerlendirme Sistemi</p>
+            <div class="header-content">
+                <div>
+                    <h1>Metabolizma Hesaplayıcı PKU</h1>
+                    <p>Beslenme ve Metabolizma Değerlendirme Sistemi</p>
+                </div>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span id="userDisplayName">Kullanıcı</span>
+                    <button id="logoutBtn" class="btn-logout">Çıkış Yap</button>
+                </div>
+            </div>
         </header>
 
         <!-- Section 1: Personal Information -->
@@ -193,6 +201,16 @@
             <button id="exportPDF" class="btn-primary">PDF İndir</button>
         </section>
     </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="js/auth/firebase-config.js"></script>
+    <script src="js/auth/auth-manager.js"></script>
+    <script src="js/auth/user-data-manager.js"></script>
 
     <!-- Scripts -->
     <script src="js/data/reference-data.js"></script>

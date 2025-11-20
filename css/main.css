@@ -26,7 +26,18 @@ header {
     background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
     color: white;
     padding: 20px;
-    text-align: center;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header-content > div:first-child {
+    text-align: left;
 }
 
 header h1 {
@@ -37,6 +48,35 @@ header h1 {
 header p {
     font-size: 1em;
     opacity: 0.9;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+.user-info span {
+    font-weight: 600;
+}
+
+.btn-logout {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    border: 2px solid white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: white;
+    color: #66BB6A;
 }
 
 .section {

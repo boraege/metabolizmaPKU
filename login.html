@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - Metabolizma PKU</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>🧬 Metabolizma PKU</h1>
+                <p>Diyetisyen Giriş Paneli</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    <input type="email" id="email" required placeholder="ornek@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="rememberMe">
+                        <span>Beni hatırla</span>
+                    </label>
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                <button type="submit" class="btn-primary" id="loginBtn">
+                    Giriş Yap
+                </button>
+
+                <div class="auth-links">
+                    <a href="#" id="forgotPasswordLink">Şifremi unuttum</a>
+                    <span>•</span>
+                    <a href="register.html">Hesap oluştur</a>
+                </div>
+            </form>
+
+            <div id="resetPasswordForm" class="auth-form" style="display: none;">
+                <div class="form-group">
+                    <label for="resetEmail">E-posta adresinizi girin</label>
+                    <input type="email" id="resetEmail" required placeholder="ornek@email.com">
+                </div>
+
+                <div id="resetMessage" class="success-message" style="display: none;"></div>
+                <div id="resetError" class="error-message" style="display: none;"></div>
+
+                <button type="button" class="btn-primary" id="sendResetBtn">
+                    Şifre Sıfırlama Linki Gönder
+                </button>
+
+                <div class="auth-links">
+                    <a href="#" id="backToLoginLink">Giriş sayfasına dön</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-footer">
+            <p>© 2024 Metabolizma PKU - Diyetisyenler için beslenme hesaplama aracı</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="js/auth/firebase-config.js"></script>
+    <script src="js/auth/auth-manager.js"></script>
+
+    <script>
+        // Initialize Firebase
+        initializeFirebase();
+        authManager.init();
+
+        const loginForm = document.getElementById('loginForm');
+        const resetPasswordForm = document.getElementById('resetPasswordForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const loginBtn = document.getElementById('loginBtn');
+
+        // Login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            // Disable button and show loading
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Giriş yapılıyor...';
+            errorMessage.style.display = 'none';
+
+            const result = await authManager.login(email, password, rememberMe);
+
+            if (result.success) {
+                // Redirect will happen automatically via onAuthStateChanged
+            } else {
+                errorMessage.textContent = result.error;
+                errorMessage.style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Giriş Yap';
+            }
+        });
+
+        // Forgot password link
+        document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            resetPasswordForm.style.display = 'block';
+        });
+
+        // Back to login link
+        document.getElementById('backToLoginLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            resetPasswordForm.style.display = 'none';
+            loginForm.style.display = 'block';
+            document.getElementById('resetMessage').style.display = 'none';
+            document.getElementById('resetError').style.display = 'none';
+        });
+
+        // Send password reset email
+        document.getElementById('sendResetBtn').addEventListener('click', async () => {
+            const email = document.getElementById('resetEmail').value;
+            const resetMessage = document.getElementById('resetMessage');
+            const resetError = document.getElementById('resetError');
+            const sendResetBtn = document.getElementById('sendResetBtn');
+
+            if (!email) {
+                resetError.textContent = 'Lütfen e-posta adresinizi girin.';
+                resetError.style.display = 'block';
+                return;
+            }
+
+            sendResetBtn.disabled = true;
+            sendResetBtn.textContent = 'Gönderiliyor...';
+            resetMessage.style.display = 'none';
+            resetError.style.display = 'none';
+
+            const result = await authManager.resetPassword(email);
+
+            if (result.success) {
+                resetMessage.textContent = 'Şifre sıfırlama linki e-posta adresinize gönderildi.';
+                resetMessage.style.display = 'block';
+                document.getElementById('resetEmail').value = '';
+            } else {
+                resetError.textContent = result.error;
+                resetError.style.display = 'block';
+            }
+
+            sendResetBtn.disabled = false;
+            sendResetBtn.textContent = 'Şifre Sıfırlama Linki Gönder';
+        });
+    </script>
+</body>
+</html>

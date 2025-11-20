@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - Metabolizma PKU</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>🧬 Metabolizma PKU</h1>
+                <p>Diyetisyen Hesabı Oluştur</p>
+            </div>
+
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="displayName">Ad Soyad</label>
+                    <input type="text" id="displayName" required placeholder="Dyt. Adınız Soyadınız">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    <input type="email" id="email" required placeholder="ornek@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" required placeholder="En az 6 karakter">
+                    <small>Şifreniz en az 6 karakter olmalıdır</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Şifre Tekrar</label>
+                    <input type="password" id="confirmPassword" required placeholder="Şifrenizi tekrar girin">
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="acceptTerms" required>
+                        <span>Kullanım koşullarını kabul ediyorum</span>
+                    </label>
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                <div id="successMessage" class="success-message" style="display: none;"></div>
+
+                <button type="submit" class="btn-primary" id="registerBtn">
+                    Hesap Oluştur
+                </button>
+
+                <div class="auth-links">
+                    <span>Zaten hesabınız var mı?</span>
+                    <a href="login.html">Giriş yapın</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="auth-footer">
+            <p>© 2024 Metabolizma PKU - Diyetisyenler için beslenme hesaplama aracı</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="js/auth/firebase-config.js"></script>
+    <script src="js/auth/auth-manager.js"></script>
+
+    <script>
+        // Initialize Firebase
+        initializeFirebase();
+        authManager.init();
+
+        const registerForm = document.getElementById('registerForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const registerBtn = document.getElementById('registerBtn');
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const displayName = document.getElementById('displayName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const acceptTerms = document.getElementById('acceptTerms').checked;
+
+            // Validation
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            if (!acceptTerms) {
+                errorMessage.textContent = 'Lütfen kullanım koşullarını kabul edin.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                errorMessage.textContent = 'Şifreler eşleşmiyor.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorMessage.textContent = 'Şifre en az 6 karakter olmalıdır.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Disable button and show loading
+            registerBtn.disabled = true;
+            registerBtn.textContent = 'Hesap oluşturuluyor...';
+
+            const result = await authManager.register(email, password, displayName);
+
+            if (result.success) {
+                successMessage.textContent = 'Hesabınız başarıyla oluşturuldu! Yönlendiriliyorsunuz...';
+                successMessage.style.display = 'block';
+                
+                // Redirect will happen automatically via onAuthStateChanged
+            } else {
+                errorMessage.textContent = result.error;
+                errorMessage.style.display = 'block';
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'Hesap Oluştur';
+            }
+        });
+
+        // Real-time password match validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.style.borderColor = '#e53935';
+            } else {
+                this.style.borderColor = '#ddd';
+            }
+        });
+    </script>
+</body>
+</html>
