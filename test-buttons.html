@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buton Test Sayfası</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/patients.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/food-selection.css">
+    <style>
+        body {
+            padding: 40px;
+        }
+        .test-section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+        }
+        .test-section h2 {
+            margin-bottom: 20px;
+            color: var(--dark-slate);
+        }
+        .button-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-section">
+            <h2>Ana Butonlar</h2>
+            <div class="button-row">
+                <button class="btn-primary">Primary Button</button>
+                <button class="btn-secondary">Secondary Button</button>
+                <button class="btn-logout">Çıkış Yap</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Modal Butonları</h2>
+            <div class="button-row">
+                <button class="modal-btn modal-btn-confirm">Onayla</button>
+                <button class="modal-btn modal-btn-cancel">İptal</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Icon Butonlar</h2>
+            <div class="button-row">
+                <button class="btn-icon">
+                    <span class="btn-icon-emoji">👁️</span>
+                    <span class="btn-icon-text">Görüntüle</span>
+                </button>
+                <button class="btn-icon">
+                    <span class="btn-icon-emoji">✏️</span>
+                    <span class="btn-icon-text">Düzenle</span>
+                </button>
+                <button class="btn-icon btn-danger">
+                    <span class="btn-icon-emoji">🗑️</span>
+                    <span class="btn-icon-text">Sil</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Kategori Butonları</h2>
+            <div class="button-row">
+                <button class="category-btn">Tümü</button>
+                <button class="category-btn active">Tahıllar</button>
+                <button class="category-btn">Meyveler</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

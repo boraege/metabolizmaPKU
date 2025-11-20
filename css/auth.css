@@ -123,7 +123,8 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--dark-slate) 0%, var(--muted-teal) 100%);
+    position: relative;
+    background: var(--dark-slate);
     color: white;
     border: none;
     padding: 14px 24px;
@@ -131,23 +132,54 @@ body {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
     margin-top: 10px;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.btn-primary::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--frosted-mint);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.btn-primary:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(36, 62, 54, 0.4);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
+    color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .btn-primary:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
+}
+
+.btn-primary:disabled::after {
+    display: none;
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .divider {
@@ -171,41 +203,67 @@ body {
 }
 
 .btn-google {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
     background: white;
     color: #333;
-    border: 2px solid #ddd;
+    border: 2px solid var(--dark-slate);
     padding: 12px 24px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+    width: 100%;
+    overflow: hidden;
+    z-index: 1;
     transition: all 0.3s ease;
+}
+
+.btn-google::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.btn-google:hover::after {
+    right: auto;
+    left: 0;
     width: 100%;
 }
 
 .btn-google:hover {
-    background: #f8f9fa;
-    border-color: #ccc;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+    border-color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
-.btn-google:active {
-    transform: translateY(0);
+.btn-google:hover svg path {
+    fill: white;
 }
 
 .btn-google:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
+}
+
+.btn-google:disabled::after {
+    display: none;
 }
 
 .btn-google svg {
     flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
 }
 
 .error-message {

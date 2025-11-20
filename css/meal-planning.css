@@ -182,21 +182,42 @@
 }
 
 .meal-header-controls button {
+    position: relative;
     padding: 5px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.9em;
-    transition: all 0.3s;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
 }
 
 .edit-meal-btn {
-    background: #2196f3;
+    background: var(--muted-teal);
     color: white;
 }
 
+.edit-meal-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.edit-meal-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
+}
+
 .edit-meal-btn:hover {
-    background: #1976d2;
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .delete-meal-btn {
@@ -204,8 +225,38 @@
     color: white;
 }
 
-.delete-meal-btn:hover {
+.delete-meal-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
     background: #d32f2f;
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.delete-meal-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
+}
+
+.delete-meal-btn:hover {
+    animation: scaleUp 0.3s ease-in-out;
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .meal-content {
@@ -225,6 +276,7 @@
 }
 
 .remove-meal-food-btn {
+    position: relative;
     background: #f44336;
     color: white;
     border: none;
@@ -238,12 +290,32 @@
     align-items: center;
     justify-content: center;
     margin-left: 10px;
-    transition: all 0.3s;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.remove-meal-food-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: #d32f2f;
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.remove-meal-food-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .remove-meal-food-btn:hover {
-    background: #d32f2f;
     transform: scale(1.1);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .meal-food-info h5 {
@@ -335,20 +407,42 @@
 
 /* Insert Meal Button */
 .insert-meal-btn {
+    position: relative;
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border: 2px dashed #64b155;
+    border: 2px dashed var(--dark-slate);
     background: transparent;
-    color: #27693f;
+    color: var(--dark-slate);
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.3s;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.insert-meal-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--frosted-mint);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.insert-meal-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .insert-meal-btn:hover {
-    background: #aada8e;
+    border-style: solid;
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 /* Modal for meal name input */
@@ -397,21 +491,72 @@
 }
 
 .modal-buttons button {
+    position: relative;
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
 }
 
 .modal-buttons .confirm-btn {
-    background: #64b155;
+    background: var(--dark-slate);
     color: white;
 }
 
+.modal-buttons .confirm-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--frosted-mint);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.modal-buttons .confirm-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
+}
+
+.modal-buttons .confirm-btn:hover {
+    color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
+}
+
 .modal-buttons .cancel-btn {
-    background: #e0e0e0;
-    color: #333;
+    background: white;
+    color: var(--dark-slate);
+    border: 2px solid var(--dark-slate);
+}
+
+.modal-buttons .cancel-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.modal-buttons .cancel-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
+}
+
+.modal-buttons .cancel-btn:hover {
+    color: white;
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 @media (max-width: 768px) {

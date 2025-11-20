@@ -58,6 +58,7 @@
 }
 
 .clear-search-btn {
+    position: relative;
     padding: 6px 10px;
     background: #f44336;
     color: white;
@@ -65,42 +66,101 @@
     border-radius: 50%;
     cursor: pointer;
     font-weight: bold;
-    transition: all 0.3s;
     width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.clear-search-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: #d32f2f;
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.clear-search-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .clear-search-btn:hover {
-    background: #d32f2f;
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .clear-search-btn.hidden {
     display: none;
 }
 
+@keyframes scaleUp {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 .category-btn {
+    position: relative;
     padding: 8px 16px;
-    border: 2px solid var(--muted-teal);
+    border: 2px solid var(--dark-slate);
     background: white;
     color: var(--dark-slate);
     border-radius: 16px;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.3s;
     white-space: nowrap;
     font-size: 0.85em;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.category-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.category-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .category-btn:hover {
-    background: var(--frosted-mint);
+    color: white;
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .category-btn.active {
     background: var(--dark-slate);
     color: white;
+}
+
+.category-btn.active::after {
+    width: 100%;
+    left: 0;
 }
 
 @media (max-width: 768px) {
@@ -311,6 +371,7 @@
 }
 
 .intake-item-controls button {
+    position: relative;
     width: 32px;
     height: 32px;
     border: none;
@@ -319,21 +380,45 @@
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    transition: all 0.3s;
     flex-shrink: 0;
     font-size: 1em;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.intake-item-controls button::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.intake-item-controls button:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .intake-item-controls button:hover {
-    background: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .intake-item-controls .remove-btn {
     background: #f44336;
 }
 
-.intake-item-controls .remove-btn:hover {
+.intake-item-controls .remove-btn::after {
     background: #d32f2f;
+}
+
+.intake-item-controls .remove-btn:hover {
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 @media (max-width: 768px) {
@@ -604,22 +689,43 @@
 }
 
 .quick-amount-btn {
+    position: relative;
     padding: 20px 10px;
-    background: var(--frosted-mint);
-    border: 2px solid var(--muted-teal);
+    background: white;
+    border: 2px solid var(--dark-slate);
     border-radius: 8px;
     color: var(--dark-slate);
     font-size: 1.1em;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
     text-align: center;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.quick-amount-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.quick-amount-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .quick-amount-btn:hover {
-    background: var(--muted-teal);
     color: white;
     transform: scale(1.05);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .quick-amount-btn small {
@@ -627,6 +733,8 @@
     font-size: 0.7em;
     font-weight: 400;
     margin-top: 3px;
+    position: relative;
+    z-index: 2;
 }
 
 .custom-amount-section {
@@ -660,21 +768,44 @@
 }
 
 .custom-amount-btn {
+    position: relative;
     padding: 10px 20px;
-    background: var(--muted-teal);
+    background: var(--dark-slate);
     color: white;
     border: none;
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.custom-amount-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--frosted-mint);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.custom-amount-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .custom-amount-btn:hover {
-    background: var(--dark-slate);
+    color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .cancel-quick-btn {
+    position: relative;
     width: 100%;
     padding: 12px;
     background: #f44336;
@@ -683,11 +814,31 @@
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.cancel-quick-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: #d32f2f;
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.cancel-quick-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .cancel-quick-btn:hover {
-    background: #d32f2f;
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 @media (max-width: 768px) {

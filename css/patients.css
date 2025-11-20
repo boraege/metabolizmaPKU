@@ -122,44 +122,87 @@
 }
 
 .btn-icon {
-    background: #f8f8f8;
-    border: 1px solid #f0f0f0;
+    position: relative;
+    background: white;
+    border: 2px solid var(--dark-slate);
     border-radius: 10px;
     padding: 8px 12px;
     min-width: 70px;
     height: auto;
     font-size: 14px;
     cursor: pointer;
-    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    color: #666;
+    color: var(--dark-slate);
     white-space: nowrap;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
 }
 
 .btn-icon-emoji {
     font-size: 16px;
+    position: relative;
+    z-index: 2;
 }
 
 .btn-icon-text {
     font-size: 13px;
     font-weight: 600;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-icon::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.btn-icon:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .btn-icon:hover {
-    background: white;
-    border-color: #e0e0e0;
-    transform: translateY(-2px);
-    color: #333;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: white;
+    border-color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
+}
+
+.btn-icon.btn-danger {
+    border-color: #e53935;
+    color: #e53935;
+}
+
+.btn-icon.btn-danger::after {
+    background: #e53935;
 }
 
 .btn-icon.btn-danger:hover {
-    background: #fff5f5;
-    border-color: #ffcdd2;
-    color: #e53935;
+    color: white;
+    border-color: #e53935;
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .patient-last-measurement {

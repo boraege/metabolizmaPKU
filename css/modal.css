@@ -125,40 +125,89 @@
 }
 
 .modal-btn {
+    position: relative;
     padding: 12px 28px;
     font-size: 14px;
     font-weight: 600;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 0.3px;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
 }
 
 .modal-btn-cancel {
     background: white;
-    color: #616161;
-    border: 1px solid #e8e8e8;
+    color: var(--dark-slate);
+    border: 2px solid var(--dark-slate);
+    box-shadow: 0 2px 8px rgba(10, 62, 52, 0.15);
+}
+
+.modal-btn-cancel::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.modal-btn-cancel:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .modal-btn-cancel:hover {
-    background: #fafafa;
-    border-color: #d0d0d0;
+    color: white;
+    border-color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .modal-btn-confirm {
-    background: linear-gradient(135deg, var(--dark-slate) 0%, var(--muted-teal) 100%);
+    background: var(--dark-slate);
     color: white;
-    box-shadow: 0 2px 8px rgba(36, 62, 54, 0.25);
+    box-shadow: 0 4px 15px rgba(10, 62, 52, 0.3);
+}
+
+.modal-btn-confirm::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--frosted-mint);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.modal-btn-confirm:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .modal-btn-confirm:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(36, 62, 54, 0.4);
+    color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
-.modal-btn-confirm:active {
-    transform: translateY(0);
+@keyframes scaleUp {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @keyframes fadeIn {

@@ -110,23 +110,43 @@ header p {
 }
 
 .btn-logout {
+    position: relative;
     background: rgba(255, 255, 255, 0.25);
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     padding: 8px 18px;
     border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     font-size: 13px;
-    transition: all 0.2s ease;
     letter-spacing: 0.3px;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.btn-logout::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: white;
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.btn-logout:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .btn-logout:hover {
-    background: white;
     color: var(--dark-slate);
     border-color: white;
-    transform: translateY(-1px);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .section {
@@ -212,44 +232,94 @@ header p {
     cursor: pointer;
 }
 
-/* Buttons - Modern Minimalist */
+/* Buttons - Animated Style */
 .btn-primary, .btn-secondary {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     padding: 12px 24px;
     border: none;
     border-radius: 12px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    display: block;
-    margin: 0 auto;
+    overflow: hidden;
     letter-spacing: 0.3px;
+    transition: all 0.3s ease-in-out;
+    z-index: 1;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--dark-slate) 0%, var(--muted-teal) 100%);
+    background: var(--dark-slate);
     color: white;
-    box-shadow: 0 2px 8px rgba(36, 62, 54, 0.25);
+    box-shadow: 0 4px 15px rgba(10, 62, 52, 0.3);
+}
+
+.btn-primary::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--frosted-mint);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.btn-primary:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(36, 62, 54, 0.4);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
+    color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
 }
 
 .btn-secondary {
     background: white;
-    color: #616161;
-    border: 1px solid #e8e8e8;
+    color: var(--dark-slate);
+    border: 2px solid var(--dark-slate);
+    box-shadow: 0 2px 8px rgba(10, 62, 52, 0.15);
+}
+
+.btn-secondary::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.btn-secondary:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
 }
 
 .btn-secondary:hover {
-    background: #fafafa;
-    border-color: #d0d0d0;
+    color: white;
+    border-color: var(--dark-slate);
+    animation: scaleUp 0.3s ease-in-out;
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* Warning Box */
