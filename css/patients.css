@@ -1,5 +1,13 @@
 /* Patients Page Styles - Modern Minimalist Design */
 
+:root {
+    --mint-cream: #F1F7ED;
+    --dark-slate: #243E36;
+    --muted-teal: #7CA982;
+    --frosted-mint: #E0EEC6;
+    --old-gold: #C2A83E;
+}
+
 .header-actions {
     display: flex;
     align-items: center;
@@ -35,9 +43,9 @@
 
 .search-input:focus {
     outline: none;
-    border-color: #81C784;
+    border-color: var(--muted-teal);
     background: white;
-    box-shadow: 0 0 0 4px rgba(129, 199, 132, 0.08);
+    box-shadow: 0 0 0 4px rgba(124, 169, 130, 0.12);
 }
 
 .search-input::placeholder {
@@ -70,7 +78,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #81C784, #66BB6A);
+    background: linear-gradient(90deg, var(--old-gold), var(--muted-teal));
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
@@ -191,7 +199,7 @@
 
 .spinner {
     border: 3px solid #f0f0f0;
-    border-top: 3px solid #81C784;
+    border-top: 3px solid var(--muted-teal);
     border-radius: 50%;
     width: 48px;
     height: 48px;
@@ -261,19 +269,19 @@
 }
 
 .radio-group label:hover {
-    border-color: #81C784;
+    border-color: var(--muted-teal);
     background: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .radio-group input[type="radio"] {
     margin: 0;
-    accent-color: #81C784;
+    accent-color: var(--muted-teal);
 }
 
 .radio-group input[type="radio"]:checked + span {
     font-weight: 600;
-    color: #66BB6A;
+    color: var(--dark-slate);
 }
 
 /* Notification Animation */

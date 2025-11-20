@@ -1,4 +1,13 @@
 /* Modern Modal Dialog */
+
+:root {
+    --mint-cream: #F1F7ED;
+    --dark-slate: #243E36;
+    --muted-teal: #7CA982;
+    --frosted-mint: #E0EEC6;
+    --old-gold: #C2A83E;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -104,9 +113,9 @@
 
 .modal-input:focus {
     outline: none;
-    border-color: #81C784;
+    border-color: var(--muted-teal);
     background: white;
-    box-shadow: 0 0 0 4px rgba(129, 199, 132, 0.08);
+    box-shadow: 0 0 0 4px rgba(124, 169, 130, 0.12);
 }
 
 .modal-footer {
@@ -138,14 +147,14 @@
 }
 
 .modal-btn-confirm {
-    background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
+    background: linear-gradient(135deg, var(--dark-slate) 0%, var(--muted-teal) 100%);
     color: white;
-    box-shadow: 0 2px 8px rgba(102, 187, 106, 0.2);
+    box-shadow: 0 2px 8px rgba(36, 62, 54, 0.25);
 }
 
 .modal-btn-confirm:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 187, 106, 0.35);
+    box-shadow: 0 6px 20px rgba(36, 62, 54, 0.4);
 }
 
 .modal-btn-confirm:active {

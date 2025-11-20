@@ -1,5 +1,13 @@
 /* Food Selection Styles */
 
+:root {
+    --mint-cream: #F1F7ED;
+    --dark-slate: #243E36;
+    --muted-teal: #7CA982;
+    --frosted-mint: #E0EEC6;
+    --old-gold: #C2A83E;
+}
+
 .food-selection-header {
     display: flex;
     gap: 12px;
@@ -33,7 +41,7 @@
 .food-search-input {
     flex: 1;
     padding: 8px 12px;
-    border: 2px solid #66BB6A;
+    border: 2px solid var(--muted-teal);
     border-radius: 16px;
     font-size: 0.9em;
     outline: none;
@@ -41,8 +49,8 @@
 }
 
 .food-search-input:focus {
-    border-color: #43A047;
-    box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.1);
+    border-color: var(--dark-slate);
+    box-shadow: 0 0 0 3px rgba(124, 169, 130, 0.15);
 }
 
 .food-search-input::placeholder {
@@ -75,9 +83,9 @@
 
 .category-btn {
     padding: 8px 16px;
-    border: 2px solid #66BB6A;
+    border: 2px solid var(--muted-teal);
     background: white;
-    color: #43A047;
+    color: var(--dark-slate);
     border-radius: 16px;
     cursor: pointer;
     font-weight: 600;
@@ -87,11 +95,11 @@
 }
 
 .category-btn:hover {
-    background: #e8f5e9;
+    background: var(--frosted-mint);
 }
 
 .category-btn.active {
-    background: #66BB6A;
+    background: var(--dark-slate);
     color: white;
 }
 
@@ -153,9 +161,9 @@
 }
 
 .food-box:hover {
-    border-color: #66BB6A;
+    border-color: var(--muted-teal);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(129, 199, 132, 0.2);
+    box-shadow: 0 4px 12px rgba(124, 169, 130, 0.25);
 }
 
 .food-box.dragging {
@@ -179,7 +187,7 @@
     background: #f8f9fa;
     padding: 16px;
     border-radius: 8px;
-    border: 2px dashed #66BB6A;
+    border: 2px dashed var(--muted-teal);
     min-height: 180px;
 }
 
@@ -195,14 +203,14 @@
 }
 
 .daily-intake .intake-list.drop-target-active {
-    background: #e8f5e9;
-    border: 2px dashed #66BB6A;
+    background: var(--frosted-mint);
+    border: 2px dashed var(--muted-teal);
     border-radius: 8px;
     padding: 10px;
 }
 
 .daily-intake h3 {
-    color: #2E7D32;
+    color: var(--dark-slate);
     margin-bottom: 12px;
     font-size: 1.1em;
 }
@@ -252,7 +260,7 @@
     background: white;
     border-radius: 6px;
     margin-bottom: 8px;
-    border-left: 3px solid #66BB6A;
+    border-left: 3px solid var(--old-gold);
     cursor: move;
     transition: all 0.3s;
     position: relative;
@@ -306,7 +314,7 @@
     width: 32px;
     height: 32px;
     border: none;
-    background: #66BB6A;
+    background: var(--muted-teal);
     color: white;
     border-radius: 6px;
     cursor: pointer;
@@ -317,7 +325,7 @@
 }
 
 .intake-item-controls button:hover {
-    background: #388E3C;
+    background: var(--dark-slate);
 }
 
 .intake-item-controls .remove-btn {
@@ -440,7 +448,7 @@
 }
 
 .intake-totals span {
-    color: #2E7D32;
+    color: var(--dark-slate);
     font-size: 1.05em;
 }
 
@@ -488,7 +496,7 @@
 
 .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #81C784 0%, #AED581 100%);
+    background: linear-gradient(90deg, var(--muted-teal) 0%, var(--old-gold) 100%);
     transition: width 0.3s;
     display: flex;
     align-items: center;
@@ -566,7 +574,7 @@
 }
 
 .quick-amount-content h3 {
-    color: #2E7D32;
+    color: var(--dark-slate);
     margin-bottom: 10px;
     font-size: 1.3em;
     text-align: center;
@@ -597,10 +605,10 @@
 
 .quick-amount-btn {
     padding: 20px 10px;
-    background: #e8f5e9;
-    border: 2px solid #66BB6A;
+    background: var(--frosted-mint);
+    border: 2px solid var(--muted-teal);
     border-radius: 8px;
-    color: #2E7D32;
+    color: var(--dark-slate);
     font-size: 1.1em;
     font-weight: 700;
     cursor: pointer;
@@ -609,7 +617,7 @@
 }
 
 .quick-amount-btn:hover {
-    background: #66BB6A;
+    background: var(--muted-teal);
     color: white;
     transform: scale(1.05);
 }
@@ -648,12 +656,12 @@
 
 .custom-amount-input:focus {
     outline: none;
-    border-color: #66BB6A;
+    border-color: var(--muted-teal);
 }
 
 .custom-amount-btn {
     padding: 10px 20px;
-    background: #66BB6A;
+    background: var(--muted-teal);
     color: white;
     border: none;
     border-radius: 6px;
@@ -663,7 +671,7 @@
 }
 
 .custom-amount-btn:hover {
-    background: #388E3C;
+    background: var(--dark-slate);
 }
 
 .cancel-quick-btn {
