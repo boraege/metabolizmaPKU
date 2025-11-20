@@ -464,20 +464,19 @@ label:has(input[name="percentileSelection"]):hover {
     }
 }
 
-/* Card Styles - Neumorphic Design */
+/* Card Styles - Clean Design */
 .card {
     width: 100%;
     min-height: auto;
     border-radius: 30px;
     background: #e0e0e0;
-    box-shadow: 15px 15px 30px #bebebe;
+    box-shadow: none;
     margin-bottom: 30px;
     padding: 0;
     transition: all 0.3s ease;
 }
 
 .card:hover {
-    box-shadow: 20px 20px 40px #bebebe;
     transform: translateY(-2px);
 }
 
@@ -497,7 +496,7 @@ label:has(input[name="percentileSelection"]):hover {
     .card {
         border-radius: 20px;
         margin-bottom: 20px;
-        box-shadow: 10px 10px 20px #bebebe;
+        box-shadow: none;
     }
     
     .card .section {
