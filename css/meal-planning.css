@@ -46,7 +46,7 @@
 }
 
 .available-foods-panel {
-    background: #f8f9fa;
+    background: #e9e6d5;
     border: 2px solid #e0e0e0;
     border-radius: 6px;
     padding: 15px;
@@ -58,7 +58,7 @@
 }
 
 .available-foods-panel h3 {
-    color: #2E7D32;
+    color: #27693f;
     margin-bottom: 8px;
     font-size: 1em;
 }
@@ -89,8 +89,8 @@
 }
 
 .available-food-item:hover {
-    border-color: #66BB6A;
-    box-shadow: 0 2px 8px rgba(129, 199, 132, 0.2);
+    border-color: #64b155;
+    box-shadow: 0 2px 8px rgba(100, 177, 85, 0.2);
     transform: translateX(2px);
 }
 
@@ -112,12 +112,12 @@
 }
 
 .food-amount-remaining {
-    color: #2E7D32 !important;
+    color: #27693f !important;
     font-weight: 600;
 }
 
 .food-amount-remaining strong {
-    color: #2E7D32;
+    color: #27693f;
     font-size: 1.1em;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .meal-slot {
-    background: #f8f9fa;
+    background: #e9e6d5;
     border: 2px solid #e0e0e0;
     border-radius: 6px;
     padding: 15px;
@@ -158,8 +158,8 @@
 }
 
 .meal-slot.drop-target {
-    border-color: #66BB6A;
-    background: #e8f5e9;
+    border-color: #64b155;
+    background: #aada8e;
 }
 
 .meal-header {
@@ -172,7 +172,7 @@
 }
 
 .meal-header h4 {
-    color: #2E7D32;
+    color: #27693f;
     font-size: 1.1em;
 }
 
@@ -323,7 +323,7 @@
     display: block;
     font-size: 1.1em;
     font-weight: 600;
-    color: #2E7D32;
+    color: #27693f;
 }
 
 .empty-meal {
@@ -338,9 +338,9 @@
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border: 2px dashed #66BB6A;
+    border: 2px dashed #64b155;
     background: transparent;
-    color: #43A047;
+    color: #27693f;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
@@ -348,7 +348,7 @@
 }
 
 .insert-meal-btn:hover {
-    background: #e8f5e9;
+    background: #aada8e;
 }
 
 /* Modal for meal name input */
@@ -379,7 +379,7 @@
 
 .modal-content h3 {
     margin-bottom: 20px;
-    color: #2E7D32;
+    color: #27693f;
 }
 
 .modal-content input {
@@ -405,7 +405,7 @@
 }
 
 .modal-buttons .confirm-btn {
-    background: #66BB6A;
+    background: #64b155;
     color: white;
 }
 

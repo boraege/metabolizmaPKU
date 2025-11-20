@@ -5,7 +5,7 @@
     top: 20px;
     right: 20px;
     padding: 10px 20px;
-    background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+    background: linear-gradient(135deg, #64b155 0%, #27693f 100%);
     color: white;
     border: none;
     border-radius: 6px;
@@ -26,7 +26,7 @@
     width: 100%;
     padding: 12px;
     margin-top: 15px;
-    background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+    background: linear-gradient(135deg, #64b155 0%, #27693f 100%);
     color: white;
     border: none;
     border-radius: 6px;
@@ -128,7 +128,7 @@
 
 /* History Stats */
 .history-stats {
-    background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+    background: linear-gradient(135deg, #64b155 0%, #27693f 100%);
     color: white;
     padding: 15px;
     border-radius: 8px;
@@ -173,8 +173,8 @@
 }
 
 .history-item:hover {
-    border-color: #66BB6A;
-    box-shadow: 0 4px 12px rgba(129, 199, 132, 0.1);
+    border-color: #64b155;
+    box-shadow: 0 4px 12px rgba(100, 177, 85, 0.1);
 }
 
 .history-item-header {
@@ -217,7 +217,7 @@
 .history-needs span,
 .history-foods span,
 .history-meals span {
-    background: #f8f9fa;
+    background: #e9e6d5;
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 13px;
@@ -241,13 +241,13 @@
 }
 
 .primary-button {
-    background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+    background: linear-gradient(135deg, #64b155 0%, #27693f 100%);
     color: white;
 }
 
 .primary-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 4px 8px rgba(100, 177, 85, 0.3);
 }
 
 .secondary-button {

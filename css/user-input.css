@@ -1,11 +1,11 @@
 /* User Input Specific Styles - Compact Version */
 
 :root {
-    --mint-cream: #F1F7ED;
-    --dark-slate: #243E36;
-    --muted-teal: #7CA982;
-    --frosted-mint: #E0EEC6;
-    --old-gold: #C2A83E;
+    --mint-cream: #e9e6d5;
+    --dark-slate: #0a3e34;
+    --muted-teal: #64b155;
+    --frosted-mint: #aada8e;
+    --old-gold: #27693f;
 }
 
 #personal-info {
@@ -82,7 +82,7 @@
 #personal-info input[type="date"] {
     width: 100%;
     padding: 8px 10px;
-    border: 2px solid #c8e6c9;
+    border: 2px solid #aada8e;
     border-radius: 6px;
     font-size: 0.95em;
     transition: all 0.3s ease;
@@ -101,22 +101,22 @@
 #personal-info input[type="number"]:focus,
 #personal-info input[type="date"]:focus {
     outline: none;
-    border-color: #66BB6A;
-    box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.15);
+    border-color: #64b155;
+    box-shadow: 0 0 0 4px rgba(100, 177, 85, 0.15);
     transform: scale(1.02);
 }
 
 #personal-info input[type="text"]:valid,
 #personal-info input[type="number"]:valid,
 #personal-info input[type="date"]:valid {
-    border-color: #48bb78;
+    border-color: #27693f;
 }
 
 #personal-info input[type="text"]:valid:focus,
 #personal-info input[type="number"]:valid:focus,
 #personal-info input[type="date"]:valid:focus {
-    border-color: #48bb78;
-    box-shadow: 0 0 0 4px rgba(72, 187, 120, 0.15);
+    border-color: #27693f;
+    box-shadow: 0 0 0 4px rgba(39, 105, 63, 0.15);
 }
 
 /* Gender Selection - Compact */
@@ -137,7 +137,7 @@
     justify-content: center;
     padding: 8px 10px;
     background: white;
-    border: 2px solid #c8e6c9;
+    border: 2px solid #aada8e;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -145,8 +145,8 @@
 }
 
 .gender-option-compact:hover {
-    border-color: #66BB6A;
-    background: #f1f8f4;
+    border-color: #64b155;
+    background: #e9e6d5;
 }
 
 .gender-option-compact input[type="radio"] {
@@ -259,9 +259,9 @@
 
 .tab-button {
     padding: 15px 35px;
-    border: 2px solid #c8e6c9;
+    border: 2px solid #aada8e;
     background: white;
-    color: #2E7D32;
+    color: #27693f;
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
@@ -274,8 +274,8 @@
 
 .tab-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(102, 187, 106, 0.2);
-    border-color: #66BB6A;
+    box-shadow: 0 4px 15px rgba(100, 177, 85, 0.2);
+    border-color: #64b155;
 }
 
 .tab-button.active {
@@ -288,12 +288,12 @@
 
 .source-description {
     padding: 20px;
-    background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%);
+    background: linear-gradient(135deg, #e9e6d5 0%, #aada8e 100%);
     border-radius: 12px;
     margin-top: 15px;
     line-height: 1.6;
     font-size: 0.95em;
-    border-left: 4px solid #66BB6A;
+    border-left: 4px solid #64b155;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
@@ -316,7 +316,7 @@
 
 #percentile-source .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(102, 187, 106, 0.4);
+    box-shadow: 0 10px 30px rgba(100, 177, 85, 0.4);
 }
 
 #percentile-source .btn-primary:active {
@@ -411,13 +411,13 @@
 .percentile-table-section h3 {
     margin-top: 0;
     margin-bottom: 15px;
-    color: #2E7D32;
+    color: #27693f;
     font-size: 1.1em;
     font-weight: 600;
     padding: 12px 15px;
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    background: linear-gradient(135deg, #e9e6d5 0%, #aada8e 100%);
     border-radius: 8px 8px 0 0;
-    border-left: 4px solid #66BB6A;
+    border-left: 4px solid #64b155;
 }
 
 .tables-preview {
@@ -472,14 +472,14 @@
 #neyziTablesPreview > div > div:first-child,
 #whoTablesPreview > div > div:first-child {
     padding: 12px 15px;
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-    border-bottom: 2px solid #66BB6A;
+    background: linear-gradient(135deg, #e9e6d5 0%, #aada8e 100%);
+    border-bottom: 2px solid #64b155;
 }
 
 #neyziTablesPreview h4,
 #whoTablesPreview h4 {
     margin: 15px 15px 10px 15px;
-    color: #2E7D32;
+    color: #27693f;
     font-size: 1em;
     font-weight: 600;
 }

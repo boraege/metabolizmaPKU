@@ -15,9 +15,9 @@
 
 .need-item {
     padding: 15px;
-    background: #f8f9fa;
+    background: #e9e6d5;
     border-radius: 6px;
-    border-left: 3px solid #66BB6A;
+    border-left: 3px solid #64b155;
 }
 
 .need-item label {
@@ -31,7 +31,7 @@
 .need-item span {
     display: block;
     font-size: 1.3em;
-    color: #2E7D32;
+    color: #27693f;
     font-weight: 700;
     cursor: help;
     position: relative;
@@ -41,14 +41,14 @@
 }
 
 .need-item span:hover {
-    background: #e8f5e9;
+    background: #aada8e;
     transform: scale(1.05);
 }
 
 .need-item span[title] {
     text-decoration: underline;
     text-decoration-style: dotted;
-    text-decoration-color: #66BB6A;
+    text-decoration-color: #64b155;
     text-underline-offset: 4px;
 }
 
@@ -121,17 +121,17 @@
 }
 
 .nutrition-table th {
-    background: #66BB6A;
+    background: #64b155;
     color: white;
     font-weight: 600;
 }
 
 .nutrition-table tr:nth-child(even) {
-    background: #f1f8e9;
+    background: #e9e6d5;
 }
 
 .nutrition-table tr.active-row {
-    background: #c8e6c9 !important;
+    background: #aada8e !important;
     font-weight: 600;
-    border: 2px solid #66BB6A;
+    border: 2px solid #64b155;
 }

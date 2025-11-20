@@ -1,11 +1,11 @@
 /* Patients Page Styles - Modern Minimalist Design */
 
 :root {
-    --mint-cream: #F1F7ED;
-    --dark-slate: #243E36;
-    --muted-teal: #7CA982;
-    --frosted-mint: #E0EEC6;
-    --old-gold: #C2A83E;
+    --mint-cream: #e9e6d5;
+    --dark-slate: #0a3e34;
+    --muted-teal: #64b155;
+    --frosted-mint: #aada8e;
+    --old-gold: #27693f;
 }
 
 .header-actions {
