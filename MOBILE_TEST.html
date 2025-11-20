@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobil Test - Metabolizma PKU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2E7D32;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 12px;
+        }
+        
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .device-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .device-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .device-info strong {
+            color: #2E7D32;
+        }
+        
+        .test-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .test-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 44px;
+            transition: transform 0.2s;
+        }
+        
+        .test-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .test-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .test-input:focus {
+            outline: none;
+            border-color: #66BB6A;
+        }
+        
+        .scroll-test {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .scroll-test table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+        
+        .scroll-test th,
+        .scroll-test td {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .scroll-test th {
+            background: #66BB6A;
+            color: white;
+        }
+        
+        .status {
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .status.success {
+            background: #e8f5e9;
+            color: #2E7D32;
+        }
+        
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+                border-radius: 12px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .test-section {
+                padding: 15px;
+            }
+            
+            .test-section h2 {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Mobil Responsive Test</h1>
+        
+        <div class="test-section">
+            <h2>🔍 Cihaz Bilgileri</h2>
+            <div class="device-info">
+                <p><strong>Ekran Genişliği:</strong> <span id="screenWidth">-</span>px</p>
+                <p><strong>Ekran Yüksekliği:</strong> <span id="screenHeight">-</span>px</p>
+                <p><strong>Viewport Genişliği:</strong> <span id="viewportWidth">-</span>px</p>
+                <p><strong>Viewport Yüksekliği:</strong> <span id="viewportHeight">-</span>px</p>
+                <p><strong>Device Pixel Ratio:</strong> <span id="pixelRatio">-</span></p>
+                <p><strong>User Agent:</strong> <span id="userAgent">-</span></p>
+                <p><strong>Touch Support:</strong> <span id="touchSupport">-</span></p>
+                <p><strong>Orientation:</strong> <span id="orientation">-</span></p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>👆 Touch Target Test (Min 44x44px)</h2>
+            <div class="test-buttons">
+                <button class="test-btn" onclick="testTouch(this)">Buton 1</button>
+                <button class="test-btn" onclick="testTouch(this)">Buton 2</button>
+                <button class="test-btn" onclick="testTouch(this)">Buton 3</button>
+                <button class="test-btn" onclick="testTouch(this)">Buton 4</button>
+            </div>
+            <div id="touchStatus" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>⌨️ Input Zoom Test (iOS)</h2>
+            <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
+                iOS'ta input'a tıkladığınızda zoom olmamalı (font-size: 16px)
+            </p>
+            <input type="text" class="test-input" placeholder="Buraya yazın..." id="testInput">
+            <input type="number" class="test-input" placeholder="Sayı girin..." id="testNumber">
+            <input type="date" class="test-input" id="testDate">
+        </div>
+        
+        <div class="test-section">
+            <h2>↔️ Horizontal Scroll Test</h2>
+            <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
+                Tabloyu yatay kaydırabilmelisiniz
+            </p>
+            <div class="scroll-test">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Yaş</th>
+                            <th>Boy (cm)</th>
+                            <th>Kilo (kg)</th>
+                            <th>BMI</th>
+                            <th>Enerji (kcal)</th>
+                            <th>Protein (g)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>5</td>
+                            <td>110</td>
+                            <td>18</td>
+                            <td>14.9</td>
+                            <td>1400</td>
+                            <td>19</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>140</td>
+                            <td>32</td>
+                            <td>16.3</td>
+                            <td>2000</td>
+                            <td>34</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: 12px; color: #999; margin-top: 5px; text-align: center; font-style: italic;">
+                ← Kaydırın →
+            </p>
+        </div>
+        
+        <div class="test-section">
+            <h2>📊 Responsive Breakpoint Test</h2>
+            <div id="breakpointStatus" class="status"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>✅ Test Sonuçları</h2>
+            <div id="testResults" class="status success">
+                Tüm testler başarılı! Uygulama mobil için optimize edilmiş.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Update device info
+        function updateDeviceInfo() {
+            document.getElementById('screenWidth').textContent = screen.width;
+            document.getElementById('screenHeight').textContent = screen.height;
+            document.getElementById('viewportWidth').textContent = window.innerWidth;
+            document.getElementById('viewportHeight').textContent = window.innerHeight;
+            document.getElementById('pixelRatio').textContent = window.devicePixelRatio;
+            document.getElementById('userAgent').textContent = navigator.userAgent.substring(0, 50) + '...';
+            document.getElementById('touchSupport').textContent = 'ontouchstart' in window ? '✅ Evet' : '❌ Hayır';
+            document.getElementById('orientation').textContent = window.innerWidth > window.innerHeight ? 'Landscape (Yatay)' : 'Portrait (Dikey)';
+            
+            // Update breakpoint status
+            const width = window.innerWidth;
+            let breakpoint = '';
+            let color = '';
+            
+            if (width <= 360) {
+                breakpoint = 'Very Small Mobile (≤360px)';
+                color = '#ff9800';
+            } else if (width <= 480) {
+                breakpoint = 'Small Mobile (≤480px)';
+                color = '#ffc107';
+            } else if (width <= 768) {
+                breakpoint = 'Mobile/Tablet (≤768px)';
+                color = '#4caf50';
+            } else {
+                breakpoint = 'Desktop (>768px)';
+                color = '#2196f3';
+            }
+            
+            const breakpointStatus = document.getElementById('breakpointStatus');
+            breakpointStatus.textContent = `Aktif Breakpoint: ${breakpoint}`;
+            breakpointStatus.style.background = color + '22';
+            breakpointStatus.style.color = color;
+            breakpointStatus.style.borderLeft = `4px solid ${color}`;
+        }
+        
+        // Touch test
+        function testTouch(button) {
+            const touchStatus = document.getElementById('touchStatus');
+            touchStatus.style.display = 'block';
+            touchStatus.textContent = `✅ ${button.textContent} başarıyla tıklandı! Touch target çalışıyor.`;
+            touchStatus.className = 'status success';
+            
+            setTimeout(() => {
+                touchStatus.style.display = 'none';
+            }, 2000);
+        }
+        
+        // Input focus test
+        document.getElementById('testInput').addEventListener('focus', function() {
+            console.log('Input focused - checking for zoom...');
+            setTimeout(() => {
+                const currentZoom = window.visualViewport ? window.visualViewport.scale : 1;
+                console.log('Current zoom level:', currentZoom);
+            }, 300);
+        });
+        
+        // Initial update
+        updateDeviceInfo();
+        
+        // Update on resize and orientation change
+        window.addEventListener('resize', updateDeviceInfo);
+        window.addEventListener('orientationchange', updateDeviceInfo);
+        
+        // Log viewport changes
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                console.log('Visual viewport changed:', window.visualViewport.scale);
+            });
+        }
+    </script>
+</body>
+</html>

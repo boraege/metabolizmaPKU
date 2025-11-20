@@ -252,8 +252,21 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .charts-container {
-        grid-template-columns: 1fr;
+    .patient-info-card {
+        padding: 15px;
+    }
+    
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .info-item label {
+        font-size: 10px;
+    }
+    
+    .info-item value {
+        font-size: 14px;
     }
     
     .quick-actions {
@@ -262,14 +275,146 @@
     
     .quick-actions button {
         width: 100%;
+        min-height: 44px;
+        font-size: 15px;
     }
     
+    .charts-container {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .chart-card {
+        padding: 12px;
+    }
+    
+    .chart-card h3 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .chart-card canvas {
+        max-height: 200px;
+    }
+    
+    .measurement-card {
+        padding: 12px;
+    }
+    
+    .measurement-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    
+    .measurement-header h3 {
+        font-size: 15px;
+    }
+    
+    .measurement-date {
+        font-size: 12px;
+    }
+    
+    .measurement-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .measurement-item label {
+        font-size: 9px;
+    }
+    
+    .measurement-item value {
+        font-size: 13px;
+    }
+    
+    .percentile-info {
+        padding: 8px 10px;
+    }
+    
+    .percentile-info h4 {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+    
+    .percentile-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .percentile-item label {
+        font-size: 9px;
+    }
+    
+    .percentile-item value {
+        font-size: 12px;
+    }
+    
+    .measurement-footer {
+        padding-top: 10px;
+    }
+    
+    .btn-sm {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-height: 36px;
+    }
+    
+    .btn-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    /* Modal adjustments */
+    .modal-large .modal-content {
+        max-width: 95%;
+        margin: 10px;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .detail-section {
+        padding: 12px;
+    }
+    
+    .detail-section h4 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    
+    .detail-section h5 {
+        font-size: 13px;
+    }
+    
+    .detail-grid div {
+        font-size: 13px;
+    }
+    
+    .food-list li {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
     .info-grid {
         grid-template-columns: 1fr;
     }
     
     .measurement-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+    }
+    
+    .percentile-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-card canvas {
+        max-height: 180px;
     }
 }
 

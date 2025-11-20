@@ -205,26 +205,83 @@
 
 /* Mobile responsive */
 @media (max-width: 768px) {
+    .modal {
+        align-items: flex-start;
+        padding: 10px;
+    }
+    
     .modal-content {
-        min-width: 90%;
-        padding: 24px;
-        margin: 20px;
+        min-width: 100%;
+        max-width: 100%;
+        padding: 20px;
+        margin: 10px 0;
+        max-height: calc(100vh - 40px);
+        border-radius: 16px;
     }
     
     .modal-dialog {
-        min-width: 90%;
+        min-width: 100%;
+        max-width: 100%;
         padding: 20px;
+        border-radius: 16px;
+    }
+    
+    .modal-header {
+        margin-bottom: 16px;
     }
     
     .modal-title {
         font-size: 18px;
     }
     
+    .modal-subtitle {
+        font-size: 13px;
+    }
+    
+    .modal-body {
+        margin-bottom: 20px;
+    }
+    
+    .modal-input-group {
+        margin-bottom: 12px;
+    }
+    
+    .modal-input-group label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+    
+    .modal-input {
+        padding: 12px 14px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
     .modal-footer {
         flex-direction: column-reverse;
+        gap: 10px;
     }
     
     .modal-btn {
         width: 100%;
+        padding: 14px 24px;
+        font-size: 15px;
+        min-height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content,
+    .modal-dialog {
+        padding: 16px;
+        margin: 5px 0;
+        max-height: calc(100vh - 20px);
+    }
+    
+    .modal-title {
+        font-size: 16px;
+    }
+    
+    .modal-subtitle {
+        font-size: 12px;
     }
 }

@@ -307,6 +307,12 @@
         font-size: 1.3em;
     }
     
+    .close-button {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+    }
+    
     .modal-body {
         padding: 15px;
     }
@@ -316,49 +322,120 @@
         flex-direction: column;
     }
     
+    .modal-footer button {
+        width: 100%;
+        min-height: 44px;
+    }
+    
     .history-button {
         top: 10px;
         right: 10px;
         padding: 10px 16px;
         font-size: 13px;
+        min-height: 40px;
+    }
+    
+    .save-history-button {
+        padding: 14px;
+        font-size: 16px;
+        min-height: 48px;
     }
     
     .stats-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 15px;
+        gap: 12px;
+    }
+    
+    .stat-label {
+        font-size: 12px;
     }
     
     .stat-value {
-        font-size: 20px;
+        font-size: 18px;
     }
     
     .history-stats {
-        padding: 15px;
+        padding: 12px;
     }
     
     .history-item {
-        padding: 15px;
+        padding: 12px;
     }
     
     .history-item-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
     }
     
     .history-item-header h3 {
-        font-size: 1em;
+        font-size: 15px;
+    }
+    
+    .history-date {
+        font-size: 12px;
+    }
+    
+    .history-item-body {
+        gap: 10px;
+        margin-bottom: 12px;
     }
     
     .history-item-actions {
         flex-direction: column;
+        gap: 8px;
+    }
+    
+    .history-item-actions button {
+        padding: 12px;
+        font-size: 14px;
+        min-height: 44px;
+    }
+    
+    .history-info,
+    .history-needs,
+    .history-foods,
+    .history-meals {
+        gap: 8px;
     }
     
     .history-info span,
     .history-needs span,
     .history-foods span,
     .history-meals span {
-        font-size: 0.8em;
-        padding: 5px 10px;
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+    
+    .empty-state {
+        padding: 40px 20px;
+    }
+    
+    .empty-state p {
+        font-size: 14px;
+    }
+    
+    .empty-hint {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .history-item-header h3 {
+        font-size: 14px;
+    }
+    
+    .history-info span,
+    .history-needs span,
+    .history-foods span,
+    .history-meals span {
+        font-size: 11px;
+        padding: 5px 8px;
     }
 }

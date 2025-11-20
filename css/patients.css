@@ -298,6 +298,12 @@
         max-width: 100%;
     }
     
+    .search-input {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 12px 20px 12px 44px;
+        background-position: 14px center;
+    }
+    
     .patients-container {
         grid-template-columns: 1fr;
         gap: 16px;
@@ -309,8 +315,30 @@
         gap: 10px;
     }
     
+    .header-actions button {
+        width: 100%;
+        min-height: 44px;
+    }
+    
     .patient-card {
         padding: 20px;
+    }
+    
+    .patient-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .patient-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .btn-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
     }
     
     .patient-info h3 {
@@ -320,5 +348,45 @@
     .patient-last-measurement {
         gap: 12px;
         padding: 14px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .patient-last-measurement span {
+        display: block;
+        width: 100%;
+    }
+    
+    .patient-card-footer {
+        padding-top: 12px;
+    }
+    
+    .patient-date {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .patient-card {
+        padding: 16px;
+    }
+    
+    .patient-info h3 {
+        font-size: 16px;
+    }
+    
+    .patient-age {
+        font-size: 13px;
+    }
+    
+    .patient-last-measurement {
+        padding: 12px;
+        font-size: 12px;
+    }
+    
+    .btn-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
     }
 }

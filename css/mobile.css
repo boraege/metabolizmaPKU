@@ -1,4 +1,7 @@
-/* Mobile-Specific Optimizations */
+/* ============================================
+   MOBILE RESPONSIVE OPTIMIZATIONS
+   Bilgisayar görünümü korunur, mobilde optimize edilir
+   ============================================ */
 
 /* Prevent text size adjustment on orientation change */
 html {
@@ -23,8 +26,11 @@ html {
     -webkit-overflow-scrolling: touch;
 }
 
-/* Prevent zoom on input focus for iOS */
+/* ============================================
+   TABLET & MOBILE (768px ve altı)
+   ============================================ */
 @media (max-width: 768px) {
+    /* Prevent zoom on input focus for iOS */
     input[type="text"],
     input[type="number"],
     input[type="date"],
@@ -35,25 +41,15 @@ html {
         font-size: 16px !important;
     }
     
-    /* Better spacing for touch targets */
+    /* Better spacing for touch targets (Apple HIG: 44x44px minimum) */
     button,
     .btn-primary,
     .btn-secondary,
     .category-btn,
     .tab-button {
         min-height: 44px;
-        min-width: 44px;
-    }
-    
-    /* Improve readability */
-    body {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-    
-    /* Better spacing */
-    .form-group {
-        margin-bottom: 15px;
+        padding: 12px 20px;
+        font-size: 15px;
     }
     
     /* Sticky header on mobile */
@@ -64,17 +60,63 @@ html {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     
-    /* Hide drag indicators on mobile (use tap instead) */
-    .drag-indicator {
-        display: none;
+    /* Header optimizations */
+    .header-content {
+        flex-direction: column;
+        gap: 12px;
     }
     
-    /* Better modal experience */
-    .modal {
-        align-items: flex-start;
+    .header-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
     }
     
-    /* Improve table scrolling indicator */
+    .header-actions button {
+        width: 100%;
+    }
+    
+    .user-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    /* Personal Info - Stack vertically on mobile */
+    .personal-info-compact .info-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .personal-info-compact .form-group {
+        width: 100%;
+    }
+    
+    .radio-group-compact {
+        flex-direction: row !important;
+        gap: 10px;
+    }
+    
+    .gender-option-compact {
+        flex: 1;
+    }
+    
+    /* Percentile Tables - Horizontal scroll with indicator */
+    .tables-preview {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .percentile-table-section {
+        width: 100%;
+    }
+    
+    .reference-table,
+    .nutrition-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
     .reference-table::after,
     .nutrition-table::after {
         content: '← Kaydırın →';
@@ -82,11 +124,217 @@ html {
         text-align: center;
         font-size: 0.8em;
         color: #999;
-        margin-top: 5px;
+        margin-top: 8px;
         font-style: italic;
     }
     
-    /* Better empty state messages */
+    .reference-table table,
+    .nutrition-table table {
+        min-width: 500px;
+    }
+    
+    /* Tab buttons - Horizontal scroll */
+    .tab-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        gap: 8px;
+        padding-bottom: 5px;
+    }
+    
+    .tab-button {
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    /* Daily Needs Grid - Stack on mobile */
+    .needs-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .need-item {
+        padding: 14px;
+    }
+    
+    /* Food Categories - Horizontal scroll */
+    .food-categories {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        gap: 8px;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+    }
+    
+    .category-btn {
+        white-space: nowrap;
+        flex-shrink: 0;
+        min-width: auto;
+        padding: 10px 18px;
+    }
+    
+    /* Food Search */
+    .food-search-container {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .food-search-input {
+        width: 100%;
+    }
+    
+    /* Food List - Single column */
+    .food-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .food-box {
+        min-height: 80px;
+        padding: 14px;
+    }
+    
+    /* Daily Intake */
+    .daily-intake {
+        margin-top: 20px;
+    }
+    
+    .intake-list {
+        max-height: 300px;
+    }
+    
+    .intake-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .intake-item-info {
+        width: 100%;
+    }
+    
+    .intake-item-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    /* Intake Totals - Stack vertically */
+    .intake-totals {
+        flex-direction: column;
+        gap: 8px;
+        padding: 14px;
+    }
+    
+    .intake-totals > div {
+        width: 100%;
+        text-align: left;
+    }
+    
+    /* Progress Chart */
+    .progress-chart {
+        margin-top: 15px;
+    }
+    
+    .progress-item {
+        margin-bottom: 14px;
+    }
+    
+    .progress-bar {
+        height: 24px;
+    }
+    
+    /* Meal Planning - Stack vertically */
+    .meal-planning-container {
+        flex-direction: column;
+    }
+    
+    .available-foods-panel,
+    .meal-slots-panel {
+        width: 100%;
+    }
+    
+    .available-foods-panel {
+        max-height: 250px;
+        margin-bottom: 20px;
+    }
+    
+    .meal-slots {
+        gap: 15px;
+    }
+    
+    .meal-slot {
+        padding: 14px;
+    }
+    
+    .meal-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .meal-header-controls {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .meal-header-controls button {
+        flex: 1;
+        min-width: 80px;
+    }
+    
+    .meal-food-item {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+    
+    .meal-totals {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .meal-total-item {
+        padding: 10px;
+        text-align: left;
+    }
+    
+    /* Export Actions - Stack vertically */
+    .export-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .export-actions button {
+        width: 100%;
+    }
+    
+    /* Modal - Full screen on mobile */
+    .modal {
+        align-items: flex-start;
+        padding: 10px;
+    }
+    
+    .modal-content {
+        width: 100%;
+        max-width: 100%;
+        max-height: 90vh;
+        margin: 0;
+        border-radius: 12px;
+    }
+    
+    .modal-body {
+        max-height: calc(90vh - 140px);
+        overflow-y: auto;
+    }
+    
+    /* Hide drag indicators on mobile */
+    .drag-indicator {
+        display: none;
+    }
+    
+    /* Better empty states */
     .empty-meal,
     .empty-foods,
     .empty-state {
@@ -94,56 +342,24 @@ html {
         padding: 20px;
     }
     
-    /* Compact meal planning on mobile */
-    .meal-food-item {
+    /* Warning boxes */
+    .warning-box {
+        padding: 12px;
         font-size: 0.9em;
     }
     
-    /* Better progress bars */
-    .progress-chart {
-        margin-top: 15px;
-    }
-    
-    .progress-item {
-        margin-bottom: 12px;
-    }
-    
-    /* Improve button groups */
-    .meal-header-controls {
-        flex-wrap: wrap;
-    }
-    
-    /* Better food box layout */
-    .food-box {
-        min-height: 100px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    
-    /* Improve intake item layout */
-    .intake-item-info {
-        width: 100%;
-    }
-    
-    /* Better meal totals */
-    .meal-total-item {
-        padding: 8px;
-    }
-    
-    .meal-total-item label {
-        font-size: 0.8em;
-    }
-    
-    .meal-total-item span {
-        font-size: 1.1em;
+    /* Source description */
+    .source-description {
+        font-size: 0.9em;
     }
 }
 
-/* Landscape mode optimizations */
+/* ============================================
+   LANDSCAPE MODE (768px ve altı, yatay)
+   ============================================ */
 @media (max-width: 768px) and (orientation: landscape) {
     header {
-        padding: 15px;
+        padding: 12px 15px;
     }
     
     header h1 {
@@ -155,41 +371,126 @@ html {
     }
     
     .section {
-        padding: 12px;
+        padding: 15px;
     }
     
     .section h2 {
         font-size: 1.2em;
+        margin-bottom: 12px;
+    }
+    
+    .modal-content {
+        max-height: 85vh;
+    }
+    
+    .modal-body {
+        max-height: calc(85vh - 140px);
     }
 }
 
-/* Small mobile devices */
+/* ============================================
+   SMALL MOBILE (480px ve altı)
+   ============================================ */
 @media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
     header h1 {
-        font-size: 1.3em;
+        font-size: 1.4em;
+    }
+    
+    header p {
+        font-size: 0.85em;
+    }
+    
+    .section {
+        padding: 15px;
     }
     
     .section h2 {
         font-size: 1.2em;
+        padding-bottom: 8px;
     }
     
-    .needs-grid {
-        gap: 12px;
+    /* Buttons */
+    .btn-primary,
+    .btn-secondary {
+        padding: 14px 18px;
+        font-size: 15px;
     }
     
-    .need-item {
+    /* Form inputs */
+    .form-group label {
+        font-size: 13px;
+    }
+    
+    .form-group input {
+        padding: 12px 14px;
+    }
+    
+    /* Food boxes */
+    .food-box {
         padding: 12px;
     }
     
-    .food-list {
-        gap: 10px;
+    .food-box h4 {
+        font-size: 0.95em;
     }
     
+    .food-box p {
+        font-size: 0.85em;
+    }
+    
+    /* Meal slots */
     .meal-slot {
         padding: 12px;
     }
     
+    .meal-slot h3 {
+        font-size: 1em;
+    }
+    
+    /* Stats grid */
     .stats-grid {
         grid-template-columns: 1fr;
+    }
+    
+    /* Patient cards */
+    .patient-card {
+        padding: 16px;
+    }
+    
+    .patient-info h3 {
+        font-size: 1.1em;
+    }
+}
+
+/* ============================================
+   VERY SMALL MOBILE (360px ve altı)
+   ============================================ */
+@media (max-width: 360px) {
+    header h1 {
+        font-size: 1.2em;
+    }
+    
+    .section h2 {
+        font-size: 1.1em;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .category-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+    
+    .tab-button {
+        padding: 10px 16px;
+        font-size: 13px;
     }
 }
