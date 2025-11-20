@@ -470,14 +470,14 @@ label:has(input[name="percentileSelection"]):hover {
     min-height: auto;
     border-radius: 30px;
     background: #e0e0e0;
-    box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
+    box-shadow: 15px 15px 30px #bebebe;
     margin-bottom: 30px;
     padding: 0;
     transition: all 0.3s ease;
 }
 
 .card:hover {
-    box-shadow: 20px 20px 40px #bebebe, -20px -20px 40px #ffffff;
+    box-shadow: 20px 20px 40px #bebebe;
     transform: translateY(-2px);
 }
 
@@ -497,7 +497,7 @@ label:has(input[name="percentileSelection"]):hover {
     .card {
         border-radius: 20px;
         margin-bottom: 20px;
-        box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+        box-shadow: 10px 10px 20px #bebebe;
     }
     
     .card .section {
