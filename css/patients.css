@@ -109,29 +109,43 @@
 
 .patient-actions {
     display: flex;
-    gap: 6px;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .btn-icon {
     background: #f8f8f8;
     border: 1px solid #f0f0f0;
     border-radius: 10px;
-    width: 38px;
-    height: 38px;
-    font-size: 16px;
+    padding: 8px 12px;
+    min-width: 70px;
+    height: auto;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
     color: #666;
+    white-space: nowrap;
+}
+
+.btn-icon-emoji {
+    font-size: 16px;
+}
+
+.btn-icon-text {
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .btn-icon:hover {
     background: white;
     border-color: #e0e0e0;
-    transform: scale(1.05);
+    transform: translateY(-2px);
     color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .btn-icon.btn-danger:hover {
@@ -360,13 +374,26 @@
     
     .patient-actions {
         width: 100%;
-        justify-content: flex-end;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    
+    .patient-actions .btn-icon {
+        flex: 1;
     }
     
     .btn-icon {
-        width: 44px;
-        height: 44px;
+        min-width: 80px;
+        padding: 10px 12px;
+        gap: 6px;
+    }
+    
+    .btn-icon-emoji {
         font-size: 18px;
+    }
+    
+    .btn-icon-text {
+        font-size: 13px;
     }
     
     .patient-info h3 {
@@ -413,8 +440,16 @@
     }
     
     .btn-icon {
-        width: 40px;
-        height: 40px;
+        min-width: 75px;
+        padding: 9px 10px;
+        gap: 5px;
+    }
+    
+    .btn-icon-emoji {
         font-size: 16px;
+    }
+    
+    .btn-icon-text {
+        font-size: 12px;
     }
 }

@@ -123,13 +123,16 @@ function createPatientCard(patient) {
             </div>
             <div class="patient-actions">
                 <button class="btn-icon" onclick="viewPatientDetails('${patient.id}')" title="Detayları Gör">
-                    📊
+                    <span class="btn-icon-emoji">📊</span>
+                    <span class="btn-icon-text">İncele</span>
                 </button>
                 <button class="btn-icon" onclick="addNewMeasurement('${patient.id}')" title="Yeni Ölçüm">
-                    ➕
+                    <span class="btn-icon-emoji">➕</span>
+                    <span class="btn-icon-text">Ekle</span>
                 </button>
                 <button class="btn-icon btn-danger" onclick="deletePatientConfirm('${patient.id}', '${patient.name}')" title="Sil">
-                    🗑️
+                    <span class="btn-icon-emoji">🗑️</span>
+                    <span class="btn-icon-text">Sil</span>
                 </button>
             </div>
         </div>
