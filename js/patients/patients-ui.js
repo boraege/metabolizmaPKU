@@ -4,13 +4,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Initialize Firebase and check authentication
     initializeFirebase();
-    authManager.init();
     
     // Wait for auth state
     await new Promise((resolve) => {
         const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
             unsubscribe();
             if (!user) {
+                console.log('❌ Kullanıcı giriş yapmamış, login sayfasına yönlendiriliyor...');
                 window.location.href = 'login.html';
                 return;
             }
@@ -31,9 +31,21 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Setup logout button
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {
-                logoutBtn.addEventListener('click', async () => {
-                    await authManager.logout();
+                console.log('✅ Çıkış yap butonu event listener ekleniyor...');
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    console.log('🔄 Çıkış yapılıyor...');
+                    try {
+                        await firebase.auth().signOut();
+                        console.log('✅ Çıkış başarılı, login sayfasına yönlendiriliyor...');
+                        window.location.href = 'login.html';
+                    } catch (error) {
+                        console.error('❌ Çıkış hatası:', error);
+                        alert('Çıkış yapılırken bir hata oluştu: ' + error.message);
+                    }
                 });
+            } else {
+                console.error('❌ Çıkış yap butonu bulunamadı!');
             }
             
             resolve();
