@@ -344,9 +344,6 @@ function updateIntakeDisplay() {
                         <button class="remove-btn" onclick="removeFromIntake(${item.id})">×</button>
                     </div>
                 </div>
-                <div class="swipe-delete-action">
-                    <span>🗑️ Sil</span>
-                </div>
             `;
             
             // Add drag functionality
