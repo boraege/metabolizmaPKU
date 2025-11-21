@@ -161,11 +161,24 @@ class AuthManager {
     }
 
     // Called when user logs in
-    onUserLoggedIn(user) {
-        // Redirect to main app if on login page
-        if (window.location.pathname.includes('login.html') || 
-            window.location.pathname.includes('register.html')) {
-            window.location.href = 'app.html';
+    async onUserLoggedIn(user) {
+        // Check if user exists in Firestore before redirecting
+        try {
+            const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+            
+            // Only redirect if user exists in Firestore
+            if (userDoc.exists) {
+                // Redirect to main app if on login page
+                if (window.location.pathname.includes('login.html') || 
+                    window.location.pathname.includes('register.html')) {
+                    window.location.href = 'app.html';
+                }
+            } else {
+                // User not in Firestore, don't redirect
+                console.log('⚠️ User authenticated but not registered in Firestore');
+            }
+        } catch (error) {
+            console.error('❌ Error checking user in Firestore:', error);
         }
     }
 

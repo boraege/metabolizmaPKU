@@ -144,19 +144,26 @@
             if (result.success) {
                 // If this is a new user, they should have registered first
                 if (result.isNewUser) {
-                    errorMessage.textContent = 'Hesabınız bulunamadı. Lütfen önce kayıt olun.';
-                    errorMessage.style.display = 'block';
+                    // Delete the Firebase Auth user immediately
+                    try {
+                        const currentUser = firebase.auth().currentUser;
+                        if (currentUser) {
+                            await currentUser.delete();
+                        }
+                    } catch (deleteError) {
+                        console.error('Error deleting user:', deleteError);
+                    }
                     
-                    // Sign out the new user
-                    await authManager.logout();
+                    errorMessage.textContent = 'Hesabınız bulunamadı. Kayıt sayfasına yönlendiriliyorsunuz...';
+                    errorMessage.style.display = 'block';
                     
                     googleBtn.disabled = false;
                     googleBtn.innerHTML = originalText;
                     
-                    // Redirect to register page after 2 seconds
+                    // Redirect to register page after 1.5 seconds
                     setTimeout(() => {
                         window.location.href = 'register.html';
-                    }, 2000);
+                    }, 1500);
                 } else {
                     // Existing user - redirect will happen automatically via onAuthStateChanged
                 }
