@@ -78,7 +78,7 @@ class AuthManager {
     }
 
     // Login with Google
-    async loginWithGoogle() {
+    async loginWithGoogle(createIfNew = true) {
         try {
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.setCustomParameters({
@@ -93,8 +93,8 @@ class AuthManager {
             
             const isNewUser = !userDoc.exists;
             
-            if (isNewUser) {
-                // Create user document for new Google users
+            if (isNewUser && createIfNew) {
+                // Create user document for new Google users (only from register page)
                 await firebase.firestore().collection('users').doc(user.uid).set({
                     email: user.email,
                     displayName: user.displayName,
