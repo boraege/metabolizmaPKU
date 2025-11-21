@@ -155,11 +155,22 @@
     border-radius: 6px;
     padding: 15px;
     position: relative;
+    transition: all 0.3s ease;
 }
 
-.meal-slot.drop-target {
-    border-color: #64b155;
-    background: #aada8e;
+.meal-slot.dragging-meal {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.meal-slot.drop-above {
+    border-top: 4px solid var(--muted-teal);
+    margin-top: 4px;
+}
+
+.meal-slot.drop-below {
+    border-bottom: 4px solid var(--muted-teal);
+    margin-bottom: 4px;
 }
 
 .meal-header {
@@ -177,50 +188,18 @@
     gap: 10px;
 }
 
-.meal-reorder-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+.meal-drag-handle {
+    cursor: move;
+    color: #999;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 5px;
+    user-select: none;
+    transition: color 0.3s ease;
 }
 
-.move-meal-btn {
-    background: var(--muted-teal);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    width: 24px;
-    height: 20px;
-    cursor: pointer;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
-
-.move-meal-btn::after {
-    content: " ";
-    width: 0%;
-    height: 100%;
-    background: var(--dark-slate);
-    position: absolute;
-    transition: all 0.4s ease-in-out;
-    right: 0;
-    top: 0;
-    z-index: -1;
-}
-
-.move-meal-btn:hover::after {
-    right: auto;
-    left: 0;
-    width: 100%;
-}
-
-.move-meal-btn:hover {
-    transform: scale(1.1);
+.meal-drag-handle:hover {
+    color: var(--muted-teal);
 }
 
 .meal-header h4 {
@@ -428,10 +407,9 @@
         font-size: 0.85em;
     }
     
-    .move-meal-btn {
-        width: 22px;
-        height: 18px;
-        font-size: 9px;
+    .meal-drag-handle {
+        font-size: 1.1em;
+        padding: 3px;
     }
     
     .meal-food-item {

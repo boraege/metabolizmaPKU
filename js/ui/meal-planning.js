@@ -75,13 +75,13 @@ function displayMealSlots() {
         const mealDiv = document.createElement('div');
         mealDiv.className = 'meal-slot';
         mealDiv.dataset.mealId = meal.id;
+        mealDiv.draggable = true;
         
         mealDiv.innerHTML = `
             <div class="meal-header">
                 <div class="meal-header-left">
-                    <div class="meal-reorder-controls">
-                        ${index > 0 ? `<button class="move-meal-btn move-up" onclick="moveMeal(${meal.id}, 'up')" title="Yukarı Taşı">▲</button>` : ''}
-                        ${index < mealSlots.length - 1 ? `<button class="move-meal-btn move-down" onclick="moveMeal(${meal.id}, 'down')" title="Aşağı Taşı">▼</button>` : ''}
+                    <div class="meal-drag-handle" title="Sürükleyerek sırayı değiştirin">
+                        ⋮⋮
                     </div>
                     <h4>${meal.name}</h4>
                 </div>
@@ -96,11 +96,18 @@ function displayMealSlots() {
             <div class="meal-totals" id="meal-totals-${meal.id}"></div>
         `;
         
-        // Add drop zone functionality
+        // Add drop zone functionality for foods
         const mealContent = mealDiv.querySelector('.meal-content');
         mealContent.addEventListener('dragover', handleDragOver);
         mealContent.addEventListener('drop', (e) => handleDrop(e, meal.id));
         mealContent.addEventListener('dragleave', handleDragLeave);
+        
+        // Add drag & drop functionality for meal reordering
+        mealDiv.addEventListener('dragstart', handleMealDragStart);
+        mealDiv.addEventListener('dragend', handleMealDragEnd);
+        mealDiv.addEventListener('dragover', handleMealDragOver);
+        mealDiv.addEventListener('drop', handleMealDrop);
+        mealDiv.addEventListener('dragleave', handleMealDragLeave);
         
         container.appendChild(mealDiv);
         
@@ -114,6 +121,119 @@ function displayMealSlots() {
     addMealBtn.textContent = '+ Öğün Ekle';
     addMealBtn.onclick = addNewMeal;
     container.appendChild(addMealBtn);
+}
+
+// Meal reordering drag & drop handlers
+let draggedMealElement = null;
+
+function handleMealDragStart(e) {
+    draggedMealElement = e.currentTarget;
+    e.currentTarget.classList.add('dragging-meal');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', JSON.stringify({
+        type: 'meal-reorder',
+        mealId: parseInt(e.currentTarget.dataset.mealId)
+    }));
+}
+
+function handleMealDragEnd(e) {
+    e.currentTarget.classList.remove('dragging-meal');
+    draggedMealElement = null;
+    
+    // Remove all drop indicators
+    document.querySelectorAll('.meal-slot').forEach(slot => {
+        slot.classList.remove('drop-above', 'drop-below');
+    });
+}
+
+function handleMealDragOver(e) {
+    e.preventDefault();
+    
+    // Check if we're dragging a meal (not a food)
+    const data = e.dataTransfer.types.includes('text/plain');
+    if (!data || !draggedMealElement) return;
+    
+    const targetMeal = e.currentTarget;
+    if (targetMeal === draggedMealElement) return;
+    
+    // Determine if we should show drop indicator above or below
+    const rect = targetMeal.getBoundingClientRect();
+    const midpoint = rect.top + rect.height / 2;
+    
+    // Remove previous indicators
+    document.querySelectorAll('.meal-slot').forEach(slot => {
+        slot.classList.remove('drop-above', 'drop-below');
+    });
+    
+    if (e.clientY < midpoint) {
+        targetMeal.classList.add('drop-above');
+    } else {
+        targetMeal.classList.add('drop-below');
+    }
+}
+
+function handleMealDragLeave(e) {
+    // Only remove if we're actually leaving the element
+    if (e.currentTarget.contains(e.relatedTarget)) return;
+    e.currentTarget.classList.remove('drop-above', 'drop-below');
+}
+
+function handleMealDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    try {
+        const dataString = e.dataTransfer.getData('text/plain');
+        if (!dataString) return;
+        
+        const data = JSON.parse(dataString);
+        
+        // Only handle meal reordering
+        if (data.type === 'meal-reorder' && data.mealId) {
+            const draggedMealId = data.mealId;
+            const targetMealId = parseInt(e.currentTarget.dataset.mealId);
+            
+            if (draggedMealId === targetMealId) return;
+            
+            // Find indices
+            const draggedIndex = window.mealSlots.findIndex(m => m.id === draggedMealId);
+            const targetIndex = window.mealSlots.findIndex(m => m.id === targetMealId);
+            
+            if (draggedIndex === -1 || targetIndex === -1) return;
+            
+            // Determine drop position
+            const rect = e.currentTarget.getBoundingClientRect();
+            const midpoint = rect.top + rect.height / 2;
+            const dropBelow = e.clientY >= midpoint;
+            
+            // Remove dragged meal
+            const [draggedMeal] = window.mealSlots.splice(draggedIndex, 1);
+            
+            // Calculate new index
+            let newIndex = targetIndex;
+            if (draggedIndex < targetIndex) {
+                newIndex = dropBelow ? targetIndex : targetIndex - 1;
+            } else {
+                newIndex = dropBelow ? targetIndex + 1 : targetIndex;
+            }
+            
+            // Insert at new position
+            window.mealSlots.splice(newIndex, 0, draggedMeal);
+            
+            // Refresh display
+            displayMealSlots();
+            
+            // Auto-save
+            if (typeof saveMealSlots === 'function') {
+                saveMealSlots();
+            }
+        }
+    } catch (error) {
+        console.error('Meal drop error:', error);
+    }
+    
+    // Clean up
+    e.currentTarget.classList.remove('drop-above', 'drop-below');
 }
 
 function handleDragOver(e) {
@@ -521,27 +641,7 @@ async function addNewMeal() {
     }
 }
 
-function moveMeal(mealId, direction) {
-    const index = window.mealSlots.findIndex(m => m.id === mealId);
-    if (index === -1) return;
-    
-    if (direction === 'up' && index > 0) {
-        // Swap with previous meal
-        [window.mealSlots[index - 1], window.mealSlots[index]] = 
-        [window.mealSlots[index], window.mealSlots[index - 1]];
-    } else if (direction === 'down' && index < window.mealSlots.length - 1) {
-        // Swap with next meal
-        [window.mealSlots[index], window.mealSlots[index + 1]] = 
-        [window.mealSlots[index + 1], window.mealSlots[index]];
-    }
-    
-    displayMealSlots();
-    
-    // Auto-save
-    if (typeof saveMealSlots === 'function') {
-        saveMealSlots();
-    }
-}
+
 
 async function addCustomFood() {
     // Step 1: Ask for food name
