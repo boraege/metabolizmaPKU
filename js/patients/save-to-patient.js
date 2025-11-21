@@ -63,7 +63,12 @@ async function loadPatientForMeasurement(patientId) {
 async function handleSaveToPatient() {
     // Validate that calculation is done
     if (!currentNeeds || !currentNeeds.bmr) {
-        alert('Lütfen önce hesaplama yapın');
+        await showModal({
+            type: 'alert',
+            title: 'Uyarı',
+            message: 'Lütfen önce hesaplama yapın',
+            confirmText: 'Tamam'
+        });
         return;
     }
     
@@ -75,7 +80,12 @@ async function handleSaveToPatient() {
     const weight = parseFloat(document.getElementById('weight').value);
     
     if (!patientName || !birthDate || !gender || !height || !weight) {
-        alert('Lütfen tüm hasta bilgilerini doldurun');
+        await showModal({
+            type: 'alert',
+            title: 'Eksik Bilgi',
+            message: 'Lütfen tüm hasta bilgilerini doldurun',
+            confirmText: 'Tamam'
+        });
         return;
     }
     
@@ -84,10 +94,13 @@ async function handleSaveToPatient() {
         
         // If no current patient, check if patient exists or create new
         if (!patientId) {
-            const shouldCreate = confirm(
-                `"${patientName}" adlı hasta için kayıt oluşturulsun mu?\n\n` +
-                `Bu hasta daha önce kaydedilmemişse yeni kayıt oluşturulacak.`
-            );
+            const shouldCreate = await showModal({
+                type: 'confirm',
+                title: 'Hastalarıma Kaydet',
+                message: `"${patientName}" adlı hasta için kayıt oluşturulsun mu?\n\nBu hasta daha önce kaydedilmemişse yeni kayıt oluşturulacak.`,
+                confirmText: 'Tamam',
+                cancelText: 'İptal'
+            });
             
             if (!shouldCreate) return;
             
@@ -131,15 +144,28 @@ async function handleSaveToPatient() {
         showSaveNotification('✅ Ölçüm başarıyla kaydedildi', 'success');
         
         // Ask if user wants to view patient details
-        setTimeout(() => {
-            if (confirm('Ölçüm kaydedildi! Hasta detaylarını görüntülemek ister misiniz?')) {
+        setTimeout(async () => {
+            const viewDetails = await showModal({
+                type: 'confirm',
+                title: 'Başarılı',
+                message: 'Ölçüm kaydedildi! Hasta detaylarını görüntülemek ister misiniz?',
+                confirmText: 'Evet',
+                cancelText: 'Hayır'
+            });
+            
+            if (viewDetails) {
                 window.location.href = `patient-detail.html?id=${patientId}`;
             }
         }, 1000);
         
     } catch (error) {
         console.error('Kayıt sırasında hata:', error);
-        showSaveNotification('❌ Kayıt sırasında hata oluştu: ' + error.message, 'error');
+        await showModal({
+            type: 'alert',
+            title: 'Hata',
+            message: 'Kayıt sırasında hata oluştu: ' + error.message,
+            confirmText: 'Tamam'
+        });
     }
 }
 
