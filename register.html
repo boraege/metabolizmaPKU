@@ -145,7 +145,10 @@
                 successMessage.textContent = 'Hesabınız başarıyla oluşturuldu! Yönlendiriliyorsunuz...';
                 successMessage.style.display = 'block';
                 
-                // Redirect will happen automatically via onAuthStateChanged
+                // Wait a bit for Firestore to complete, then redirect manually
+                setTimeout(() => {
+                    window.location.href = 'app.html';
+                }, 1000);
             } else {
                 errorMessage.textContent = result.error;
                 errorMessage.style.display = 'block';
@@ -178,7 +181,11 @@
             if (result.success) {
                 successMessage.textContent = 'Hesabınız başarıyla oluşturuldu! Yönlendiriliyorsunuz...';
                 successMessage.style.display = 'block';
-                // Redirect will happen automatically via onAuthStateChanged
+                
+                // Wait a bit for Firestore to complete, then redirect manually
+                setTimeout(() => {
+                    window.location.href = 'app.html';
+                }, 1000);
             } else {
                 errorMessage.textContent = result.error;
                 errorMessage.style.display = 'block';
