@@ -43,7 +43,9 @@ class AuthManager {
                 email: email,
                 displayName: displayName,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                role: 'dietitian'
+                role: 'dietitian',
+                termsAccepted: true,
+                termsAcceptedDate: firebase.firestore.FieldValue.serverTimestamp()
             });
 
             console.log('✅ User registered successfully:', email);
@@ -89,7 +91,9 @@ class AuthManager {
             // Check if this is a new user
             const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
             
-            if (!userDoc.exists) {
+            const isNewUser = !userDoc.exists;
+            
+            if (isNewUser) {
                 // Create user document for new Google users
                 await firebase.firestore().collection('users').doc(user.uid).set({
                     email: user.email,
@@ -97,12 +101,14 @@ class AuthManager {
                     photoURL: user.photoURL,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     role: 'dietitian',
-                    provider: 'google'
+                    provider: 'google',
+                    termsAccepted: true,
+                    termsAcceptedDate: firebase.firestore.FieldValue.serverTimestamp()
                 });
             }
 
             console.log('✅ User logged in with Google:', user.email);
-            return { success: true, user: user };
+            return { success: true, user: user, isNewUser: isNewUser };
         } catch (error) {
             console.error('❌ Google login error:', error);
             
