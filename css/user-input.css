@@ -9,21 +9,23 @@
 }
 
 #personal-info {
-    background: linear-gradient(135deg, var(--dark-slate) 0%, var(--muted-teal) 100%);
+    background: transparent;
     border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 4px 20px rgba(36, 62, 54, 0.35);
     position: relative;
     overflow: hidden;
     margin: 0;
 }
 
 #personal-info h2 {
-    color: white;
+    color: var(--dark-slate);
     text-align: center;
     font-size: 1.5em;
     margin-bottom: 20px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border-left: none;
+    border-bottom: 3px solid var(--old-gold);
+    padding-left: 0;
+    padding-bottom: 8px;
 }
 
 .personal-info-compact {
@@ -31,6 +33,16 @@
     margin: 0 auto;
     width: 100%;
     box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+@media (max-width: 768px) {
+    .personal-info-compact {
+        padding: 15px;
+        border-radius: 12px;
+    }
 }
 
 .info-row {
@@ -47,15 +59,15 @@
 }
 
 #personal-info .form-group {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 12px 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.1);
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
     transition: all 0.3s ease;
 }
 
 #personal-info .form-group:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: none;
 }
 
 #personal-info label {
@@ -81,12 +93,12 @@
 #personal-info input[type="number"],
 #personal-info input[type="date"] {
     width: 100%;
-    padding: 8px 10px;
-    border: 2px solid #aada8e;
-    border-radius: 6px;
-    font-size: 0.95em;
-    transition: all 0.3s ease;
-    background: white;
+    padding: 12px 16px;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    background: #fafafa;
     box-sizing: border-box;
     font-family: inherit;
 }
@@ -101,22 +113,9 @@
 #personal-info input[type="number"]:focus,
 #personal-info input[type="date"]:focus {
     outline: none;
-    border-color: #64b155;
-    box-shadow: 0 0 0 4px rgba(100, 177, 85, 0.15);
-    transform: scale(1.02);
-}
-
-#personal-info input[type="text"]:valid,
-#personal-info input[type="number"]:valid,
-#personal-info input[type="date"]:valid {
-    border-color: #27693f;
-}
-
-#personal-info input[type="text"]:valid:focus,
-#personal-info input[type="number"]:valid:focus,
-#personal-info input[type="date"]:valid:focus {
-    border-color: #27693f;
-    box-shadow: 0 0 0 4px rgba(39, 105, 63, 0.15);
+    border-color: var(--muted-teal);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(124, 169, 130, 0.12);
 }
 
 /* Gender Selection - Compact */
@@ -135,18 +134,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 10px;
-    background: white;
-    border: 2px solid #aada8e;
-    border-radius: 6px;
+    padding: 12px 16px;
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .gender-option-compact:hover {
-    border-color: #64b155;
-    background: #e9e6d5;
+    border-color: var(--muted-teal);
+    background: white;
 }
 
 .gender-option-compact input[type="radio"] {
@@ -158,10 +157,10 @@
 }
 
 .gender-option-compact:has(input[type="radio"]:checked) {
-    background: linear-gradient(135deg, var(--dark-slate) 0%, var(--muted-teal) 100%);
+    background: var(--frosted-mint);
     border-color: var(--muted-teal);
-    color: white;
-    box-shadow: 0 2px 8px rgba(36, 62, 54, 0.35);
+    color: var(--dark-slate);
+    box-shadow: 0 2px 8px rgba(124, 169, 130, 0.3);
 }
 
 .gender-option-compact span {
@@ -365,8 +364,10 @@
     }
 
     #personal-info h2 {
-        font-size: 1.3em;
-        margin-bottom: 15px;
+        font-size: 1.15em;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom-width: 2px;
     }
 
     .info-row {
@@ -377,7 +378,7 @@
     }
 
     #personal-info .form-group {
-        padding: 10px 12px;
+        padding: 0;
         width: 100%;
         box-sizing: border-box;
         overflow: hidden;
@@ -397,13 +398,13 @@
     #personal-info input[type="text"],
     #personal-info input[type="number"],
     #personal-info input[type="date"] {
-        padding: 8px;
+        padding: 14px 16px;
         font-size: 16px;
         width: 100%;
         box-sizing: border-box;
         max-width: 100%;
-        border: 2px solid #c8e6c9;
-        border-radius: 6px;
+        border: 1px solid #e8e8e8;
+        border-radius: 12px;
     }
     
     /* Doğum tarihi özel düzeltme */
@@ -426,7 +427,8 @@
     }
 
     .gender-option-compact {
-        padding: 10px;
+        padding: 14px 16px;
+        min-height: 48px;
     }
     
     .tab-button {
