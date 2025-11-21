@@ -343,3 +343,49 @@
         font-size: 12px;
     }
 }
+
+/* Dark Mode for Modal */
+[data-theme="dark"] .modal {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .modal-overlay {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .modal-content {
+    background: #1e231e;
+}
+
+[data-theme="dark"] .modal-header h2 {
+    color: #e8e8e8;
+}
+
+[data-theme="dark"] .modal-body label {
+    color: #e8e8e8;
+}
+
+[data-theme="dark"] .modal-body input[type="text"],
+[data-theme="dark"] .modal-body input[type="date"],
+[data-theme="dark"] .modal-body input[type="number"],
+[data-theme="dark"] .modal-body textarea,
+[data-theme="dark"] .modal-body select {
+    background: #2a2f2a;
+    border-color: #3a3a3a;
+    color: #e8e8e8;
+}
+
+[data-theme="dark"] .modal-body input:focus,
+[data-theme="dark"] .modal-body textarea:focus,
+[data-theme="dark"] .modal-body select:focus {
+    background: #2f342f;
+    border-color: var(--old-gold);
+}
+
+[data-theme="dark"] .modal-close {
+    color: #a0a0a0;
+}
+
+[data-theme="dark"] .modal-close:hover {
+    color: #e8e8e8;
+}

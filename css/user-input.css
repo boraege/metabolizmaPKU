@@ -558,3 +558,55 @@
         width: calc(100% - 24px);
     }
 }
+
+/* Dark Mode for User Input */
+[data-theme="dark"] .personal-info-compact {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .info-row label {
+    color: #e8e8e8;
+}
+
+[data-theme="dark"] .age-display-inline {
+    background: var(--frosted-mint);
+    color: var(--dark-slate);
+}
+
+[data-theme="dark"] .gender-option-compact {
+    background: #2a2f2a;
+    border-color: #3a3a3a;
+    color: #c0c0c0;
+}
+
+[data-theme="dark"] .gender-option-compact:hover {
+    background: #2f342f;
+    border-color: var(--old-gold);
+}
+
+[data-theme="dark"] .gender-option-compact input:checked + span {
+    color: #1a1f1a;
+}
+
+[data-theme="dark"] .needs-grid {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .need-item label {
+    color: #c0c0c0;
+}
+
+[data-theme="dark"] .need-item span,
+[data-theme="dark"] .need-item input {
+    color: #e8e8e8;
+}
+
+[data-theme="dark"] .need-item input {
+    background: #2a2f2a;
+    border-color: #3a3a3a;
+}
+
+[data-theme="dark"] .need-item input:focus {
+    background: #2f342f;
+    border-color: var(--old-gold);
+}

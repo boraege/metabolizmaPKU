@@ -639,3 +639,57 @@
         padding: 12px;
     }
 }
+
+/* Dark Mode for Meal Planning */
+[data-theme="dark"] .meal-planning-container {
+    background: transparent;
+}
+
+[data-theme="dark"] .available-foods-panel,
+[data-theme="dark"] .meal-slots-panel {
+    background: #252a25;
+}
+
+[data-theme="dark"] .available-foods-panel h3,
+[data-theme="dark"] .meal-slots-panel h3 {
+    color: #e8e8e8;
+}
+
+[data-theme="dark"] .panel-hint {
+    color: #a0a0a0;
+}
+
+[data-theme="dark"] .available-foods-list {
+    background: #2a2f2a;
+}
+
+[data-theme="dark"] .meal-slot {
+    background: #252a25;
+    border-color: #3a3a3a;
+}
+
+[data-theme="dark"] .meal-slot:hover {
+    border-color: var(--old-gold);
+}
+
+[data-theme="dark"] .meal-header {
+    background: #2a2f2a;
+}
+
+[data-theme="dark"] .meal-title {
+    color: #e8e8e8;
+}
+
+[data-theme="dark"] .meal-foods {
+    background: #2f342f;
+}
+
+[data-theme="dark"] .meal-food-item {
+    background: #252a25;
+    border-color: #3a3a3a;
+}
+
+[data-theme="dark"] .meal-totals {
+    background: rgba(0, 0, 0, 0.3);
+    color: #e8e8e8;
+}
