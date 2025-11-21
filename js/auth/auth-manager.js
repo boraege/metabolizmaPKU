@@ -9,12 +9,12 @@ class AuthManager {
 
     // Initialize auth state listener
     init() {
-        firebase.auth().onAuthStateChanged((user) => {
+        firebase.auth().onAuthStateChanged(async (user) => {
             this.currentUser = user;
             
             if (user) {
                 console.log('✅ User logged in:', user.email);
-                this.onUserLoggedIn(user);
+                await this.onUserLoggedIn(user);
             } else {
                 console.log('❌ User logged out');
                 this.onUserLoggedOut();
