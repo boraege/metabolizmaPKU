@@ -171,6 +171,58 @@
     border-bottom: 2px solid #e0e0e0;
 }
 
+.meal-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.meal-reorder-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.move-meal-btn {
+    background: var(--muted-teal);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.move-meal-btn::after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--dark-slate);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.move-meal-btn:hover::after {
+    right: auto;
+    left: 0;
+    width: 100%;
+}
+
+.move-meal-btn:hover {
+    transform: scale(1.1);
+}
+
 .meal-header h4 {
     color: #27693f;
     font-size: 1.1em;
@@ -353,13 +405,33 @@
         padding: 15px;
     }
     
+    .meal-header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .meal-header-left {
+        flex: 1;
+        min-width: 200px;
+    }
+    
     .meal-header h4 {
         font-size: 1em;
+    }
+    
+    .meal-header-controls {
+        flex-wrap: wrap;
     }
     
     .meal-header-controls button {
         padding: 5px 10px;
         font-size: 0.85em;
+    }
+    
+    .move-meal-btn {
+        width: 22px;
+        height: 18px;
+        font-size: 9px;
     }
     
     .meal-food-item {
@@ -374,6 +446,11 @@
     
     .meal-food-info p {
         font-size: 0.8em;
+    }
+    
+    .add-meal-bottom-btn {
+        padding: 12px;
+        font-size: 0.95em;
     }
 }
 
@@ -405,24 +482,25 @@
     font-style: italic;
 }
 
-/* Insert Meal Button */
-.insert-meal-btn {
+/* Add Meal Bottom Button */
+.add-meal-bottom-btn {
     position: relative;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 2px dashed var(--dark-slate);
-    background: transparent;
-    color: var(--dark-slate);
+    padding: 15px;
+    margin-top: 20px;
+    border: 2px solid var(--dark-slate);
+    background: var(--dark-slate);
+    color: white;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 1em;
     overflow: hidden;
     z-index: 1;
     transition: all 0.3s ease;
 }
 
-.insert-meal-btn::after {
+.add-meal-bottom-btn::after {
     content: " ";
     width: 0%;
     height: 100%;
@@ -434,14 +512,14 @@
     z-index: -1;
 }
 
-.insert-meal-btn:hover::after {
+.add-meal-bottom-btn:hover::after {
     right: auto;
     left: 0;
     width: 100%;
 }
 
-.insert-meal-btn:hover {
-    border-style: solid;
+.add-meal-bottom-btn:hover {
+    color: var(--dark-slate);
     animation: scaleUp 0.3s ease-in-out;
 }
 

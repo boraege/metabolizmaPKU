@@ -78,7 +78,13 @@ function displayMealSlots() {
         
         mealDiv.innerHTML = `
             <div class="meal-header">
-                <h4>${meal.name}</h4>
+                <div class="meal-header-left">
+                    <div class="meal-reorder-controls">
+                        ${index > 0 ? `<button class="move-meal-btn move-up" onclick="moveMeal(${meal.id}, 'up')" title="Yukarı Taşı">▲</button>` : ''}
+                        ${index < mealSlots.length - 1 ? `<button class="move-meal-btn move-down" onclick="moveMeal(${meal.id}, 'down')" title="Aşağı Taşı">▼</button>` : ''}
+                    </div>
+                    <h4>${meal.name}</h4>
+                </div>
                 <div class="meal-header-controls">
                     <button class="edit-meal-btn" onclick="editMealName(${meal.id})">Düzenle</button>
                     ${mealSlots.length > 1 ? `<button class="delete-meal-btn" onclick="deleteMeal(${meal.id})">Sil</button>` : ''}
@@ -100,16 +106,14 @@ function displayMealSlots() {
         
         // Display foods in this meal
         displayMealFoods(meal);
-        
-        // Add insert button between meals
-        if (index < mealSlots.length - 1) {
-            const insertBtn = document.createElement('button');
-            insertBtn.className = 'insert-meal-btn';
-            insertBtn.textContent = '+ Araya Öğün Ekle';
-            insertBtn.onclick = () => insertMeal(index);
-            container.appendChild(insertBtn);
-        }
     });
+    
+    // Add single "Add Meal" button at the bottom
+    const addMealBtn = document.createElement('button');
+    addMealBtn.className = 'add-meal-bottom-btn';
+    addMealBtn.textContent = '+ Öğün Ekle';
+    addMealBtn.onclick = addNewMeal;
+    container.appendChild(addMealBtn);
 }
 
 function handleDragOver(e) {
@@ -491,7 +495,7 @@ async function deleteMeal(mealId) {
     }
 }
 
-async function insertMeal(afterIndex) {
+async function addNewMeal() {
     const name = await showModal({
         type: 'input',
         title: 'Yeni Öğün Ekle',
@@ -503,7 +507,7 @@ async function insertMeal(afterIndex) {
     });
     
     if (name && name.trim()) {
-        window.mealSlots.splice(afterIndex + 1, 0, {
+        window.mealSlots.push({
             id: Date.now(),
             name: name.trim(),
             foods: []
@@ -514,6 +518,28 @@ async function insertMeal(afterIndex) {
         if (typeof saveMealSlots === 'function') {
             saveMealSlots();
         }
+    }
+}
+
+function moveMeal(mealId, direction) {
+    const index = window.mealSlots.findIndex(m => m.id === mealId);
+    if (index === -1) return;
+    
+    if (direction === 'up' && index > 0) {
+        // Swap with previous meal
+        [window.mealSlots[index - 1], window.mealSlots[index]] = 
+        [window.mealSlots[index], window.mealSlots[index - 1]];
+    } else if (direction === 'down' && index < window.mealSlots.length - 1) {
+        // Swap with next meal
+        [window.mealSlots[index], window.mealSlots[index + 1]] = 
+        [window.mealSlots[index + 1], window.mealSlots[index]];
+    }
+    
+    displayMealSlots();
+    
+    // Auto-save
+    if (typeof saveMealSlots === 'function') {
+        saveMealSlots();
     }
 }
 
