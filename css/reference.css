@@ -67,6 +67,24 @@
     font-weight: 600;
 }
 
+/* Persentil aralığı highlight stilleri */
+.preview-table td.percentile-highlight {
+    background: #fff9c4 !important;
+    font-weight: 700;
+    color: #f57c00;
+    border: 2px solid #ff9800;
+    position: relative;
+}
+
+.preview-table td.percentile-highlight::after {
+    content: '●';
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 0.7em;
+    color: #ff6f00;
+}
+
 .reference-table tr.height-age-row {
     background: #aada8e !important;
     border: 2px solid #64b155;

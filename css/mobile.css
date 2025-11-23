@@ -131,6 +131,23 @@ html {
     
     /* Önizleme tabloları normal boyutta */
     
+    /* Persentil highlight mobilde de görünür */
+    .preview-table td.percentile-highlight {
+        background: #fff9c4 !important;
+        font-weight: 700;
+        color: #f57c00;
+        border: 2px solid #ff9800;
+    }
+    
+    .preview-table td.percentile-highlight::after {
+        content: '●';
+        position: absolute;
+        top: 1px;
+        right: 2px;
+        font-size: 0.6em;
+        color: #ff6f00;
+    }
+    
     /* Referans ve nutrition tabloları - hesapla sonrası */
     .reference-table,
     .nutrition-table {

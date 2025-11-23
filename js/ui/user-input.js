@@ -16,6 +16,18 @@ function initializeUserInput() {
         input.addEventListener('change', updatePercentileTablesPreview);
     });
     
+    // Height and weight change handlers - update percentile tables
+    const heightInput = document.getElementById('height');
+    const weightInput = document.getElementById('weight');
+    
+    heightInput.addEventListener('input', function() {
+        updatePercentileTablesPreview();
+    });
+    
+    weightInput.addEventListener('input', function() {
+        updatePercentileTablesPreview();
+    });
+    
     // Tab switching for percentile source
     const tabButtons = document.querySelectorAll('.tab-button');
     tabButtons.forEach(button => {
@@ -65,6 +77,10 @@ async function updatePercentileTablesPreview() {
     const ageInMonths = (ageData.years * 12) + ageData.months;
     const ageInDays = calculateAgeInDays(birthDate);
     
+    // Çocuğun boy ve kilo değerlerini al
+    const currentHeight = parseFloat(document.getElementById('height').value) || null;
+    const currentWeight = parseFloat(document.getElementById('weight').value) || null;
+    
     // Neyzi verilerini al (aylık bazda)
     const neyziData = gender === 'male' ? REFERENCE_DATA.neyzi_male : REFERENCE_DATA.neyzi_female;
     
@@ -73,10 +89,10 @@ async function updatePercentileTablesPreview() {
     const neyziHeightRow = findClosestRow(neyziData.height, ageInMonths);
     
     // Neyzi tablosunu göster
-    displayComparisonTable('neyziTablesPreview', 'Neyzi', neyziWeightRow, neyziHeightRow, gender, ageData);
+    displayComparisonTable('neyziTablesPreview', 'Neyzi', neyziWeightRow, neyziHeightRow, gender, ageData, currentHeight, currentWeight);
     
     // WHO verilerini yükle ve göster (günlük bazda)
-    await loadAndDisplayWHOData(gender, ageInDays, ageData);
+    await loadAndDisplayWHOData(gender, ageInDays, ageData, currentHeight, currentWeight);
 }
 
 function findClosestRow(data, ageInMonths) {
@@ -88,7 +104,7 @@ function findClosestRow(data, ageInMonths) {
 }
 
 // WHO verilerini yükle ve göster
-async function loadAndDisplayWHOData(gender, ageInDays, ageData) {
+async function loadAndDisplayWHOData(gender, ageInDays, ageData, currentHeight, currentWeight) {
     const container = document.getElementById('whoTablesPreview');
     if (!container) return;
     
@@ -135,7 +151,7 @@ async function loadAndDisplayWHOData(gender, ageInDays, ageData) {
         }
         
         // WHO verilerini göster (hem boy hem ağırlık)
-        displayWHOComparisonTable(container, heightRecord, weightRecord, gender, ageData, ageInDays);
+        displayWHOComparisonTable(container, heightRecord, weightRecord, gender, ageData, ageInDays, currentHeight, currentWeight);
         
     } catch (error) {
         console.error('WHO verileri yüklenirken hata:', error);
@@ -143,9 +159,37 @@ async function loadAndDisplayWHOData(gender, ageInDays, ageData) {
     }
 }
 
+// Değerin hangi persentil aralığına denk geldiğini bul
+function findPercentileRange(value, percentiles) {
+    if (!value || !percentiles) return null;
+    
+    const ranges = [
+        { min: -Infinity, max: percentiles.P3, label: '<P3' },
+        { min: percentiles.P3, max: percentiles.P10, label: 'P3-P10' },
+        { min: percentiles.P10, max: percentiles.P25, label: 'P10-P25' },
+        { min: percentiles.P25, max: percentiles.P50, label: 'P25-P50' },
+        { min: percentiles.P50, max: percentiles.P75, label: 'P50-P75' },
+        { min: percentiles.P75, max: percentiles.P90, label: 'P75-P90' },
+        { min: percentiles.P90, max: percentiles.P97, label: 'P90-P97' },
+        { min: percentiles.P97, max: Infinity, label: '>P97' }
+    ];
+    
+    for (let range of ranges) {
+        if (value >= range.min && value < range.max) {
+            return range.label;
+        }
+    }
+    
+    return null;
+}
+
 // WHO verilerini tablo olarak göster (Boy ve Ağırlık)
-function displayWHOComparisonTable(container, heightRecord, weightRecord, gender, ageData, ageInDays) {
+function displayWHOComparisonTable(container, heightRecord, weightRecord, gender, ageData, ageInDays, currentHeight, currentWeight) {
     const genderText = gender === 'male' ? 'Erkek' : 'Kadın';
+    
+    // Persentil aralıklarını bul
+    const weightRange = currentWeight ? findPercentileRange(currentWeight, weightRecord) : null;
+    const heightRange = currentHeight ? findPercentileRange(currentHeight, heightRecord) : null;
     
     let html = '<div style="background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;">';
     html += `<div style="padding: 12px 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #66BB6A;">`;
@@ -156,32 +200,42 @@ function displayWHOComparisonTable(container, heightRecord, weightRecord, gender
     
     // Ağırlık Tablosu
     html += '<h4 style="margin: 15px 15px 10px 15px; color: #2E7D32; font-size: 1em; font-weight: 600;">⚖️ Ağırlık (kg) - WHO Günlük Persentil</h4>';
+    if (currentWeight && weightRange) {
+        html += `<p style="margin: 5px 15px 10px 15px; color: #f57c00; font-weight: 600; font-size: 0.9em;">Çocuğun ağırlığı: ${currentWeight} kg → ${weightRange}</p>`;
+    }
     html += '<table class="preview-table" style="margin: 0 15px 15px 15px; width: calc(100% - 30px);">';
     html += '<thead><tr>';
     html += '<th>P3</th><th>P10</th><th>P25</th><th>P50</th><th>P75</th><th>P90</th><th>P97</th>';
     html += '</tr></thead><tbody><tr>';
-    html += `<td>${weightRecord.P3?.toFixed(2) || '-'}</td>`;
-    html += `<td>${weightRecord.P10?.toFixed(2) || '-'}</td>`;
-    html += `<td>${weightRecord.P25?.toFixed(2) || '-'}</td>`;
-    html += `<td>${weightRecord.P50?.toFixed(2) || '-'}</td>`;
-    html += `<td>${weightRecord.P75?.toFixed(2) || '-'}</td>`;
-    html += `<td>${weightRecord.P90?.toFixed(2) || '-'}</td>`;
-    html += `<td>${weightRecord.P97?.toFixed(2) || '-'}</td>`;
+    
+    // Ağırlık hücrelerini highlight ile göster
+    const weightPercentiles = ['P3', 'P10', 'P25', 'P50', 'P75', 'P90', 'P97'];
+    weightPercentiles.forEach(p => {
+        const value = weightRecord[p]?.toFixed(2) || '-';
+        const isHighlight = currentWeight && weightRange && weightRange.includes(p);
+        html += `<td${isHighlight ? ' class="percentile-highlight"' : ''}>${value}</td>`;
+    });
+    
     html += '</tr></tbody></table>';
     
     // Boy Tablosu
     html += '<h4 style="margin: 15px 15px 10px 15px; color: #2E7D32; font-size: 1em; font-weight: 600;">📏 Boy (cm) - WHO Günlük Persentil</h4>';
+    if (currentHeight && heightRange) {
+        html += `<p style="margin: 5px 15px 10px 15px; color: #f57c00; font-weight: 600; font-size: 0.9em;">Çocuğun boyu: ${currentHeight} cm → ${heightRange}</p>`;
+    }
     html += '<table class="preview-table" style="margin: 0 15px 15px 15px; width: calc(100% - 30px);">';
     html += '<thead><tr>';
     html += '<th>P3</th><th>P10</th><th>P25</th><th>P50</th><th>P75</th><th>P90</th><th>P97</th>';
     html += '</tr></thead><tbody><tr>';
-    html += `<td>${heightRecord.P3?.toFixed(1) || '-'}</td>`;
-    html += `<td>${heightRecord.P10?.toFixed(1) || '-'}</td>`;
-    html += `<td>${heightRecord.P25?.toFixed(1) || '-'}</td>`;
-    html += `<td>${heightRecord.P50?.toFixed(1) || '-'}</td>`;
-    html += `<td>${heightRecord.P75?.toFixed(1) || '-'}</td>`;
-    html += `<td>${heightRecord.P90?.toFixed(1) || '-'}</td>`;
-    html += `<td>${heightRecord.P97?.toFixed(1) || '-'}</td>`;
+    
+    // Boy hücrelerini highlight ile göster
+    const heightPercentiles = ['P3', 'P10', 'P25', 'P50', 'P75', 'P90', 'P97'];
+    heightPercentiles.forEach(p => {
+        const value = heightRecord[p]?.toFixed(1) || '-';
+        const isHighlight = currentHeight && heightRange && heightRange.includes(p);
+        html += `<td${isHighlight ? ' class="percentile-highlight"' : ''}>${value}</td>`;
+    });
+    
     html += '</tr></tbody></table>';
     
     html += '</div>';
@@ -189,7 +243,7 @@ function displayWHOComparisonTable(container, heightRecord, weightRecord, gender
     container.innerHTML = html;
 }
 
-function displayComparisonTable(containerId, sourceName, weightRow, heightRow, gender, ageData) {
+function displayComparisonTable(containerId, sourceName, weightRow, heightRow, gender, ageData, currentHeight, currentWeight) {
     const container = document.getElementById(containerId);
     if (!container) return;
     
@@ -200,6 +254,30 @@ function displayComparisonTable(containerId, sourceName, weightRow, heightRow, g
     
     const genderText = gender === 'male' ? 'Erkek' : 'Kadın';
     
+    // Neyzi için persentil aralıklarını bul
+    const weightPercentiles = {
+        P3: parseFloat(weightRow.p3),
+        P10: parseFloat(weightRow.p10),
+        P25: parseFloat(weightRow.p25),
+        P50: parseFloat(weightRow.p50),
+        P75: parseFloat(weightRow.p75),
+        P90: parseFloat(weightRow.p90),
+        P97: parseFloat(weightRow.p97)
+    };
+    
+    const heightPercentiles = {
+        P3: parseFloat(heightRow.p3),
+        P10: parseFloat(heightRow.p10),
+        P25: parseFloat(heightRow.p25),
+        P50: parseFloat(heightRow.p50),
+        P75: parseFloat(heightRow.p75),
+        P90: parseFloat(heightRow.p90),
+        P97: parseFloat(heightRow.p97)
+    };
+    
+    const weightRange = currentWeight ? findPercentileRange(currentWeight, weightPercentiles) : null;
+    const heightRange = currentHeight ? findPercentileRange(currentHeight, heightPercentiles) : null;
+    
     let html = '<div style="background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;">';
     html += `<div style="padding: 12px 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-bottom: 2px solid #66BB6A;">`;
     html += `<strong style="color: #2E7D32;">👤 ${genderText}</strong> | `;
@@ -208,32 +286,44 @@ function displayComparisonTable(containerId, sourceName, weightRow, heightRow, g
     
     // Ağırlık Tablosu
     html += '<h4 style="margin: 15px 15px 10px 15px; color: #2E7D32; font-size: 1em; font-weight: 600;">⚖️ Ağırlık (kg)</h4>';
+    if (currentWeight && weightRange) {
+        html += `<p style="margin: 5px 15px 10px 15px; color: #f57c00; font-weight: 600; font-size: 0.9em;">Çocuğun ağırlığı: ${currentWeight} kg → ${weightRange}</p>`;
+    }
     html += '<table class="preview-table" style="margin: 0 15px 15px 15px; width: calc(100% - 30px);">';
     html += '<thead><tr>';
     html += '<th>P3</th><th>P10</th><th>P25</th><th>P50</th><th>P75</th><th>P90</th><th>P97</th>';
     html += '</tr></thead><tbody><tr>';
-    html += `<td>${weightRow.p3}</td>`;
-    html += `<td>${weightRow.p10}</td>`;
-    html += `<td>${weightRow.p25}</td>`;
-    html += `<td>${weightRow.p50}</td>`;
-    html += `<td>${weightRow.p75}</td>`;
-    html += `<td>${weightRow.p90}</td>`;
-    html += `<td>${weightRow.p97}</td>`;
+    
+    // Ağırlık hücrelerini highlight ile göster
+    const weightCols = ['p3', 'p10', 'p25', 'p50', 'p75', 'p90', 'p97'];
+    const weightLabels = ['P3', 'P10', 'P25', 'P50', 'P75', 'P90', 'P97'];
+    weightCols.forEach((col, idx) => {
+        const value = weightRow[col];
+        const isHighlight = currentWeight && weightRange && weightRange.includes(weightLabels[idx]);
+        html += `<td${isHighlight ? ' class="percentile-highlight"' : ''}>${value}</td>`;
+    });
+    
     html += '</tr></tbody></table>';
     
     // Boy Tablosu
     html += '<h4 style="margin: 15px 15px 10px 15px; color: #2E7D32; font-size: 1em; font-weight: 600;">📏 Boy (cm)</h4>';
+    if (currentHeight && heightRange) {
+        html += `<p style="margin: 5px 15px 10px 15px; color: #f57c00; font-weight: 600; font-size: 0.9em;">Çocuğun boyu: ${currentHeight} cm → ${heightRange}</p>`;
+    }
     html += '<table class="preview-table" style="margin: 0 15px 15px 15px; width: calc(100% - 30px);">';
     html += '<thead><tr>';
     html += '<th>P3</th><th>P10</th><th>P25</th><th>P50</th><th>P75</th><th>P90</th><th>P97</th>';
     html += '</tr></thead><tbody><tr>';
-    html += `<td>${heightRow.p3}</td>`;
-    html += `<td>${heightRow.p10}</td>`;
-    html += `<td>${heightRow.p25}</td>`;
-    html += `<td>${heightRow.p50}</td>`;
-    html += `<td>${heightRow.p75}</td>`;
-    html += `<td>${heightRow.p90}</td>`;
-    html += `<td>${heightRow.p97}</td>`;
+    
+    // Boy hücrelerini highlight ile göster
+    const heightCols = ['p3', 'p10', 'p25', 'p50', 'p75', 'p90', 'p97'];
+    const heightLabels = ['P3', 'P10', 'P25', 'P50', 'P75', 'P90', 'P97'];
+    heightCols.forEach((col, idx) => {
+        const value = heightRow[col];
+        const isHighlight = currentHeight && heightRange && heightRange.includes(heightLabels[idx]);
+        html += `<td${isHighlight ? ' class="percentile-highlight"' : ''}>${value}</td>`;
+    });
+    
     html += '</tr></tbody></table>';
     
     html += '</div>';
