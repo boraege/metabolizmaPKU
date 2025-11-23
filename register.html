@@ -40,7 +40,7 @@
 
                 <div class="form-group checkbox-group">
                     <label>
-                        <input type="checkbox" id="acceptTerms" required>
+                        <input type="checkbox" id="acceptTerms">
                         <span><a href="kullanim-kosullari.html" target="_blank">Kullanım Koşulları</a> ve <a href="gizlilik-politikasi.html" target="_blank">Gizlilik Politikası</a>'nı okudum, kabul ediyorum</span>
                     </label>
                 </div>
@@ -58,7 +58,7 @@
 
                 <div class="form-group checkbox-group">
                     <label>
-                        <input type="checkbox" id="acceptTermsGoogle" required>
+                        <input type="checkbox" id="acceptTermsGoogle">
                         <span><a href="kullanim-kosullari.html" target="_blank">Kullanım Koşulları</a> ve <a href="gizlilik-politikasi.html" target="_blank">Gizlilik Politikası</a>'nı okudum, kabul ediyorum</span>
                     </label>
                 </div>
@@ -203,6 +203,19 @@
                 this.style.borderColor = '#e53935';
             } else {
                 this.style.borderColor = '#ddd';
+            }
+        });
+
+        // Sync checkboxes - when one is checked, check the other too
+        document.getElementById('acceptTerms').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('acceptTermsGoogle').checked = true;
+            }
+        });
+
+        document.getElementById('acceptTermsGoogle').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('acceptTerms').checked = true;
             }
         });
     </script>
