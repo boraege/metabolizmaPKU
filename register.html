@@ -205,19 +205,6 @@
                 this.style.borderColor = '#ddd';
             }
         });
-
-        // Sync checkboxes - when one is checked, check the other too
-        document.getElementById('acceptTerms').addEventListener('change', function() {
-            if (this.checked) {
-                document.getElementById('acceptTermsGoogle').checked = true;
-            }
-        });
-
-        document.getElementById('acceptTermsGoogle').addEventListener('change', function() {
-            if (this.checked) {
-                document.getElementById('acceptTerms').checked = true;
-            }
-        });
     </script>
 </body>
 </html>
