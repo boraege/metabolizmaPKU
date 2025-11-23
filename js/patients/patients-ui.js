@@ -82,8 +82,12 @@ async function loadPatients() {
             container.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-icon">👥</div>
-                    <h3>Henüz hasta kaydı yok</h3>
-                    <p>Yeni hasta eklemek için yukarıdaki butonu kullanın</p>
+                    <h3>Henüz hasta kaydınız bulunmuyor</h3>
+                    <p>İlk hastanızı ekleyerek takip sistemini kullanmaya başlayın. Hasta bilgilerini kaydedip, ölçümlerini takip edebilirsiniz.</p>
+                    <button class="empty-state-cta" onclick="document.getElementById('addPatientBtn').click()">
+                        <span>➕</span>
+                        <span>İlk Hastayı Ekle</span>
+                    </button>
                 </div>
             `;
             return;
@@ -282,22 +286,9 @@ function formatDate(date) {
 
 // Show notification
 function showNotification(message) {
-    // Simple notification - can be enhanced
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #4CAF50;
-        color: white;
-        padding: 15px 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-    `;
     
     document.body.appendChild(notification);
     
