@@ -137,24 +137,24 @@ function createPatientCard(patient) {
                 <h3>${genderIcon} ${patient.name}</h3>
                 <p class="patient-age">${age}</p>
             </div>
-            <div class="patient-actions">
-                <button class="btn-icon" onclick="viewPatientDetails('${patient.id}')" title="Detayları Gör">
-                    <span class="btn-icon-emoji">📊</span>
-                    <span class="btn-icon-text">İncele</span>
-                </button>
-                <button class="btn-icon" onclick="addNewMeasurement('${patient.id}')" title="Yeni Ölçüm">
-                    <span class="btn-icon-emoji">➕</span>
-                    <span class="btn-icon-text">Ekle</span>
-                </button>
-                <button class="btn-icon btn-danger" onclick="deletePatientConfirm('${patient.id}', '${patient.name}')" title="Sil">
-                    <span class="btn-icon-emoji">🗑️</span>
-                    <span class="btn-icon-text">Sil</span>
-                </button>
+            ${lastMeasurementInfo}
+            <div class="patient-card-footer">
+                <span class="patient-date">Son Güncelleme: ${lastUpdate}</span>
             </div>
         </div>
-        ${lastMeasurementInfo}
-        <div class="patient-card-footer">
-            <span class="patient-date">Son Güncelleme: ${lastUpdate}</span>
+        <div class="patient-actions">
+            <button class="btn-icon" onclick="viewPatientDetails('${patient.id}')" title="Detayları Gör">
+                <span class="btn-icon-emoji">📊</span>
+                <span class="btn-icon-text">İncele</span>
+            </button>
+            <button class="btn-icon" onclick="addNewMeasurement('${patient.id}')" title="Yeni Ölçüm">
+                <span class="btn-icon-emoji">➕</span>
+                <span class="btn-icon-text">Ekle</span>
+            </button>
+            <button class="btn-icon btn-danger" onclick="deletePatientConfirm('${patient.id}', '${patient.name}')" title="Sil">
+                <span class="btn-icon-emoji">🗑️</span>
+                <span class="btn-icon-text">Sil</span>
+            </button>
         </div>
     `;
     

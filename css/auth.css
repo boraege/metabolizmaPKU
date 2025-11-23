@@ -16,7 +16,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, var(--muted-teal) 0%, var(--dark-slate) 100%);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -31,8 +31,8 @@ body {
 
 .auth-card {
     background: white;
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     padding: 40px;
     animation: slideUp 0.5s ease-out;
 }
@@ -55,12 +55,13 @@ body {
 
 .auth-header h1 {
     font-size: 32px;
-    color: #333;
+    color: var(--dark-slate);
     margin-bottom: 8px;
+    font-weight: 700;
 }
 
 .auth-header p {
-    color: #666;
+    color: #7f8c8d;
     font-size: 16px;
 }
 
@@ -123,42 +124,31 @@ body {
 }
 
 .btn-primary {
-    position: relative;
-    background: var(--dark-slate);
+    background: linear-gradient(135deg, var(--old-gold), var(--muted-teal));
     color: white;
     border: none;
     padding: 14px 24px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     margin-top: 10px;
-    overflow: hidden;
-    z-index: 1;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(100, 177, 85, 0.25);
 }
 
 .btn-primary::after {
-    content: " ";
-    width: 0%;
-    height: 100%;
-    background: var(--frosted-mint);
-    position: absolute;
-    transition: all 0.4s ease-in-out;
-    right: 0;
-    top: 0;
+    display: none;
     z-index: -1;
 }
 
-.btn-primary:hover::after {
-    right: auto;
-    left: 0;
-    width: 100%;
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(100, 177, 85, 0.35);
 }
 
-.btn-primary:hover {
-    color: var(--dark-slate);
-    animation: scaleUp 0.3s ease-in-out;
+.btn-primary:active {
+    transform: translateY(0);
 }
 
 .btn-primary:disabled {
